@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mauricio | Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@100;300&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #000; --accent: rgba(255,255,255,0.8); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body { 
+    background: var(--bg); 
+    color: #fff; 
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden; 
+    padding-bottom: 20vh;
+  }
+
+  /* --- 🛠️ MOBILE POSITIONING CENTER 🛠️ --- */
+  /* This section only works on phones. Adjust the 'top' values to move images. */
+  /* Positive numbers (20px) move them DOWN. Negative (-20px) move them UP. */
+  @media (max-width: 768px) {
+    #p1 { margin-top: 10vh !important; } 
+    #p2 { margin-top: 5vh !important; }
+    #p3 { margin-top: 25vh !important; }
+    #p4 { margin-top: -10vh !important; } 
+    #p5 { margin-top: 20vh !important; }
+    #p6 { margin-top: 45vh !important; }
+    #p7 { margin-top: -40vh !important; }
+  }
+  /* ----------------------------------------- */
+
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    width: 0%; height: 2px;
+    background: #fff;
+    z-index: 100;
+  }
+
+  .bg-text {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Zen Dots', cursive;
+    font-size: 22vw;
+    color: rgba(255, 255, 255, 0.02); 
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .parallax-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 15vh;
+  }
+
+  .product {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    opacity: 0;
+    top: 40px; 
+    filter: blur(15px);
+    z-index: 2;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .product.is-visible { opacity: 0.3; top: 0; filter: blur(10px); }
+
+  .product:hover, .product.is-active {
+    filter: blur(0px) !important;
+    opacity: 1 !important;
+    z-index: 10;
+    transform: scale(1.03) translateY(var(--y-pos, 0));
+  }
+
+  .product img {
+    display: block;
+    max-height: 70vh; 
+    max-width: 80vw;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+
+  .label {
+    position: absolute;
+    top: 50%;
+    font-weight: 300;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--accent);
+    text-transform: uppercase;
+    opacity: 0;
+    transition: all 0.5s ease;
+  }
+
+  .label-right { right: -180px; transform: translateX(-20px); }
+  .label-left { left: -120px; transform: translateX(20px); text-align: right; }
+
+  .product:hover .label, .product.is-active .label {
+    opacity: 1; transform: translateX(0);
+  }
+
+  .align-left { align-self: flex-start; }
+  .align-right { align-self: flex-end; }
+  .align-center { align-self: center; }
+
+  /* Ripple */
+  .ripple {
+    position: fixed;
+    width: 60px; height: 60px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: scale(0);
+    animation: ripple-effect 0.6s ease-out;
+    z-index: 99;
+  }
+  @keyframes ripple-effect { to { transform: scale(2); opacity: 0; } }
+
+  @media (max-width: 768px) {
+    .bg-text { font-size: 30vw; }
+    .product { 
+      margin-left: auto !important;
+      margin-right: auto !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 90%; 
+    }
+    .label {
+      position: relative;
+      top: 0; left: 0 !important; right: 0 !important;
+      display: block;
+      margin-top: 15px;
+      text-align: center;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .product img { max-width: 100%; max-height: 50vh; }
+  }
+</style>
+</head>
+<body>
+
+<nav style="position: absolute; top: 0; width: 100%; padding: 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000;">
+  <a href="#" style="font-family: 'Zen Dots'; font-size: 14px; text-decoration: none; color: #fff;">MAURICIO</a>
+  
+  <a href="about.html" style="font-family: 'Zen Dots'; font-size: 10px; color: #fff; text-decoration: none; border: 1px solid #333; padding: 8px 15px; border-radius: 20px; transition: 0.3s;" onmouseover="this.style.borderColor='#fff'" onmouseout="this.style.borderColor='#333'">
+    ABOUT
+  </a>
+
+  <div style="font-family: 'Zen Dots'; font-size: 10px; color: #444; margin-left: auto; padding-left: 20px;">PRODUCT DESIGN 2026</div>
+</nav>
+
+  <div id="progress"></div>
+  <div class="bg-text">WORKS</div>
+
+  <div class="parallax-wrapper">
+    <a href="product-1.html" id="p1" class="product scroll-item align-left" data-speed="0.1" style="margin-top: 0vh; margin-left: 8vw;">
+      <img src="Product 1.png" alt="Wavy Chair">
+      <div class="label label-right">01 // WAVY CHAIR</div>
+    </a>
+
+    <a href="product-2.html" id="p2" class="product scroll-item align-right" data-speed="0.05" style="margin-top: 10vh; margin-right: 8vw;">
+      <img src="Product 2.png" id="p2" alt="C8H1">
+      <div class="label label-left">02 // C8H1</div>
+    </a>
+
+    <a href="product-3.html" id="p3" class="product scroll-item align-center" data-speed="-0.08" style="margin-top: 20vh;">
+      <img src="Product 3.png" alt="Pill lamp">
+      <div class="label label-right">03 // PILL LAMP</div>
+    </a>
+
+    <a href="product-4.html" id="p4" class="product scroll-item align-left" data-speed="0.15" style="margin-top: -15vh; margin-left: 8vw;">
+      <img src="Product 4.png" alt="Fluido">
+      <div class="label label-right">04 // FLUIDO</div>
+    </a>
+
+    <a href="product-5.html" id="p5" class="product scroll-item align-right" data-speed="0.1" style="margin-top: 10vh; margin-right: 8vw;">
+      <img src="Product 5.png" alt="Boring Glasses">
+      <div class="label label-left">05 // BORING GLASSES</div>
+    </a>
+
+    <a href="product-6.html" id="p6" class="product scroll-item align-left" data-speed="-0.02" style="margin-top: 25vh; margin-left: 35vw;">
+      <img src="Product 6.png" alt="True Human">
+      <div class="label label-right">06 // TRUE HUMAN</div>
+    </a>
+
+    <a href="product-7.html" id="p7" class="product scroll-item align-center" data-speed="0.12" style="margin-top: -10vh;">
+      <img src="Product 7.png" alt="Fleed">
+      <div class="label label-right">07 // FLEED</div>
+    </a>
+<div style="height: 40vh;"></div> 
+
+<section id="about-bottom" class="align-center" style="position: relative; width: 100%; padding: 100px 0; text-align: center; z-index: 10;">
+  <a href="about.html" style="text-decoration: none; color: inherit; display: inline-block;">
+    <h2 style="font-family: 'Zen Dots'; font-size: 8vw; letter-spacing: -0.05em; color: #fff; margin: 0;">
+      ABOUT ME
+    </h2>
+    <div style="font-family: 'Zen Dots'; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #444; margin-top: 20px;">
+      CLICK TO VIEW CONTACT & BIO
+    </div>
+  </a>
+</section>
+  </div>
+
+  <script>
+    // Scroll Progress
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById("progress").style.width = (winScroll / height) * 100 + "%";
+    });
+
+    // Reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('is-visible');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.product').forEach(p => observer.observe(p));
+
+    // Parallax
+    window.addEventListener('scroll', () => {
+      document.querySelectorAll('.scroll-item').forEach(item => {
+        if (item.classList.contains('is-visible')) {
+          let speed = item.getAttribute('data-speed');
+          let yVal = window.pageYOffset * speed;
+          item.style.setProperty('--y-pos', `${yVal}px`);
+          item.style.transform = `translateY(${yVal}px)`;
+        }
+      });
+    });
+
+    // Mobile Taps
+    let lastTap = 0;
+    const products = document.querySelectorAll('.product');
+
+    document.addEventListener('touchstart', (e) => {
+      const ripple = document.createElement('div');
+      ripple.className = 'ripple';
+      ripple.style.left = `${e.touches[0].clientX - 30}px`;
+      ripple.style.top = `${e.touches[0].clientY - 30}px`;
+      document.body.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+
+      const targetProduct = e.target.closest('.product');
+      if (targetProduct && window.innerWidth <= 1024) {
+        const currentTime = new Date().getTime();
+        if (currentTime - lastTap < 300) {
+          window.location.href = targetProduct.getAttribute('href');
+        } else {
+          products.forEach(p => p.classList.remove('is-active'));
+          targetProduct.classList.add('is-active');
+        }
+        lastTap = currentTime;
+      } else if (!targetProduct) {
+        products.forEach(p => p.classList.remove('is-active'));
+      }
+    });
+
+    products.forEach(p => { p.addEventListener('click', (e) => { if(window.innerWidth <= 1024) e.preventDefault(); }); });
+  </script>
+</body>
+</html>

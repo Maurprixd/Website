@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fleed | Process Breakdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+<style>
+  :root { --accent: #ffffff; --dim: #444; --bg: #000; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  html, body { 
+    background: var(--bg); 
+    color: #fff; 
+    font-family: 'Inter', sans-serif;
+    overflow-y: auto; 
+    min-height: 100%;
+  }
+
+  /* Sticky Navigation */
+  .process-nav {
+    position: sticky; top: 0; width: 100%; padding: 20px 40px;
+    background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid #1a1a1a; z-index: 1000;
+  }
+  .nav-logo { font-family: 'Zen Dots'; font-size: 14px; text-decoration: none; color: #fff; }
+  .steps { display: flex; gap: 30px; font-size: 10px; font-weight: 600; letter-spacing: 2px; }
+  .steps a { text-decoration: none; color: var(--dim); transition: 0.3s; }
+  .steps a:hover { color: #fff; }
+
+  /* Hero Section */
+  .hero-alt {
+    padding: 160px 40px 80px; text-align: left; max-width: 1200px; margin: 0 auto;
+  }
+  .hero-alt h1 { font-family: 'Zen Dots'; font-size: 5rem; line-height: 0.9; margin-bottom: 20px; text-transform: uppercase; }
+  .hero-alt .meta { color: #888; letter-spacing: 3px; font-size: 12px; }
+
+  /* Sections */
+  section { max-width: 1200px; margin: 0 auto; padding: 100px 40px; min-height: 50vh; }
+  .section-header { margin-bottom: 60px; }
+  .section-num { font-family: 'Zen Dots'; font-size: 12px; color: var(--dim); display: block; margin-bottom: 10px; }
+  .section-title { font-family: 'Zen Dots'; font-size: 24px; text-transform: uppercase; }
+
+  /* Bento Grid */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto;
+    gap: 20px;
+  }
+  .bento-item { background: #111; border-radius: 8px; overflow: hidden; min-height: 300px; }
+  .bento-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tall { grid-row: span 2; }
+
+  /* Technical Section */
+  .tech-specs {
+    background: #0a0a0a; border: 1px solid #1a1a1a; padding: 40px; border-radius: 12px;
+    display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; align-items: center;
+  }
+  .tech-info h3 { font-family: 'Zen Dots'; font-size: 18px; margin-bottom: 20px; }
+  .tech-list { list-style: none; color: #888; font-size: 14px; }
+  .tech-list li { border-bottom: 1px solid #1a1a1a; padding: 12px 0; display: flex; justify-content: space-between; }
+  .tech-list b { color: #fff; font-weight: 400; }
+
+  .showcase-img { width: 100%; border-radius: 4px; margin-top: 40px; display: block; }
+
+  footer { padding: 120px 40px; text-align: center; border-top: 1px solid #1a1a1a; }
+
+  @media (max-width: 768px) {
+    .bento-grid, .tech-specs { grid-template-columns: 1fr; }
+    .hero-alt h1 { font-size: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="process-nav">
+  <a href="./index.html" class="nav-logo">← BACK</a>
+  <div class="steps">
+    <a href="#ideation">01 IDEATION</a>
+    <a href="#cad">02 CAD</a>
+    <a href="#final">03 FINAL</a>
+  </div>
+</nav>
+
+<header class="hero-alt">
+  <span class="meta">AERIAL TECHNOLOGY / 2026</span>
+  <h1>FLEED</h1>
+</header>
+
+<section id="ideation">
+  <div class="section-header">
+    <span class="section-num">PHASE 01</span>
+    <h2 class="section-title">Ideation & Form</h2>
+    <p style="color: #666; margin-top: 20px; max-width: 600px;">
+      Fleed takes inspiration from the streamlined form of a bike helmet, combining aerodynamics with protection. Its smooth, compact body enhances efficiency, while the extended arms provide balance and stability blending movement with purpose in a farming context. 
+    </p>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 40px;">
+    <div class="bento-item" style="background: #fff; padding: 40px; border-radius: 12px; cursor: zoom-in; display: flex; justify-content: center; align-items: center;">
+      <img src="Fleed drawing 1.png" alt="Fleed Concept Sketch 1" style="max-width: 100%; height: auto; object-fit: contain; display: block;">
+    </div>
+    
+    <div class="bento-item" style="background: #fff; padding: 40px; border-radius: 12px; cursor: zoom-in; display: flex; justify-content: center; align-items: center;">
+      <img src="Fleed drawing 2.png" alt="Fleed Concept Sketch 2" style="max-width: 100%; height: auto; object-fit: contain; display: block;">
+    </div>
+  </div>
+</section>
+
+<section id="cad">
+  <div class="section-header">
+    <span class="section-num">PHASE 02</span>
+    <h2 class="section-title">Engineering</h2>
+    <p style="color: #666; margin-top: 20px; max-width: 600px;">
+        Technical orthographic and isometric projections generated in SolidWorks to establish precise manufacturing tolerances and define component assembly for the Fleed airframe.
+    </p>
+  </div>
+
+  <div class="tech-specs">
+    <div class="bento-item" style="background: #fff; border-radius: 8px; padding: 40px; cursor: zoom-in; display: flex; align-items: center; justify-content: center; min-height: 400px;">
+      <img src="Fleed cad.png" alt="Fleed Engineering Drawing" style="width: auto; height: auto; max-width: 100%; max-height: 500px; object-fit: scale-down; display: block;">
+    </div>
+
+    <div class="tech-info">
+      <h3>Technical Specification</h3>
+      <p style="color: #888; margin-bottom: 20px;">
+        The assembly was engineered for high-stress agricultural environments, focusing on the integration of high-torque actuators and modular motor mounts.
+      </p>
+      <ul class="tech-list">
+        <li><span>Software</span> <b>SolidWorks 2024</b></li>
+        <li><span>Units</span> <b>mm (Millimeters)</b></li>
+        <li><span>Scale</span> <b>1:1 (Full Scale)</b></li>
+        <li><span>Prototype Material</span> <b>3D Printed</b></li>
+        <li><span>Final Materials</span> <b>Carbon Fiber & Aluminum</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="final">
+  <style>
+    /* Carousel & Interaction Styles */
+    #carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      border-radius: 12px;
+    }
+    #carousel::-webkit-scrollbar { display: none; }
+    
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      border-radius: 50%;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    #zoom-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    #zoom-overlay img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .close-zoom {
+      position: absolute;
+      top: 30px; right: 30px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid #444;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-family: 'Zen Dots', sans-serif;
+      font-size: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-arrow { display: none !important; }
+    }
+  </style>
+
+  <div id="zoom-overlay" onclick="closeZoom()">
+    <button class="close-zoom" onclick="closeZoom()">CLOSE ×</button>
+    <img src="" id="zoomed-img">
+  </div>
+
+  <div class="section-header">
+    <span class="section-num">PHASE 03</span>
+    <h2 class="section-title">Final Execution</h2>
+  </div>
+  
+  <div style="position: relative; width: 100%; max-width: 1400px; margin: 0 auto;">
+    <button class="nav-arrow" style="left: 10px;" onclick="document.getElementById('carousel').scrollBy({left: -1000, behavior: 'smooth'})">←</button>
+    <button class="nav-arrow" style="right: 10px;" onclick="document.getElementById('carousel').scrollBy({left: 1000, behavior: 'smooth'})">→</button>
+
+    <div id="carousel">
+      <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
+        <img src="fleed render 1.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+      </div>
+
+      <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
+        <img src="fleed render 2.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+      </div>
+
+      <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
+        <img src="fleed render 3.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 20px; margin-bottom: 40px;">
+    <p style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 2px;">← Swipe or use arrows to view gallery →</p>
+    <p style="color: #444; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px;">Double tap to view full resolution</p>
+  </div>
+</section>
+
+<div id="lightbox" onclick="this.style.display='none'; document.body.style.overflow='auto';" style="position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; cursor: zoom-out;">
+  <img src="" style="max-width: 95%; max-height: 85%; border-radius: 4px;">
+</div>
+
+<footer style="padding: 100px 40px; text-align: center; border-top: 1px solid #1a1a1a;">
+  <a href="./index.html" style="font-family: 'Zen Dots'; color: #444; text-decoration: none; letter-spacing: 2px;">RETURN TO WORK</a>
+</footer>
+
+<script>
+  // Functions for Zooming images in the Carousel
+  function openZoom(imgSrc) {
+    const overlay = document.getElementById('zoom-overlay');
+    document.getElementById('zoomed-img').src = imgSrc;
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeZoom() {
+    document.getElementById('zoom-overlay').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+
+  // Double-tap logic for mobile users
+  let lastTap = 0;
+  document.querySelectorAll('#carousel img').forEach(img => {
+    img.addEventListener('touchend', function (e) {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      if (tapLength < 500 && tapLength > 0) {
+        openZoom(this.src);
+        e.preventDefault();
+      }
+      lastTap = currentTime;
+    });
+  });
+
+  // Lightbox logic for the sketches and CAD sections
+  document.querySelectorAll('section:not(#final) img').forEach(image => {
+    image.addEventListener('click', () => {
+      const lb = document.getElementById('lightbox');
+      lb.querySelector('img').src = image.src;
+      lb.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+  });
+</script>
+</body>
+</html>

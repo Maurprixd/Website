@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process Breakdown | Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+<style>
+  :root { --accent: #ffffff; --dim: #444; --bg: #000; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body { 
+    background: var(--bg); color: #fff; font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  /* --- LIGHTBOX STYLES (Full Screen Logic) --- */
+  #lightbox {
+    position: fixed;
+    z-index: 2000;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95);
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  #lightbox img {
+    max-width: 95%;
+    max-height: 85%;
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  #lightbox.active { display: flex; }
+  #lightbox.active img { transform: scale(1); }
+
+  /* Sticky Navigation Tracker */
+  .process-nav {
+    position: sticky; top: 0; width: 100%; padding: 20px 40px;
+    background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid #1a1a1a; z-index: 1000;
+  }
+  .nav-logo { font-family: 'Zen Dots'; font-size: 14px; text-decoration: none; color: #fff; }
+  .steps { display: flex; gap: 30px; font-size: 10px; font-weight: 600; letter-spacing: 2px; }
+  .steps a { text-decoration: none; color: var(--dim); transition: 0.3s; }
+  .steps a:hover, .steps a.active { color: #fff; }
+
+  /* Hero Section */
+  .hero-alt {
+    padding: 160px 40px 80px; text-align: left; max-width: 1200px; margin: 0 auto;
+  }
+  .hero-alt h1 { font-family: 'Zen Dots'; font-size: 5rem; line-height: 0.9; margin-bottom: 20px; }
+  .hero-alt .meta { color: #888; letter-spacing: 3px; font-size: 12px; }
+
+  /* Content Sections */
+  section { max-width: 1200px; margin: 0 auto; padding: 100px 40px; }
+  
+  .section-header { margin-bottom: 60px; }
+  .section-num { font-family: 'Zen Dots'; font-size: 12px; color: var(--dim); display: block; margin-bottom: 10px; }
+  .section-title { font-family: 'Zen Dots'; font-size: 24px; text-transform: uppercase; }
+
+  /* Bento/Image Containers */
+  .bento-item { background: #111; border-radius: 8px; overflow: hidden; position: relative; cursor: zoom-in; }
+  .bento-item img { 
+    width: 100%; height: 100%; object-fit: contain; opacity: 1; 
+  }
+
+  /* Technical Section */
+  .tech-specs {
+    background: #0a0a0a; border: 1px solid #1a1a1a; padding: 40px; border-radius: 12px;
+    display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; align-items: center;
+  }
+  .tech-info h3 { font-family: 'Zen Dots'; font-size: 18px; margin-bottom: 20px; color: #fff; }
+  .tech-list { list-style: none; color: #888; font-size: 14px; }
+  .tech-list li { border-bottom: 1px solid #1a1a1a; padding: 12px 0; display: flex; justify-content: space-between; }
+  .tech-list b { color: #fff; font-weight: 400; }
+
+  @media (max-width: 768px) {
+    .tech-specs { grid-template-columns: 1fr; }
+    .hero-alt h1 { font-size: 3rem; }
+    .process-nav { padding: 15px 20px; }
+    .steps { gap: 15px; font-size: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="lightbox">
+  <img src="" alt="Full Screen View">
+</div>
+
+<nav class="process-nav">
+  <a href="index.html" class="nav-logo">← BACK</a>
+  <div class="steps">
+    <a href="#ideation">01 IDEATION</a>
+    <a href="#cad">02 CAD</a>
+    <a href="#final">03 FINAL</a>
+  </div>
+</nav>
+
+<header class="hero-alt">
+  <span class="meta">CONCEPT TO MANUFACTURE</span>
+  <h1>WAVY<br>CHAIR</h1>
+</header>
+
+<section id="ideation">
+  <div class="section-header">
+    <span class="section-num">PHASE 01</span>
+    <h2 class="section-title">Ideation & Form</h2>
+    <p style="color: #666; margin-top: 20px; max-width: 600px;">
+        The Wavy Chair bridges the organic and the industrial, seamlessly blending wood and concrete.
+    </p>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 40px;">
+    <div class="bento-item" style="background: none; height: auto;">
+      <img src="wavy sketch 1.png" alt="Wavy Chair Concept Sketches">
+    </div>
+    <div class="bento-item" style="background: none; height: auto;">
+      <img src="wavy sketch 2.png" alt="Form Exploration Sketches">
+    </div>
+  </div>
+</section>
+
+<section id="cad">
+  <div class="section-header">
+    <span class="section-num">PHASE 02</span>
+    <h2 class="section-title">Engineering & Scale</h2>
+    <p style="color: #666; margin-top: 20px; max-width: 600px;">
+        Technical orthographic views were generated to establish precise dimensions for the 1:6 scale prototype.
+    </p>
+  </div>
+
+  <div class="tech-specs">
+    <div class="bento-item" style="background: #fff; border-radius: 8px; padding: 10px; overflow: hidden;">
+      <img src="wavy ortho view 2.png" alt="Wavy Chair Engineering Drawing">
+    </div>
+
+    <div class="tech-info">
+      <h3>Technical Specification</h3>
+      <ul class="tech-list">
+        <li><span>Software</span> <b>SolidWorks</b></li>
+        <li><span>Units</span> <b>Millimeters (mm)</b></li>
+        <li><span>Prototype Scale</span> <b>1:6</b></li>
+        <li><span>Primary Material</span> <b>Maple Plywood</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="final">
+  <style>
+    /* Desktop arrows hidden on mobile devices */
+    @media (max-width: 768px) {
+      .nav-arrow { display: none !important; }
+    }
+
+    /* Full-res overlay styles */
+    #zoom-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    #zoom-overlay img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .close-zoom {
+      position: absolute;
+      top: 30px; right: 30px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid #444;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-family: 'Zen Dots', sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      backdrop-filter: blur(10px);
+      z-index: 3001;
+    }
+  </style>
+
+  <div id="zoom-overlay" onclick="closeZoom()">
+    <button class="close-zoom" onclick="closeZoom()">CLOSE ×</button>
+    <img src="" id="zoomed-img">
+  </div>
+
+  <div class="section-header">
+    <span class="section-num">PHASE 03</span>
+    <h2 class="section-title">Final Execution</h2>
+    <p style="color: #666; margin-top: 20px; max-width: 600px;">
+      The final realization of the Wavy Chair highlights the organic flow of the design and the structural harmony between its unique material components.
+    </p>
+  </div>
+  
+  <div style="position: relative; width: 100%; max-width: 1400px; margin: 0 auto;">
+    <button class="nav-arrow" onclick="document.getElementById('carousel').scrollBy({left: -1000, behavior: 'smooth'})" 
+            style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: white; width: 60px; height: 60px; cursor: pointer; border-radius: 50%; backdrop-filter: blur(10px); font-size: 24px;">
+      ←
+    </button>
+    
+    <button class="nav-arrow" onclick="document.getElementById('carousel').scrollBy({left: 1000, behavior: 'smooth'})" 
+            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: white; width: 60px; height: 60px; cursor: pointer; border-radius: 50%; backdrop-filter: blur(10px); font-size: 24px;">
+      →
+    </button>
+
+    <div id="carousel" style="display: flex; overflow-x: auto; gap: 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; border-radius: 12px;">
+      
+      <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
+        <img src="wavy photo 1.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+      </div>
+
+      <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
+        <img src="wavy photo 2.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+      </div>
+
+      <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
+        <img src="wavy photo 3.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+      </div>
+
+      <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
+        <img src="wavy photo 4.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+      </div>
+
+      <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
+        <img src="wavy photo 5.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+      </div>
+
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 20px; margin-bottom: 40px;">
+    <p style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">
+      ← Swipe or use arrows to view gallery →
+    </p>
+    <p style="color: #444; font-size: 9px; text-transform: uppercase; letter-spacing: 1px;">
+      Double tap any image to view in full resolution
+    </p>
+  </div>
+</section>
+
+<footer style="padding: 100px 40px; text-align: center; border-top: 1px solid #1a1a1a;">
+  <a href="index.html" style="font-family: 'Zen Dots'; color: #444; text-decoration: none; letter-spacing: 2px;">RETURN TO WORK</a>
+</footer>
+
+<script>
+  function openZoom(imgSrc) {
+    const overlay = document.getElementById('zoom-overlay');
+    const zoomedImg = document.getElementById('zoomed-img');
+    zoomedImg.src = imgSrc;
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeZoom() {
+    const overlay = document.getElementById('zoom-overlay');
+    overlay.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+
+  // Handle mobile double tap logic
+  let lastTap = 0;
+  document.querySelectorAll('#carousel img').forEach(img => {
+    img.addEventListener('touchend', function (e) {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      if (tapLength < 500 && tapLength > 0) {
+        openZoom(this.src);
+        e.preventDefault();
+      }
+      lastTap = currentTime;
+    });
+  });
+
+  // Keep Lightbox functionality for Ideation/CAD sections
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = lightbox.querySelector('img');
+
+  document.querySelectorAll('section:not(#final) img').forEach(image => {
+    image.addEventListener('click', () => {
+      lightboxImg.src = image.src;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  lightbox.addEventListener('click', () => {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  });
+</script>
+
+</body>
+</html>

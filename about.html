@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | Mauricio</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+<style>
+  :root { --accent: #ffffff; --dim: #888; --bg: #000; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body { 
+    background: var(--bg); 
+    color: #fff; 
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .nav {
+    position: fixed; top: 0; width: 100%; padding: 30px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 1000; mix-blend-mode: difference;
+  }
+  .nav-logo { font-family: 'Zen Dots'; font-size: 14px; text-decoration: none; color: #fff; }
+
+  /* Profile Photo - Increased Size */
+  .profile-photo {
+    width: 450px; /* Increased from 280px */
+    height: auto;
+    display: block;
+    margin-bottom: 40px;
+    border-radius: 12px;
+  }
+
+  .about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 180px 40px 100px;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr; /* Adjusted ratio to give photo more room */
+    gap: 60px;
+  }
+
+  .about-text h1 {
+    font-family: 'Zen Dots';
+    font-size: 4rem;
+    line-height: 0.9;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+  }
+
+  .about-text p {
+    font-size: 18px;
+    color: var(--dim);
+    margin-bottom: 30px;
+    max-width: 500px;
+  }
+
+  .contact-grid {
+    display: grid;
+    gap: 40px;
+  }
+
+  .contact-item h3 {
+    font-family: 'Zen Dots';
+    font-size: 12px;
+    color: #444;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+  }
+
+  .contact-link {
+    font-size: 24px;
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid #222;
+    padding-bottom: 5px;
+    transition: 0.3s;
+    display: inline-block;
+  }
+
+  .contact-link:hover {
+    border-color: #fff;
+    color: var(--accent);
+  }
+
+  @media (max-width: 1024px) {
+    .profile-photo { width: 100%; max-width: 400px; }
+  }
+
+  @media (max-width: 768px) {
+    .about-container { grid-template-columns: 1fr; padding-top: 120px; gap: 60px; }
+    .profile-photo { margin-left: auto; margin-right: auto; width: 90%; }
+    .about-text h1 { font-size: 2.5rem; text-align: center; }
+    .contact-link { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">← BACK</a>
+    <div style="font-family: 'Zen Dots'; font-size: 10px; color: #444;">PORTFOLIO 2026</div>
+  </nav>
+
+  <main class="about-container">
+    <div class="about-text">
+      <img src="Profile photo.png" alt="Mauricio Mena" class="profile-photo">
+
+      <h1>MAURICIO</h1>
+      <p>
+        Hello! My name is Mauricio Mena, a 20 year old designer from Peru. Design represents the epilogue of a journey—a harmonious blend of ideas, experiences, and emotions brought to life in both tangible and intangible forms. Through my work, I strive to create designs that tell stories, evoke feelings, and connect people with purposeful innovation.
+      </p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-item">
+        <h3>Direct Contact</h3>
+        <a href="mailto:mena47831@gmail.com" class="contact-link">mena47831@gmail.com / 4376614530</a>
+      </div>
+
+      <div class="contact-item">
+        <h3>Linkedin</h3>
+        <a href="https://www.linkedin.com/in/mauricio-mena-9b8885226/" target="_blank" class="contact-link">mauricio-mena</a> 
+      </div>
+
+      <div class="contact-item">
+        <h3>Behance</h3>
+        <a href="https://www.behance.net/gallery/217417729/Portfolio" target="_blank" class="contact-link">Mauricio Mena</a> 
+      </div>
+
+      <div class="contact-item">
+        <h3>Instagram</h3>
+        <a href="https://www.instagram.com/is.that.a.design?igsh=MWFnajZyOWViZjZqYg%3D%3D&utm_source=qr" target="_blank" class="contact-link">@is.that.a.design</a>
+      </div>
+
+      <div class="contact-item">
+        <h3>Location</h3>
+        <p style="font-size: 20px; color: #fff;">Toronto, Ontario</p>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
