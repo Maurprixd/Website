@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESP32 WATCH — Mauricio Mena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000;
+      --gold: #CA8A04;
+      --gold-dim: rgba(202,138,4,0.35);
+      --text: #fff;
+      --muted: #555;
+      --dim: #222;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; width: 100%; padding: 24px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 1000; background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .nav-logo {
+      font-family: 'Zen Dots'; font-size: 12px;
+      text-decoration: none; color: #666; letter-spacing: 0.1em;
+      transition: color 0.2s;
+    }
+    .nav-logo:hover { color: #fff; }
+    .nav-tag {
+      font-size: 9px; color: #2a2a2a; letter-spacing: 3px; text-transform: uppercase;
+    }
+
+    /* ── HERO ─────────────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 120px 80px 80px;
+      gap: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: 'ESP32';
+      position: absolute;
+      font-family: 'Zen Dots';
+      font-size: 28vw;
+      color: #050505;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      white-space: nowrap;
+      letter-spacing: -0.05em;
+      z-index: 0;
+    }
+    .hero-left { position: relative; z-index: 1; }
+    .hero-eyebrow {
+      font-size: 9px; color: var(--gold); letter-spacing: 4px;
+      text-transform: uppercase; display: block; margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: 'Zen Dots';
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .hero-title span { color: var(--gold); }
+    .hero-desc {
+      font-size: 14px; color: #999; line-height: 1.8;
+      max-width: 440px; margin-bottom: 40px;
+    }
+    .ai-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1px solid var(--gold-dim); padding: 10px 18px;
+      font-size: 9px; color: var(--gold); letter-spacing: 3px;
+    }
+    .ai-badge::before {
+      content: '▲'; font-size: 8px;
+    }
+
+    /* ── HERO RIGHT: spec board ───────────────────────────────────────── */
+    .spec-board {
+      position: relative; z-index: 1;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 0;
+      overflow: hidden;
+    }
+    .spec-board-header {
+      background: #050505;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      padding: 14px 20px;
+      font-size: 9px; color: #555; letter-spacing: 4px;
+      display: flex; justify-content: space-between;
+    }
+    .spec-board-header span { color: var(--gold); }
+    .spec-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      gap: 20px;
+    }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-key { font-size: 9px; color: #666; letter-spacing: 2px; text-transform: uppercase; min-width: 90px; padding-top: 2px; }
+    .spec-val { font-size: 12px; color: #ddd; text-align: right; line-height: 1.5; }
+    .spec-val.gold { color: var(--gold); font-family: 'Zen Dots'; font-size: 15px; }
+
+    /* ── SECTIONS ─────────────────────────────────────────────────────── */
+    section { padding: 100px 80px; border-top: 1px solid rgba(255,255,255,0.15); }
+    .section-label {
+      font-size: 9px; color: #555; letter-spacing: 4px;
+      text-transform: uppercase; display: block; margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Zen Dots';
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      color: #fff; margin-bottom: 20px; text-transform: uppercase;
+    }
+    .section-desc {
+      font-size: 13px; color: #888; line-height: 1.8; max-width: 640px; margin-bottom: 48px;
+    }
+
+    /* ── THE ANGLE SECTION ────────────────────────────────────────────── */
+    .angle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .angle-card {
+      background: #000;
+      padding: 32px 28px;
+    }
+    .angle-num {
+      font-family: 'Zen Dots'; font-size: 28px;
+      color: #222; margin-bottom: 16px; display: block;
+    }
+    .angle-title {
+      font-size: 10px; color: var(--gold); letter-spacing: 3px;
+      text-transform: uppercase; margin-bottom: 12px; display: block;
+    }
+    .angle-text { font-size: 13px; color: #777; line-height: 1.7; }
+
+    /* ── ARCHITECTURE ─────────────────────────────────────────────────── */
+    .arch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .arch-board {
+      border: 1px solid rgba(255,255,255,0.15);
+      overflow: hidden;
+    }
+    .arch-board-title {
+      background: #050505;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      padding: 12px 20px;
+      font-size: 10px; color: #666; letter-spacing: 3px;
+      text-transform: uppercase;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .arch-board-title em { color: var(--gold); font-style: normal; font-size: 9px; }
+    .arch-component {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 12px;
+    }
+    .arch-component:last-child { border-bottom: none; }
+    .arch-comp-name { color: #999; }
+    .arch-comp-val { color: var(--gold); font-size: 10px; letter-spacing: 1px; }
+
+    /* ── STATUS SECTION ───────────────────────────────────────────────── */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .status-cell {
+      background: #000;
+      padding: 28px 24px;
+    }
+    .status-phase { font-size: 9px; color: #555; letter-spacing: 3px; margin-bottom: 12px; display: block; }
+    .status-name { font-family: 'Zen Dots'; font-size: 14px; color: #fff; margin-bottom: 12px; display: block; text-transform: uppercase; }
+    .status-badge {
+      font-size: 8px; letter-spacing: 2px; padding: 4px 10px;
+      display: inline-block; text-transform: uppercase;
+    }
+    .badge-done { background: rgba(202,138,4,0.15); color: var(--gold); border: 1px solid var(--gold-dim); }
+    .badge-active { background: rgba(255,255,255,0.05); color: #888; border: 1px solid #222; }
+    .badge-next { background: #050505; color: #333; border: 1px solid #111; }
+
+    /* ── POWER BUDGET ─────────────────────────────────────────────────── */
+    .power-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .power-table th {
+      font-size: 9px; color: #555; letter-spacing: 3px;
+      text-align: left; padding: 10px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .power-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      color: #888;
+    }
+    .power-table td:last-child { color: var(--gold); text-align: right; }
+    .power-table tr:last-child td { border-bottom: none; }
+    .power-table tbody tr:hover td { background: #050505; }
+
+    /* ── FOOTER ───────────────────────────────────────────────────────── */
+    footer {
+      padding: 60px 80px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p { font-size: 10px; color: #444; letter-spacing: 2px; }
+    .footer-link {
+      font-size: 10px; color: #555; letter-spacing: 2px; text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-link:hover { color: var(--gold); }
+
+    /* ── MOBILE ───────────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 48px; min-height: auto; }
+      .hero::before { font-size: 50vw; }
+      section { padding: 60px 24px; }
+      .angle-grid { grid-template-columns: 1fr; }
+      .arch-grid { grid-template-columns: 1fr; }
+      .status-grid { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; gap: 16px; padding: 40px 24px; text-align: center; }
+      nav { padding: 20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="./index.html" class="nav-logo">← BACK</a>
+  <span class="nav-tag">PERSONAL PROJECT · 2025</span>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-left">
+    <span class="hero-eyebrow">PERSONAL PROJECT · HARDWARE · 2025</span>
+    <h1 class="hero-title">ESP32<br><span>WATCH</span></h1>
+    <p class="hero-desc">
+      A dual-screen wristwatch designed from scratch with AI assistance — starting from zero KiCad
+      knowledge. Custom two-board PCB architecture, ESP32-C3 MCU, USB-C charging, RTC timekeeping.
+      An industrial designer learning EDA through build.
+    </p>
+    <div class="ai-badge">DESIGNED WITH AI · ZERO KICAD EXPERIENCE</div>
+  </div>
+
+  <div class="spec-board">
+    <div class="spec-board-header">
+      HARDWARE SPEC <span>REV 1</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">MCU</span>
+      <span class="spec-val">ESP32-C3-MINI-1U-N4<br><span style="font-size:9px;color:#333;">Wi-Fi + BLE · 13.2 × 16.6mm</span></span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Displays</span>
+      <span class="spec-val gold">2×</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Display type</span>
+      <span class="spec-val">SSD1306 OLED · I²C</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">RTC</span>
+      <span class="spec-val">DS3231SN</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Charging</span>
+      <span class="spec-val">USB-C · TP4054 · 500mA</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Regulator</span>
+      <span class="spec-val">ME6211 · 3.3V LDO</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Main board</span>
+      <span class="spec-val">31 × 16mm · 1.6mm · 2-layer · ENIG</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Button board</span>
+      <span class="spec-val">31 × 5mm · 1.0mm · 3 buttons + OLED2</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Idle draw</span>
+      <span class="spec-val gold">~0.5mA</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">Battery life</span>
+      <span class="spec-val">~16hr · 200mAh cell</span>
+    </div>
+    <div class="spec-row">
+      <span class="spec-key">EDA tool</span>
+      <span class="spec-val">KiCad 10 · JLCPCB target</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── THE ANGLE ──────────────────────────────────────────────────────── -->
+<section>
+  <span class="section-label">THE ANGLE</span>
+  <h2 class="section-title">Industrial Designer.<br>Zero PCB Experience.</h2>
+  <p class="section-desc">
+    This project started with one question: could an industrial designer — someone who works in SolidWorks
+    and KeyShot, not KiCad — design a functional PCB from scratch using AI as the EDA co-pilot?
+    The answer turned out to be yes, with a lot of iteration.
+  </p>
+
+  <div class="angle-grid">
+    <div class="angle-card">
+      <span class="angle-num">01</span>
+      <span class="angle-title">The Starting Point</span>
+      <p class="angle-text">
+        No EDA background. No prior schematic design. I knew what a PCB was but had never opened KiCad.
+        The goal: design a complete, manufacturable two-board wristwatch with real components.
+      </p>
+    </div>
+    <div class="angle-card">
+      <span class="angle-num">02</span>
+      <span class="angle-title">AI as Co-Pilot</span>
+      <p class="angle-text">
+        Claude guided the full process — MCU selection, power architecture, component footprints, net
+        classes, and DRC debugging. Every decision was reasoned through, not copy-pasted.
+        I learned EDA by building the actual thing.
+      </p>
+    </div>
+    <div class="angle-card">
+      <span class="angle-num">03</span>
+      <span class="angle-title">The Result</span>
+      <p class="angle-text">
+        A complete two-board schematic with a documented power budget, per-component net classes,
+        MOSFET power switching for battery life, and a 7-pin stacked board architecture.
+        ERC clean. PCB layout in progress.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ARCHITECTURE ────────────────────────────────────────────────────── -->
+<section>
+  <span class="section-label">BOARD ARCHITECTURE</span>
+  <h2 class="section-title">Two-Board Stack</h2>
+  <p class="section-desc">
+    A stacked two-board design: a main board (MCU, power, RTC, primary display) and a thin button board
+    (3 tactile inputs + secondary OLED), linked by a 7-pin JST connector. Designed to fit a slim wristwatch enclosure.
+  </p>
+
+  <div class="arch-grid">
+    <div class="arch-board">
+      <div class="arch-board-title">
+        MAIN BOARD <em>31 × 16mm · 1.6mm · BLACK ENIG</em>
+      </div>
+      <div class="arch-component">
+        <span class="arch-comp-name">ESP32-C3-MINI-1U-N4</span>
+        <span class="arch-comp-val">MCU · Wi-Fi + BLE</span>
+      </div>
+      <div class="arch-component">
+        <span class="arch-comp-name">SSD1306 OLED #1</span>
+        <span class="arch-comp-val">Primary display</span>
+      </div>
+      <div class="arch-component">
+        <span class="arch-comp-name">DS3231SN</span>
+        <span class="arch-comp-val">RTC · ±2ppm</span>
+      </div>
+      <div class="arch-component">
+        <span class="arch-comp-name">TP4054</span>
+        <span class="arch-comp-val">LiPo charger · 500mA</span>
+      </div>
+      <div class="arch-component">
+        <span class="arch-comp-name">ME6211</span>
+        <span class="arch-comp-val">3.3V LDO regulator</span>
+      </div>
+      <div class="arch-component">
+        <span class="arch-comp-name">2N7002 MOSFET</span>
+        <span class="arch-comp-val">OLED power cut · battery life</span>
+      </div>
+      <div class="arch-component">
+        <span class="arch-comp-name">USB-C connector</span>
+        <span class="arch-comp-val">Edge-mount charging</span>
+      </div>
+    </div>
+
+    <div class="arch-board">
+      <div class="arch-board-title">
+        BUTTON BOARD <em>31 × 5mm · 1.0mm · SLIM</em>
+      </div>
+      <div class="arch-component">
+        <span class="arch-comp-name">SSD1306 OLED #2</span>
+        <span class="arch-comp-val">Secondary display</span>
+      </div>
+      <div class="arch-component">
+        <span class="arch-comp-name">3× Tactile switch</span>
+        <span class="arch-comp-val">User input</span>
+      </div>
+      <div class="arch-component">
+        <span class="arch-comp-name">JST 7-pin</span>
+        <span class="arch-comp-val">Link to main board</span>
+      </div>
+      <div class="arch-component">
+        <span class="arch-comp-name" style="color:#888; font-size:11px; letter-spacing:2px;">DESIGN NOTE</span>
+        <span class="arch-comp-val" style="color:var(--gold); font-size:10px;">1.0mm board for slim profile</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATUS ──────────────────────────────────────────────────────────── -->
+<section>
+  <span class="section-label">BUILD STATUS</span>
+  <h2 class="section-title">In Progress</h2>
+  <p class="section-desc">
+    Schematic complete, PCB layout underway. Routing not yet started — placement DRC being cleared.
+    Target manufacturer: JLCPCB.
+  </p>
+
+  <div class="status-grid">
+    <div class="status-cell">
+      <span class="status-phase">PHASE 01</span>
+      <span class="status-name">Schematic</span>
+      <span class="status-badge badge-done">COMPLETE</span>
+    </div>
+    <div class="status-cell">
+      <span class="status-phase">PHASE 02</span>
+      <span class="status-name">PCB Placement</span>
+      <span class="status-badge badge-active">IN PROGRESS</span>
+    </div>
+    <div class="status-cell">
+      <span class="status-phase">PHASE 03</span>
+      <span class="status-name">PCB Routing</span>
+      <span class="status-badge badge-next">NEXT</span>
+    </div>
+    <div class="status-cell">
+      <span class="status-phase">PHASE 04</span>
+      <span class="status-name">Fabrication</span>
+      <span class="status-badge badge-next">JLCPCB</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── POWER BUDGET ─────────────────────────────────────────────────────── -->
+<section>
+  <span class="section-label">POWER BUDGET</span>
+  <h2 class="section-title">~16hr Mixed Use</h2>
+  <p class="section-desc">
+    Calculated on a 200mAh LiPo. A low-side MOSFET lets the ESP32 fully cut OLED1 power during sleep —
+    the key design decision that makes the battery life viable.
+  </p>
+
+  <table class="power-table">
+    <thead>
+      <tr>
+        <th>COMPONENT</th>
+        <th>MODE</th>
+        <th>DRAW</th>
+        <th>EST. mA</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>ESP32-C3</td><td>Active (Wi-Fi off)</td><td>Normal operation</td><td>~20mA</td></tr>
+      <tr><td>SSD1306 OLED ×2</td><td>Active</td><td>Both displays on</td><td>~20mA</td></tr>
+      <tr><td>DS3231SN</td><td>Always on</td><td>RTC timekeeping</td><td>~0.2mA</td></tr>
+      <tr><td>ME6211 LDO</td><td>Always on</td><td>Quiescent current</td><td>~0.06mA</td></tr>
+      <tr><td>System (idle)</td><td>Deep sleep · OLED off</td><td>MOSFET cuts OLED1</td><td style="color:#fff;">~0.5mA</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────────────────────────── -->
+<footer>
+  <p>ESP32 WATCH · PERSONAL PROJECT · MAURICIO MENA · 2025</p>
+  <a href="index.html" class="footer-link">← BACK TO PORTFOLIO</a>
+</footer>
+
+</body>
+</html>

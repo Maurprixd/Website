@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -59,7 +59,9 @@
     background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2);
     color: white; width: 60px; height: 60px; cursor: pointer; border-radius: 50%;
     backdrop-filter: blur(10px); font-size: 24px; display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.3s;
   }
+  .nav-arrow.hidden { opacity: 0 !important; pointer-events: none; }
   @media (max-width: 768px) { .nav-arrow { display: none !important; } .tech-specs { grid-template-columns: 1fr; } .hero-alt h1 { font-size: 3rem; } }
 
   #zoom-overlay {
@@ -77,7 +79,14 @@
     position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; cursor: zoom-out;
   }
-</style>
+
+  .proto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .proto-cell { position: relative; background: #0d0d0d; aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in; }
+  .proto-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .proto-cell:hover img { transform: scale(1.03); }
+  .proto-num { position: absolute; top: 10px; left: 12px; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 2px; pointer-events: none; font-family: monospace; display: none; }
+  .proto-cell.wide { grid-column: span 2; aspect-ratio: 16/7; }
+  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }</style>
 </head>
 <body>
 
@@ -86,7 +95,7 @@
   <div class="steps">
     <a href="#ideation">01 IDEATION</a>
     <a href="#cad">02 CAD</a>
-    <a href="#final">03 FINAL</a>
+    <a href="#prototype">03 PROTOTYPE</a>    <a href="#final">04 FINAL</a>
   </div>
 </nav>
 
@@ -104,17 +113,31 @@
     </p>
   </div>
 
-  <div style="display: flex; flex-direction: column; gap: 40px;">
-    <div class="bento-item" style="background: none; cursor: zoom-in;">
-      <img src="Pill skecthes1.png" alt="Pill Lamp Concept Exploration 1">
-    </div>
-    <div class="bento-item" style="background: none; cursor: zoom-in;">
-      <img src="Pill skecthes2.png" alt="Pill Lamp Concept Exploration 2">
-    </div>
-    <div class="bento-item" style="background: none; cursor: zoom-in;">
-      <img src="Pill skecthes3.png" alt="Pill Lamp Concept Exploration 3">
+  <div style="margin: 0 -40px; position: relative;">
+    <!-- Left arrow -->
+    <button onclick="pillStripScroll(-1)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);z-index:10;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:#fff;width:40px;height:40px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseenter="this.style.background='rgba(255,255,255,0.15)'" onmouseleave="this.style.background='rgba(0,0,0,0.6)'">&#8592;</button>
+    <!-- Right arrow -->
+    <button onclick="pillStripScroll(1)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);z-index:10;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:#fff;width:40px;height:40px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseenter="this.style.background='rgba(255,255,255,0.15)'" onmouseleave="this.style.background='rgba(0,0,0,0.6)'">&#8594;</button>
+    <!-- Strip -->
+    <div id="pill-strip" style="display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;padding:0 40px 16px;cursor:grab;">
+      <div style="flex:0 0 clamp(280px,44vw,500px);height:400px;scroll-snap-align:start;border-radius:4px;overflow:hidden;cursor:zoom-in;display:flex;align-items:center;justify-content:center;" onclick="openZoom('images/Pill skecthes1.png')">
+        <img src="images/Pill skecthes1.png" alt="Pill Lamp Sketch 1" style="width:100%;height:100%;object-fit:contain;display:block;">
+      </div>
+      <div style="flex:0 0 clamp(280px,44vw,500px);height:400px;scroll-snap-align:start;border-radius:4px;overflow:hidden;cursor:zoom-in;display:flex;align-items:center;justify-content:center;" onclick="openZoom('images/Pill skecthes2.png')">
+        <img src="images/Pill skecthes2.png" alt="Pill Lamp Sketch 2" style="width:100%;height:100%;object-fit:contain;display:block;">
+      </div>
+      <div style="flex:0 0 clamp(280px,44vw,500px);height:400px;scroll-snap-align:start;border-radius:4px;overflow:hidden;cursor:zoom-in;display:flex;align-items:center;justify-content:center;" onclick="openZoom('images/Pill skecthes3.png')">
+        <img src="images/Pill skecthes3.png" alt="Pill Lamp Sketch 3" style="width:100%;height:100%;object-fit:contain;display:block;">
+      </div>
     </div>
   </div>
+  <script>
+    function pillStripScroll(dir) {
+      var strip = document.getElementById('pill-strip');
+      var cardW = strip.querySelector('div').offsetWidth + 8;
+      strip.scrollBy({ left: dir * cardW, behavior: 'smooth' });
+    }
+  </script>
 </section>
 
 <section id="cad">
@@ -125,7 +148,7 @@
 
   <div class="tech-specs">
     <div class="bento-item" style="background: #fff; border-radius: 8px; padding: 20px; cursor: zoom-in;">
-      <img src="pill lamp cad drawing.png" alt="Pill Lamp CAD Technical Drawing">
+      <img src="images/pill lamp cad drawing.png" alt="Pill Lamp CAD Technical Drawing">
     </div>
     <div class="tech-info">
       <h3>Technical Execution</h3>
@@ -141,33 +164,72 @@
   </div>
 </section>
 
+<section id="prototype" style="max-width: 1200px; margin: 0 auto; padding: 100px 40px;">
+  <div style="margin-bottom: 60px;">
+    <span style="font-family: 'Zen Dots'; font-size: 12px; color: #444; display: block; margin-bottom: 10px;">PHASE 03</span>
+    <h2 style="font-family: 'Zen Dots'; font-size: 24px; text-transform: uppercase;">Prototype Process</h2>
+    <p style="color: #666; margin-top: 20px; max-width: 600px; line-height: 1.7; font-size: 14px;">Vacuum-forming iterations, aluminum bending, wood tablet shaping, and final assembly.</p>
+  </div>
+  <!-- Proto grid: 3-col (ancha/más ancha/angosta) × 2 filas -->
+  <div style="display:grid; grid-template-columns:17fr 19fr 10fr; grid-template-rows:1fr 1fr; gap:8px; height:580px;">
+    <!-- Row 1 -->
+    <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/pill-lamp/Pill 1.png')">
+      <img src="images/pill-lamp/Pill 1.png" alt="Step 01" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">01</span>
+    </div>
+    <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/pill-lamp/Pill 2.png')">
+      <img src="images/pill-lamp/Pill 2.png" alt="Step 02" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">02</span>
+    </div>
+    <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/pill-lamp/Pill 3.png')">
+      <img src="images/pill-lamp/Pill 3.png" alt="Step 03" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">03</span>
+    </div>
+    <!-- Row 2 -->
+    <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/pill-lamp/Pill 5.png')">
+      <img src="images/pill-lamp/Pill 5.png" alt="Step 05" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">05</span>
+    </div>
+    <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/pill-lamp/Pill 6.png')">
+      <img src="images/pill-lamp/Pill 6.png" alt="Step 06" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">06</span>
+    </div>
+    <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/pill-lamp/Pill 4.png')">
+      <img src="images/pill-lamp/Pill 4.png" alt="Step 04" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">04</span>
+    </div>
+  </div>
+</section>
+
 <section id="final">
   <div id="zoom-overlay" onclick="closeZoom()">
     <button class="close-zoom">CLOSE ×</button>
-    <img src="" id="zoomed-img">
+    <div style="background:#fff; padding:20px; border-radius:6px; max-width:88vw; max-height:88vh; display:flex; align-items:center; justify-content:center; box-shadow:0 0 60px rgba(0,0,0,0.5); ">
+    <img src="" id="zoomed-img" style="max-width:100%; max-height:calc(88vh - 40px); object-fit:contain; display:block;">
+  </div>
   </div>
 
   <div class="section-header">
-    <span class="section-num">PHASE 03</span>
+    <span class="section-num">PHASE 04</span>
     <h2 class="section-title">Final Execution</h2>
   </div>
   
   <div style="position: relative; width: 100%; max-width: 1400px; margin: 0 auto;">
-    <button class="nav-arrow" style="left: 10px;" onclick="document.getElementById('carousel').scrollBy({left: -1000, behavior: 'smooth'})">←</button>
-    <button class="nav-arrow" style="right: 10px;" onclick="document.getElementById('carousel').scrollBy({left: 1000, behavior: 'smooth'})">→</button>
+    <button class="nav-arrow" style="left: 10px;" onclick="scrollCarousel(-1)">←</button>
+    <button class="nav-arrow" style="right: 10px;" onclick="scrollCarousel(1)">→</button>
 
     <div id="carousel">
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; display: flex; align-items: center; justify-content: center;">
-        <img src="Pill lamp final1.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+        <img src="images/Pill lamp final1.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
       </div>
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; display: flex; align-items: center; justify-content: center;">
-        <img src="Pill lamp final2.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+        <img src="images/Pill lamp final2.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
       </div>
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; display: flex; align-items: center; justify-content: center;">
-        <img src="Pill lamp final3.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+        <img src="images/Pill lamp final3.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
       </div>
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; display: flex; align-items: center; justify-content: center;">
-        <img src="Pill lamp final4.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+        <img src="images/Pill lamp final4.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
       </div>
     </div>
   </div>
@@ -217,6 +279,22 @@
       document.body.style.overflow = 'hidden';
     });
   });
+
+  function scrollCarousel(dir) {
+    var c = document.getElementById('carousel');
+    c.scrollBy({ left: dir * c.clientWidth, behavior: 'smooth' });
+    setTimeout(updateCarouselArrows, 500);
+  }
+  function updateCarouselArrows() {
+    var c = document.getElementById('carousel');
+    if (!c) return;
+    var btns = document.querySelectorAll('.nav-arrow');
+    if (btns.length < 2) return;
+    btns[0].classList.toggle('hidden', c.scrollLeft <= 4);
+    btns[1].classList.toggle('hidden', c.scrollLeft + c.clientWidth >= c.scrollWidth - 4);
+  }
+  document.getElementById('carousel').addEventListener('scroll', updateCarouselArrows, { passive: true });
+  window.addEventListener('load', updateCarouselArrows);
 </script>
 
 </body>

@@ -1,78 +1,92 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mauricio | Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@100;300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@100;300&family=Share+Tech+Mono&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-  :root { --bg: #000; --accent: rgba(255,255,255,0.8); }
+  /* ── DESIGN SYSTEM ─────────────────────────────────────────────────── */
+  :root {
+    --bg: #000;
+    --accent: rgba(255,255,255,0.8);
+    --gold: #CA8A04;
+    --gold-dim: rgba(202,138,4,0.15);
+    --glass-bg: rgba(0,0,0,0.55);
+    --glass-border: rgba(255,255,255,0.07);
+    --border-dim: #1a1a1a;
+  }
+
+  html { scroll-behavior: smooth; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  body { 
-    background: var(--bg); 
-    color: #fff; 
+
+  body {
+    background: var(--bg);
+    color: #fff;
     font-family: 'Inter', sans-serif;
-    overflow-x: hidden; 
+    overflow-x: hidden;
     padding-bottom: 20vh;
   }
 
-  /* --- 🛠️ MOBILE POSITIONING CENTER 🛠️ --- */
-  /* This section only works on phones. Adjust the 'top' values to move images. */
-  /* Positive numbers (20px) move them DOWN. Negative (-20px) move them UP. */
-  @media (max-width: 768px) {
-    #p1 { margin-top: 10vh !important; } 
-    #p2 { margin-top: 5vh !important; }
-    #p3 { margin-top: 25vh !important; }
-    #p4 { margin-top: -10vh !important; } 
-    #p5 { margin-top: 20vh !important; }
-    #p6 { margin-top: 45vh !important; }
-    #p7 { margin-top: -40vh !important; }
+  /* ── GRAIN TEXTURE (premium feel) ──────────────────────────────────── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px;
+    background-repeat: repeat;
   }
-  /* ----------------------------------------- */
 
+  /* ── SCROLL PROGRESS ────────────────────────────────────────────────── */
   #progress {
     position: fixed;
     top: 0; left: 0;
-    width: 0%; height: 2px;
-    background: #fff;
-    z-index: 100;
+    width: 0%; height: 1px;
+    background: linear-gradient(90deg, var(--gold), #fff);
+    z-index: 9999;
   }
 
+  /* ── BG WATERMARK ───────────────────────────────────────────────────── */
   .bg-text {
     position: fixed;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     font-family: 'Zen Dots', cursive;
     font-size: 22vw;
-    color: rgba(255, 255, 255, 0.02); 
+    color: rgba(255,255,255,0.025);
     z-index: 0;
     pointer-events: none;
+    user-select: none;
   }
 
+  /* ── PARALLAX WRAPPER ───────────────────────────────────────────────── */
   .parallax-wrapper {
     position: relative;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    padding-top: 15vh;
+    min-height: 700vh;
   }
 
+  /* ── PRODUCTS ───────────────────────────────────────────────────────── */
   .product {
     position: relative;
     display: block;
     text-decoration: none;
     opacity: 0;
-    top: 40px; 
+    top: 40px;
     filter: blur(15px);
     z-index: 2;
+    cursor: pointer;
     transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     -webkit-tap-highlight-color: transparent;
   }
 
-  .product.is-visible { opacity: 0.3; top: 0; filter: blur(10px); }
+  .product.is-visible { opacity: 0.6; top: 0; filter: blur(4px); }
 
-  .product:hover, .product.is-active {
+  .product.is-active {
     filter: blur(0px) !important;
     opacity: 1 !important;
     z-index: 10;
@@ -81,40 +95,42 @@
 
   .product img {
     display: block;
-    max-height: 70vh; 
+    max-height: 70vh;
     max-width: 80vw;
     object-fit: contain;
     margin: 0 auto;
   }
 
+  /* ── LABELS ─────────────────────────────────────────────────────────── */
   .label {
     position: absolute;
     top: 50%;
     font-weight: 300;
     font-size: 10px;
     letter-spacing: 0.4em;
-    color: var(--accent);
+    color: var(--gold);
     text-transform: uppercase;
     opacity: 0;
-    transition: all 0.5s ease;
+    transition: all 0.4s ease;
+    white-space: nowrap;
   }
-
   .label-right { right: -180px; transform: translateX(-20px); }
-  .label-left { left: -120px; transform: translateX(20px); text-align: right; }
+  .label-left  { left: -120px;  transform: translateX(20px); text-align: right; }
+  .product.is-active .label { opacity: 1; transform: translateX(0); }
 
-  .product:hover .label, .product.is-active .label {
-    opacity: 1; transform: translateX(0);
-  }
+  /* ── WIMTACH label gold accent ──────────────────────────────────────── */
+  #p8 .label { letter-spacing: 0.5em; }
 
-  .align-left { align-self: flex-start; }
-  .align-right { align-self: flex-end; }
+  /* ── ALIGNMENT ──────────────────────────────────────────────────────── */
+  .align-left   { align-self: flex-start; }
+  .align-right  { align-self: flex-end; }
   .align-center { align-self: center; }
 
-  /* Ripple */
+  /* ── RIPPLE ─────────────────────────────────────────────────────────── */
   .ripple {
     position: fixed;
     width: 60px; height: 60px;
-    background: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.2);
     border-radius: 50%;
     pointer-events: none;
     transform: scale(0);
@@ -123,14 +139,47 @@
   }
   @keyframes ripple-effect { to { transform: scale(2); opacity: 0; } }
 
+  /* ── BANNER J ───────────────────────────────────────────────────────── */
+  @keyframes border-flicker {
+    0%,84%,90%,94%,100% { border-color: rgba(202,138,4,0.55); box-shadow: 0 0 0 1px rgba(202,138,4,0.1); }
+    85%,91%,95% { border-color: rgba(202,138,4,0.04); box-shadow: none; }
+    86%,92%,96% { border-color: var(--gold); box-shadow: 0 0 10px rgba(202,138,4,0.35); }
+    87%,93%,97% { border-color: rgba(202,138,4,0.06); box-shadow: none; }
+  }
+  @keyframes letter-dim {
+    0%,100% { opacity: 1; }
+    50%      { opacity: 0.1; }
+  }
+
   @media (max-width: 768px) {
+    /* section tiles stack on mobile */
+    .section-tiles-grid { grid-template-columns: 1fr !important; }
+  }
+
+  /* ── REDUCED MOTION ─────────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .product { transition: opacity 0.3s ease; }
+    #p1,#p2,#p3,#p4,#p5,#p6,#p7,#p8 { transition-delay: 0s; }
+    html { scroll-behavior: auto; }
+  }
+
+  /* ── MOBILE ─────────────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    #p1 { margin-top: 10vh !important; }
+    #p2 { margin-top: 5vh !important; }
+    #p3 { margin-top: 25vh !important; }
+    #p4 { margin-top: -10vh !important; }
+    #p5 { margin-top: 20vh !important; }
+    #p6 { margin-top: 45vh !important; }
+    #p7 { margin-top: -40vh !important; }
+    #p8 { margin-top: 15vh !important; }
+
     .bg-text { font-size: 30vw; }
-    .product { 
+    .product {
       margin-left: auto !important;
       margin-right: auto !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: 90%; 
+      left: 0 !important; right: 0 !important;
+      width: 90%;
     }
     .label {
       position: relative;
@@ -147,55 +196,102 @@
 </head>
 <body>
 
-<nav style="position: absolute; top: 0; width: 100%; padding: 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000;">
-  <a href="#" style="font-family: 'Zen Dots'; font-size: 14px; text-decoration: none; color: #fff;">MAURICIO</a>
-  
-  <a href="about.html" style="font-family: 'Zen Dots'; font-size: 10px; color: #fff; text-decoration: none; border: 1px solid #333; padding: 8px 15px; border-radius: 20px; transition: 0.3s;" onmouseover="this.style.borderColor='#fff'" onmouseout="this.style.borderColor='#333'">
-    ABOUT
-  </a>
+<nav style="position: fixed; top: 0; width: 100%; padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.6); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid rgba(255,255,255,0.06);">
+  <a href="#" style="font-family: 'Zen Dots'; font-size: 14px; text-decoration: none; color: #fff; letter-spacing: 0.05em;">MAURICIO</a>
 
-  <div style="font-family: 'Zen Dots'; font-size: 10px; color: #444; margin-left: auto; padding-left: 20px;">PRODUCT DESIGN 2026</div>
+  <div style="display: flex; gap: 10px; align-items: center;">
+    <a href="about.html" style="font-family: 'Zen Dots'; font-size: 10px; color: rgba(255,255,255,0.7); text-decoration: none; border: 1px solid #2a2a2a; padding: 8px 16px; border-radius: 20px; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.borderColor='rgba(255,255,255,0.4)'; this.style.color='#fff'" onmouseout="this.style.borderColor='#2a2a2a'; this.style.color='rgba(255,255,255,0.7)'">
+      ABOUT
+    </a>
+    <a href="project-watch.html" style="font-family: 'Zen Dots'; font-size: 10px; color: rgba(255,255,255,0.7); text-decoration: none; border: 1px solid #2a2a2a; padding: 8px 16px; border-radius: 20px; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.borderColor='rgba(255,255,255,0.4)'; this.style.color='#fff'" onmouseout="this.style.borderColor='#2a2a2a'; this.style.color='rgba(255,255,255,0.7)'">
+      PERSONAL
+    </a>
+    <a href="wimtach.html" style="font-family: 'Zen Dots'; font-size: 10px; color: #000; background: var(--gold); text-decoration: none; border: 1px solid var(--gold); padding: 8px 16px; border-radius: 20px; transition: all 0.3s ease; cursor: pointer; letter-spacing: 0.05em;" onmouseover="this.style.background='transparent'; this.style.color='var(--gold)'" onmouseout="this.style.background='#CA8A04'; this.style.color='#000'">
+      WIMTACH
+    </a>
+  </div>
+
+  <div style="font-family: 'Zen Dots'; font-size: 9px; color: #333; letter-spacing: 0.15em;">PRODUCT DESIGN 2026</div>
 </nav>
 
   <div id="progress"></div>
-  <div class="bg-text">WORKS</div>
+  <div class="bg-text">MM</div>
+
+  <!-- ── SECTION TILES: WIMTACH + PERSONAL PROJECTS ───────────────── -->
+  <div style="position: relative; z-index: 5; width: 100%; background: #000;">
+  <div class="section-tiles-grid" style="max-width: 1300px; margin: 0 auto; padding: 110px 40px 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+
+    <!-- BUDDHACALM tile -->
+    <a href="product-9.html" style="display: block; text-decoration: none; padding: 36px; border: 2px solid rgba(202,138,4,0.45); background: rgba(202,138,4,0.04); animation: border-flicker 4s linear infinite;">
+      <span style="font-family:'Share Tech Mono'; font-size: 9px; color: rgba(202,138,4,0.6); letter-spacing: 3px; text-transform: uppercase; display: block; margin-bottom: 18px;">WIMTACH · 2026</span>
+      <div style="font-family:'Zen Dots'; font-size: clamp(2rem,3.5vw,3rem); color: #fff; line-height: 0.9; text-transform: uppercase; margin-bottom: 18px;">BU<span style="display:inline-block;animation:letter-dim 2.1s step-end infinite 0.6s">D</span>DHA<br>CA<span style="display:inline-block;animation:letter-dim 3.3s step-end infinite 1.9s">L</span>M</div>
+      <p style="font-size: 11px; color: #666; line-height: 1.65; margin-bottom: 24px;">Lead designer on a wearable that earned a patent application. Six prototype cycles, pogo-pin charging architecture, cross-functional team.</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0; border-top:1px solid rgba(202,138,4,0.2); padding-top:18px; margin-bottom:20px;">
+        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size:8px; color:rgba(255,255,255,0.25); letter-spacing:2px; display:block; margin-bottom:4px;">ROLE</span><span style="font-family:'Share Tech Mono'; font-size:10px; color:#CA8A04;">Lead Designer</span></div>
+        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size:8px; color:rgba(255,255,255,0.25); letter-spacing:2px; display:block; margin-bottom:4px;">CYCLES</span><span style="font-family:'Share Tech Mono'; font-size:10px; color:#CA8A04;">6+</span></div>
+        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size:8px; color:rgba(255,255,255,0.25); letter-spacing:2px; display:block; margin-bottom:4px;">TOLERANCE</span><span style="font-family:'Share Tech Mono'; font-size:10px; color:#CA8A04;">±0.15mm</span></div>
+        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size:8px; color:rgba(255,255,255,0.25); letter-spacing:2px; display:block; margin-bottom:4px;">IP STATUS</span><span style="font-family:'Share Tech Mono'; font-size:10px; color:#CA8A04; animation:letter-dim 2.8s step-end infinite 0.3s;">Patent Pending ●</span></div>
+      </div>
+      <span style="font-family:'Zen Dots'; font-size: 9px; color: #CA8A04; letter-spacing: 2px;">CASE STUDY →</span>
+    </a>
+
+    <!-- PERSONAL PROJECTS tile — watch -->
+    <a id="personal" href="project-watch.html" style="display: block; text-decoration: none; padding: 36px; border: 2px solid #1c1c1c; background: #050505; animation: border-flicker 6s linear infinite 2s;">
+      <span style="font-family:'Zen Dots'; font-size: 9px; color: #333; letter-spacing: 3px; text-transform: uppercase; display: block; margin-bottom: 18px;">PERSONAL PROJECT · 2025</span>
+      <div style="font-family:'Zen Dots'; font-size: clamp(2rem,3.5vw,3rem); color: #fff; line-height: 0.9; text-transform: uppercase; margin-bottom: 18px;">ESP32<br>WATCH</div>
+      <p style="font-size: 11px; color: #666; line-height: 1.65; margin-bottom: 24px;">7mm thin dual-screen wristwatch — designed entirely with AI assistance, zero prior KiCad experience. Custom PCB, ESP32 microcontroller.</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-top: 1px solid #111; padding-top: 20px;">
+        <div><span style="font-family:'Share Tech Mono'; font-size: 8px; color: #2a2a2a; letter-spacing: 2px; display: block; margin-bottom: 6px;">THICKNESS</span><span style="font-family:'Zen Dots'; font-size: 13px; color: #CA8A04;">7mm</span></div>
+        <div><span style="font-family:'Share Tech Mono'; font-size: 8px; color: #2a2a2a; letter-spacing: 2px; display: block; margin-bottom: 6px;">DISPLAYS</span><span style="font-family:'Zen Dots'; font-size: 13px; color: #CA8A04;">DUAL</span></div>
+        <div><span style="font-family:'Share Tech Mono'; font-size: 8px; color: #2a2a2a; letter-spacing: 2px; display: block; margin-bottom: 6px;">MCU</span><span style="font-family:'Zen Dots'; font-size: 13px; color: #CA8A04;">ESP32</span></div>
+      </div>
+    </a>
+
+  </div>
+  </div>
+  <!-- ─────────────────────────────────────────────────────────────────── -->
 
   <div class="parallax-wrapper">
-    <a href="product-1.html" id="p1" class="product scroll-item align-left" data-speed="0.1" style="margin-top: 0vh; margin-left: 8vw;">
-      <img src="Product 1.png" alt="Wavy Chair">
-      <div class="label label-right">01 // WAVY CHAIR</div>
+    <a href="product-8.html" id="p8" class="product scroll-item" data-speed="0.06" style="position:absolute; top:-75vh; left:-35vw;">
+      <img src="images/Product 8.png" alt="MASTAY" style="width:170vw;height:auto;max-width:none;max-height:none;">
+      <div class="label label-right" style="right: 80vw; top: 75%;">01 // MASTAY</div>
     </a>
 
-    <a href="product-2.html" id="p2" class="product scroll-item align-right" data-speed="0.05" style="margin-top: 10vh; margin-right: 8vw;">
-      <img src="Product 2.png" id="p2" alt="C8H1">
-      <div class="label label-left">02 // C8H1</div>
+    <a href="product-7.html" id="p7" class="product scroll-item" data-speed="0.12" style="position:absolute; top:120vh; left:58.4vw;">
+      <img src="images/Product 7.png" alt="FLEED">
+      <div class="label label-left">02 // FLEED</div>
     </a>
 
-    <a href="product-3.html" id="p3" class="product scroll-item align-center" data-speed="-0.08" style="margin-top: 20vh;">
-      <img src="Product 3.png" alt="Pill lamp">
-      <div class="label label-right">03 // PILL LAMP</div>
+    <a href="product-1.html" id="p1" class="product scroll-item" data-speed="0.1" style="position:absolute; top:200vh; left:7.6vw;">
+      <img src="images/Product 1.png" alt="WAVY CHAIR">
+      <div class="label label-right">03 // WAVY CHAIR</div>
     </a>
 
-    <a href="product-4.html" id="p4" class="product scroll-item align-left" data-speed="0.15" style="margin-top: -15vh; margin-left: 8vw;">
-      <img src="Product 4.png" alt="Fluido">
-      <div class="label label-right">04 // FLUIDO</div>
+    <a href="product-2.html" id="p2" class="product scroll-item" data-speed="0.05" style="position:absolute; top:300vh; left:66.9vw;">
+      <img src="images/Product 2.png" alt="C8H1">
+      <div class="label label-left">04 // C8H1</div>
     </a>
 
-    <a href="product-5.html" id="p5" class="product scroll-item align-right" data-speed="0.1" style="margin-top: 10vh; margin-right: 8vw;">
-      <img src="Product 5.png" alt="Boring Glasses">
-      <div class="label label-left">05 // BORING GLASSES</div>
+    <a href="product-3.html" id="p3" class="product scroll-item" data-speed="-0.08" style="position:absolute; top:430vh; left:42.4vw;">
+      <img src="images/Product 3.png" alt="PILL LAMP">
+      <div class="label label-right">05 // PILL LAMP</div>
     </a>
 
-    <a href="product-6.html" id="p6" class="product scroll-item align-left" data-speed="-0.02" style="margin-top: 25vh; margin-left: 35vw;">
-      <img src="Product 6.png" alt="True Human">
-      <div class="label label-right">06 // TRUE HUMAN</div>
+    <a href="product-4.html" id="p4" class="product scroll-item" data-speed="0.15" style="position:absolute; top:390.2vh; left:7.5vw;">
+      <img src="images/Product 4.png" alt="FLUIDO">
+      <div class="label label-right">06 // FLUIDO</div>
     </a>
 
-    <a href="product-7.html" id="p7" class="product scroll-item align-center" data-speed="0.12" style="margin-top: -10vh;">
-      <img src="Product 7.png" alt="Fleed">
-      <div class="label label-right">07 // FLEED</div>
+    <a href="product-5.html" id="p5" class="product scroll-item" data-speed="0.1" style="position:absolute; top:500.5vh; left:56.1vw;">
+      <img src="images/Product 5.png" alt="BORING GLASSES">
+      <div class="label label-left" style="left: -170px;">07 // BORING GLASSES</div>
     </a>
-<div style="height: 40vh;"></div> 
+
+    <a href="product-6.html" id="p6" class="product scroll-item" data-speed="-0.02" style="position:absolute; top:640.6vh; left:30vw;">
+      <img src="images/Product 6.png" alt="TRUE HUMAN">
+      <div class="label label-right">08 // TRUE HUMAN</div>
+    </a>
+  </div>
 
 <section id="about-bottom" class="align-center" style="position: relative; width: 100%; padding: 100px 0; text-align: center; z-index: 10;">
   <a href="about.html" style="text-decoration: none; color: inherit; display: inline-block;">
@@ -207,7 +303,6 @@
     </div>
   </a>
 </section>
-  </div>
 
   <script>
     // Scroll Progress
@@ -225,7 +320,18 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.product').forEach(p => observer.observe(p));
 
-    // Parallax
+    // Parallax + scroll-based active product (closest to viewport center gets unblurred)
+    function updateActiveProduct() {
+      const mid = window.innerHeight / 2;
+      let closest = null, closestDist = Infinity;
+      document.querySelectorAll('.product.is-visible').forEach(p => {
+        const rect = p.getBoundingClientRect();
+        const dist = Math.abs((rect.top + rect.height / 2) - mid);
+        if (dist < closestDist) { closestDist = dist; closest = p; }
+      });
+      document.querySelectorAll('.product').forEach(p => p.classList.remove('is-active'));
+      if (closest) closest.classList.add('is-active');
+    }
     window.addEventListener('scroll', () => {
       document.querySelectorAll('.scroll-item').forEach(item => {
         if (item.classList.contains('is-visible')) {
@@ -235,7 +341,8 @@
           item.style.transform = `translateY(${yVal}px)`;
         }
       });
-    });
+      updateActiveProduct();
+    }, { passive: true });
 
     // Mobile Taps
     let lastTap = 0;

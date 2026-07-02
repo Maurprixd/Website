@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -83,7 +83,14 @@
     .bento-grid, .tech-specs { grid-template-columns: 1fr; }
     .hero-alt h1 { font-size: 3rem; }
   }
-</style>
+
+  .proto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .proto-cell { position: relative; background: #0d0d0d; aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in; }
+  .proto-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .proto-cell:hover img { transform: scale(1.03); }
+  .proto-num { position: absolute; top: 10px; left: 12px; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 2px; pointer-events: none; font-family: monospace; display: none; }
+  .proto-cell.wide { grid-column: span 2; aspect-ratio: 16/7; }
+  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }</style>
 </head>
 <body>
 
@@ -92,7 +99,7 @@
   <div class="steps">
     <a href="#ideation">01 IDEATION</a>
     <a href="#cad">02 CAD</a>
-    <a href="#final">03 FINAL</a>
+    <a href="#prototype">03 PROTOTYPE</a>    <a href="#final">04 FINAL</a>
   </div>
 </nav>
 
@@ -110,13 +117,12 @@
     </p>
   </div>
 
-  <div style="display: flex; flex-direction: column; gap: 40px;">
-    <div class="bento-item" style="background: #fff; padding: 40px; border-radius: 12px; cursor: zoom-in; display: flex; justify-content: center; align-items: center;">
-      <img src="Fluido draw1.png" alt="Fluido Concept Sketch 1" style="max-width: 100%; height: auto; object-fit: contain; display: block;">
+  <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 8px; align-items: start;">
+    <div style="background: #fff; padding: 32px; border-radius: 4px; cursor: zoom-in;">
+      <img src="images/Fluido draw1.png" alt="Fluido Concept Sketch 1" style="width: 100%; height: auto; object-fit: contain; display: block;">
     </div>
-    
-    <div class="bento-item" style="background: #fff; padding: 40px; border-radius: 12px; cursor: zoom-in; display: flex; justify-content: center; align-items: center;">
-      <img src="Fluido draw2.png" alt="Fluido Concept Sketch 2" style="max-width: 100%; height: auto; object-fit: contain; display: block;">
+    <div style="background: #fff; padding: 32px; border-radius: 4px; cursor: zoom-in;">
+      <img src="images/Fluido draw2.png" alt="Fluido Concept Sketch 2" style="width: 100%; height: auto; object-fit: contain; display: block;">
     </div>
   </div>
 </section>
@@ -132,7 +138,7 @@
 
   <div class="tech-specs">
     <div class="bento-item" style="background: #fff; border-radius: 8px; padding: 40px; cursor: zoom-in; display: flex; align-items: center; justify-content: center; min-height: 400px;">
-      <img src="Fluido Cad.png" alt="Fluido Engineering Drawing" style="width: auto; height: auto; max-width: 100%; max-height: 500px; object-fit: scale-down; display: block;">
+      <img src="images/Fluido Cad.png" alt="Fluido Engineering Drawing" style="width: auto; height: auto; max-width: 100%; max-height: 500px; object-fit: scale-down; display: block;">
     </div>
 
     <div class="tech-info">
@@ -147,7 +153,63 @@
   </div>
 </section>
 
-  <section id="final">
+  <section id="prototype" style="max-width: 1200px; margin: 0 auto; padding: 100px 40px;">
+  <div style="margin-bottom: 60px;">
+    <span style="font-family: 'Zen Dots'; font-size: 12px; color: #444; display: block; margin-bottom: 10px;">PHASE 03</span>
+    <h2 style="font-family: 'Zen Dots'; font-size: 24px; text-transform: uppercase;">Prototype Process</h2>
+    <p style="color: #666; margin-top: 20px; max-width: 600px; line-height: 1.7; font-size: 14px;">CNC routing, hand finishing, stacking geometry validation across 9 fabrication steps.</p>
+  </div>
+  <!-- Proto grid: cascada — fila 1 (5 celdas, ancho completo) + fila 2 (4 celdas, indentada) -->
+  <div style="display:flex; flex-direction:column; gap:8px;">
+
+    <!-- Row 1: 5 columnas, ancho completo -->
+    <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; height:260px;">
+      <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fluido-stool/Fluido 1.png')">
+        <img src="images/fluido-stool/Fluido 1.png" alt="Step 01" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">01</span>
+      </div>
+      <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fluido-stool/Fluido 2.png')">
+        <img src="images/fluido-stool/Fluido 2.png" alt="Step 02" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">02</span>
+      </div>
+      <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fluido-stool/Fluido 3.png')">
+        <img src="images/fluido-stool/Fluido 3.png" alt="Step 03" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">03</span>
+      </div>
+      <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fluido-stool/Fluido 4.png')">
+        <img src="images/fluido-stool/Fluido 4.png" alt="Step 04" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">04</span>
+      </div>
+      <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fluido-stool/Fluido 5.png')">
+        <img src="images/fluido-stool/Fluido 5.png" alt="Step 05" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">05</span>
+      </div>
+    </div>
+
+    <!-- Row 2: 4 columnas, indentada (cascada: ~4% izquierda, ~6.6% derecha) -->
+    <div style="margin-left:5%; margin-right:5%; display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; height:260px;">
+      <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fluido-stool/Fluido 6.png')">
+        <img src="images/fluido-stool/Fluido 6.png" alt="Step 06" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">06</span>
+      </div>
+      <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fluido-stool/Fluido 7.png')">
+        <img src="images/fluido-stool/Fluido 7.png" alt="Step 07" style="width:100%;height:100%;object-fit:contain;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">07</span>
+      </div>
+      <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fluido-stool/Fluido 8.png')">
+        <img src="images/fluido-stool/Fluido 8.png" alt="Step 08" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">08</span>
+      </div>
+      <div style="position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fluido-stool/Fluido 9.png')">
+        <img src="images/fluido-stool/Fluido 9.png" alt="Step 09" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">09</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="final">
   <style>
     /* Carousel & Zoom Overlay Styles */
     #carousel {
@@ -177,7 +239,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: opacity 0.3s;
     }
+    .nav-arrow.hidden { opacity: 0 !important; pointer-events: none; }
 
     #zoom-overlay {
       position: fixed;
@@ -212,31 +276,40 @@
     @media (max-width: 768px) {
       .nav-arrow { display: none !important; }
     }
-  </style>
+  
+  .proto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .proto-cell { position: relative; background: #0d0d0d; aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in; }
+  .proto-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .proto-cell:hover img { transform: scale(1.03); }
+  .proto-num { position: absolute; top: 10px; left: 12px; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 2px; pointer-events: none; font-family: monospace; display: none; }
+  .proto-cell.wide { grid-column: span 2; aspect-ratio: 16/7; }
+  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }</style>
 
   <div id="zoom-overlay" onclick="closeZoom()">
     <button class="close-zoom" onclick="closeZoom()">CLOSE ×</button>
-    <img src="" id="zoomed-img">
+    <div style="background:#fff; padding:20px; border-radius:6px; max-width:88vw; max-height:88vh; display:flex; align-items:center; justify-content:center; box-shadow:0 0 60px rgba(0,0,0,0.5); ">
+    <img src="" id="zoomed-img" style="max-width:100%; max-height:calc(88vh - 40px); object-fit:contain; display:block;">
+  </div>
   </div>
 
   <div class="section-header">
-    <span class="section-num">PHASE 03</span>
+    <span class="section-num">PHASE 04</span>
     <h2 class="section-title">Final Execution</h2>
   </div>
   
   <div style="position: relative; width: 100%; max-width: 1400px; margin: 0 auto;">
-    <button class="nav-arrow" style="left: 10px;" onclick="document.getElementById('carousel').scrollBy({left: -1000, behavior: 'smooth'})">←</button>
-    <button class="nav-arrow" style="right: 10px;" onclick="document.getElementById('carousel').scrollBy({left: 1000, behavior: 'smooth'})">→</button>
+    <button class="nav-arrow" style="left: 10px;" onclick="scrollCarousel(-1)">←</button>
+    <button class="nav-arrow" style="right: 10px;" onclick="scrollCarousel(1)">→</button>
 
     <div id="carousel">
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; display: flex; align-items: center; justify-content: center; background: #000;">
-        <img src="stool photo 1.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+        <img src="images/stool photo 1.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
       </div>
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; display: flex; align-items: center; justify-content: center; background: #000;">
-        <img src="stool photo 2.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+        <img src="images/stool photo 2.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
       </div>
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; display: flex; align-items: center; justify-content: center; background: #000;">
-        <img src="stool photo 3.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+        <img src="images/stool photo 3.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
       </div>
     </div>
   </div>
@@ -286,6 +359,22 @@
       document.body.style.overflow = 'hidden';
     });
   });
+
+  function scrollCarousel(dir) {
+    var c = document.getElementById('carousel');
+    c.scrollBy({ left: dir * c.clientWidth, behavior: 'smooth' });
+    setTimeout(updateCarouselArrows, 500);
+  }
+  function updateCarouselArrows() {
+    var c = document.getElementById('carousel');
+    if (!c) return;
+    var btns = document.querySelectorAll('.nav-arrow');
+    if (btns.length < 2) return;
+    btns[0].classList.toggle('hidden', c.scrollLeft <= 4);
+    btns[1].classList.toggle('hidden', c.scrollLeft + c.clientWidth >= c.scrollWidth - 4);
+  }
+  document.getElementById('carousel').addEventListener('scroll', updateCarouselArrows, { passive: true });
+  window.addEventListener('load', updateCarouselArrows);
 </script>
 </body>
 </html>

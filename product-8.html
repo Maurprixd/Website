@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mastay | Process Breakdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@300;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root { --accent: #ffffff; --dim: #444; --bg: #000; --gold: #CA8A04; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    overflow-y: auto;
+    min-height: 100%;
+  }
+
+  /* NAV */
+  .process-nav {
+    position: sticky; top: 0; width: 100%; padding: 20px 40px;
+    background: rgba(0,0,0,0.92); backdrop-filter: blur(12px);
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid #1a1a1a; z-index: 1000;
+  }
+  .nav-logo { font-family: 'Zen Dots'; font-size: 14px; text-decoration: none; color: #fff; }
+  .steps { display: flex; gap: 30px; font-size: 10px; font-weight: 600; letter-spacing: 2px; }
+  .steps a { text-decoration: none; color: var(--dim); transition: 0.3s; }
+  .steps a:hover, .steps a.active { color: #fff; }
+
+  /* HERO */
+  .hero-alt { padding: 160px 40px 80px; text-align: left; max-width: 1200px; margin: 0 auto; }
+  .hero-alt h1 {
+    font-family: 'Zen Dots'; font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 1; margin-bottom: 20px; text-transform: uppercase;
+    overflow: visible; padding-bottom: 0.12em;
+  }
+  .hero-alt .meta { color: #888; letter-spacing: 3px; font-size: 12px; display: block; margin-bottom: 28px; }
+
+  .project-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px;
+    margin-top: 60px; padding-top: 40px; border-top: 1px solid #1a1a1a;
+  }
+  .stat-label {
+    font-family: 'Zen Dots'; font-size: 9px; color: #444;
+    letter-spacing: 2px; display: block; margin-bottom: 8px; text-transform: uppercase;
+  }
+  .stat-value { font-size: 13px; color: #fff; font-weight: 300; line-height: 1.5; }
+
+  /* SECTIONS */
+  section { max-width: 1200px; margin: 0 auto; padding: 100px 40px; }
+  .section-header { margin-bottom: 60px; }
+  .section-num { font-family: 'Zen Dots'; font-size: 12px; color: var(--dim); display: block; margin-bottom: 10px; }
+  .section-title { font-family: 'Zen Dots'; font-size: 24px; text-transform: uppercase; }
+  .section-desc { color: #666; margin-top: 20px; max-width: 600px; line-height: 1.7; font-size: 14px; }
+
+  /* BENTO */
+  .bento-item { background: #111; border-radius: 8px; overflow: hidden; }
+  .bento-item img { width: 100%; height: 100%; object-fit: contain; display: block; cursor: zoom-in; }
+
+  /* PROTOTYPE GRID */
+  .proto-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .proto-cell {
+    position: relative;
+    background: #0d0d0d;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    cursor: zoom-in;
+  }
+  .proto-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .proto-cell:hover img { transform: scale(1.03); }
+  .proto-num { display: none; }
+  .proto-num-dead {
+    position: absolute; top: 10px; left: 12px;
+    font-family: 'Share Tech Mono'; font-size: 9px;
+    color: rgba(255,255,255,0.35); letter-spacing: 2px;
+    pointer-events: none;
+  }
+  .proto-cell.wide { grid-column: span 2; aspect-ratio: 16/7; }
+
+  /* ASSEMBLY STRIP (Option A) */
+  .assembly-section { max-width: 100%; padding: 100px 0; }
+  .assembly-inner { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+  .assembly-track-wrap {
+    position: relative;
+    margin-top: 60px;
+  }
+  .assembly-track {
+    display: flex;
+    gap: 40px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* center first/last card: padding = 50vw minus half card width */
+    padding: 0 calc(50vw - clamp(160px, 21vw, 280px)) 24px;
+    cursor: grab;
+  }
+  .assembly-track::-webkit-scrollbar { display: none; }
+  .assembly-track:active { cursor: grabbing; }
+  .assembly-card {
+    flex: 0 0 clamp(320px, 42vw, 560px);
+    scroll-snap-align: center;
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .assembly-card-num {
+    font-family: 'Zen Dots';
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    padding: 16px 18px 12px;
+    display: none;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .assembly-card img {
+    width: 100%; display: block;
+    background: #fff;
+    cursor: zoom-in;
+  }
+  .assembly-hint {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 40px; margin-top: 20px;
+  }
+  .assembly-hint-line { flex: 1; height: 1px; background: #1a1a1a; }
+  .assembly-hint span {
+    font-family: 'Share Tech Mono'; font-size: 11px;
+    color: #555; letter-spacing: 2px; white-space: nowrap;
+  }
+  .assembly-arrows {
+    display: flex; gap: 10px;
+    padding: 0 40px; margin-top: 16px; justify-content: flex-end;
+  }
+  .asm-arrow {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid #2a2a2a; background: #0a0a0a;
+    color: var(--gold); font-size: 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s, background 0.2s, opacity 0.3s;
+  }
+  .asm-arrow:hover { border-color: var(--gold); background: rgba(202,138,4,0.08); }
+  .asm-arrow.hidden { opacity: 0; pointer-events: none; }
+
+  /* FINAL CAROUSEL */
+  #carousel {
+    display: flex; overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  #carousel::-webkit-scrollbar { display: none; }
+  .nav-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    z-index: 10; background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.2); color: white;
+    width: 60px; height: 60px; cursor: pointer; border-radius: 50%;
+    backdrop-filter: blur(10px); display: flex;
+    align-items: center; justify-content: center; font-size: 24px;
+    transition: opacity 0.3s;
+  }
+  .nav-arrow.hidden { opacity: 0; pointer-events: none; }
+
+  /* ZOOM */
+  #zoom-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%; background: rgba(0,0,0,0.97);
+    z-index: 3000; display: none;
+    align-items: center; justify-content: center; cursor: zoom-out;
+  }
+  #zoom-overlay img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .close-zoom {
+    position: absolute; top: 30px; right: 30px;
+    background: rgba(255,255,255,0.08); border: 1px solid #444;
+    color: #fff; padding: 10px 20px; border-radius: 30px;
+    cursor: pointer; font-family: 'Zen Dots'; font-size: 10px; letter-spacing: 2px;
+  }
+
+  /* ── MATRIX DECK ──────────────────────────── */
+  #proto-deck {
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+    cursor: pointer; user-select: none; padding: 40px 0;
+  }
+  #proto-stack { position: relative; width: 200px; height: 260px; }
+  .m-card {
+    position: absolute; inset: 0; border-radius: 4px; overflow: hidden;
+    background: #0d0d0d; box-shadow: 0 4px 24px rgba(0,0,0,0.9);
+    transition: transform 0.45s cubic-bezier(0.34,1.4,0.64,1);
+  }
+  .m-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #proto-deck:hover .m-card:nth-child(1) { transform: rotate(-8deg) translate(-18px,22px); }
+  #proto-deck:hover .m-card:nth-child(2) { transform: rotate(-4deg) translate(-9px,12px); }
+  #proto-deck:hover .m-card:nth-child(3) { transform: rotate(4deg) translate(9px,8px); }
+  #proto-deck:hover .m-card:nth-child(4) { transform: rotate(0deg); }
+  .deck-tag { font-family: 'Zen Dots'; font-size: 9px; letter-spacing: 4px; color: #333; }
+  .deck-sub { font-family: 'Share Tech Mono'; font-size: 10px; color: #1a1a1a; letter-spacing: 2px; margin-top: -8px; }
+
+  /* glitch jitter on deck hover */
+  @keyframes m-glitch {
+    0%   { transform: translate(0,0); }
+    10%  { transform: translate(-3px,1px); }
+    20%  { transform: translate(3px,-1px); }
+    30%  { transform: translate(-2px,2px); }
+    40%  { transform: translate(2px,0); }
+    50%  { transform: translate(-1px,-2px); }
+    60%  { transform: translate(1px,1px); }
+    70%  { transform: translate(-2px,0); }
+    80%  { transform: translate(2px,-1px); }
+    90%  { transform: translate(-1px,1px); }
+    100% { transform: translate(0,0); }
+  }
+  #proto-stack.glitching { animation: m-glitch 0.32s steps(1) forwards; }
+
+  /* matrix grid cells */
+  #proto-grid-wrap { position: relative; display: none; }
+  #proto-grid {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 6px;
+  }
+  .mgc {
+    aspect-ratio: 4/3; overflow: hidden; background: #0d0d0d;
+    cursor: zoom-in; opacity: 0; transition: filter 0.3s; position: relative;
+  }
+  .mgc img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .mgc:hover img { transform: scale(1.04); transition: transform 0.4s; }
+  .mgc-num {
+    position: absolute; bottom: 6px; right: 8px;
+    font-family: 'Share Tech Mono'; font-size: 9px;
+    color: rgba(255,255,255,0.2); letter-spacing: 2px; pointer-events: none;
+  }
+  #proto-canvas { position: absolute; top:0; left:0; pointer-events:none; z-index:5; }
+
+  /* stack-back button */
+  #proto-back {
+    display: none; margin-top: 20px;
+    font-family: 'Zen Dots'; font-size: 9px; letter-spacing: 3px;
+    color: #0f0; background: none; border: 1px solid #0f0;
+    padding: 9px 18px; cursor: pointer; transition: background 0.2s, color 0.2s;
+  }
+  #proto-back:hover { background: #0f0; color: #000; }
+
+  footer { padding: 100px 40px; text-align: center; border-top: 1px solid #1a1a1a; }
+
+  @media (max-width: 768px) {
+    .project-stats { grid-template-columns: 1fr 1fr; }
+    .hero-alt h1 { font-size: 3rem; }
+    .nav-arrow { display: none !important; }
+    section { padding: 60px 20px; }
+    .hero-alt { padding: 120px 20px 60px; }
+    .process-nav { padding: 15px 20px; }
+    .steps { gap: 15px; font-size: 8px; }
+    .proto-grid { grid-template-columns: 1fr; }
+    .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; }
+  }
+</style>
+</head>
+<body>
+
+<div id="zoom-overlay" onclick="closeZoom()">
+  <button class="close-zoom" onclick="event.stopPropagation(); closeZoom()">CLOSE ×</button>
+  <div style="background:#fff; padding:20px; border-radius:6px; max-width:88vw; max-height:88vh; display:flex; align-items:center; justify-content:center; box-shadow:0 0 60px rgba(0,0,0,0.5); ">
+    <img src="" id="zoomed-img" style="max-width:100%; max-height:calc(88vh - 40px); object-fit:contain; display:block;">
+  </div>
+</div>
+
+<nav class="process-nav">
+  <a href="./index.html" class="nav-logo">← BACK</a>
+  <div class="steps">
+    <a href="#ideation">01 IDEATION</a>
+    <a href="#assembly">02 ASSEMBLY</a>
+    <a href="#prototype">03 PROTOTYPE</a>
+    <a href="#final">04 FINAL</a>
+  </div>
+</nav>
+
+<header class="hero-alt">
+  <span class="meta">KINETIC FURNITURE / CENTENNIAL COLLEGE CAPSTONE 2025–2026</span>
+  <h1>MASTAY</h1>
+  <div class="project-stats">
+    <div>
+      <span class="stat-label">Type</span>
+      <span class="stat-value">2-in-1 Kinetic Furniture</span>
+    </div>
+    <div>
+      <span class="stat-label">School</span>
+      <span class="stat-value">Centennial College</span>
+    </div>
+    <div>
+      <span class="stat-label">Timeline</span>
+      <span class="stat-value">2025 – 2026</span>
+    </div>
+    <div>
+      <span class="stat-label">Inspired by</span>
+      <span class="stat-value">Incan K'allku Geometry</span>
+    </div>
+  </div>
+</header>
+
+<!-- ─── PHASE 01: IDEATION ──────────────────────────────────────────── -->
+<section id="ideation">
+  <div class="section-header">
+    <span class="section-num">PHASE 01</span>
+    <h2 class="section-title">Ideation & Form</h2>
+    <p class="section-desc">
+      Mastay is a 2-in-1 kinetic piece — a compact storage tower that unfolds into a horizontal
+      collaborative workspace. The trapezoid geometry of the Incan K'allku archway drove the
+      form language: stable, structural, culturally grounded.
+    </p>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+      <div class="bento-item" style="background: #fff; cursor: zoom-in;" onclick="openZoom('images/mastay/Mastay sketch photo 1.png')">
+        <img src="images/mastay/Mastay sketch photo 1.png" alt="Mastay Sketch Detail 1">
+      </div>
+      <div class="bento-item" style="background: #fff; cursor: zoom-in;" onclick="openZoom('images/mastay/Mastay sketch photo 2.png')">
+        <img src="images/mastay/Mastay sketch photo 2.png" alt="Mastay Sketch Detail 2">
+      </div>
+      <div class="bento-item" style="background: #fff; cursor: zoom-in;" onclick="openZoom('images/mastay/Mastay sketch photo 3.png')">
+        <img src="images/mastay/Mastay sketch photo 3.png" alt="Mastay Sketch Detail 3">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PHASE 02: ASSEMBLY ──────────────────────────────────────────── -->
+<div class="assembly-section" id="assembly">
+  <div class="assembly-inner">
+    <div class="section-header">
+      <span class="section-num">PHASE 02</span>
+      <h2 class="section-title">Assembly Instructions</h2>
+      <p class="section-desc">
+        A full assembly brief was produced documenting the kinetic transformation sequence —
+        from tower configuration to collaborative workspace. Industrial drawer sliders and
+        high-strength hinges are the core mechanical components.
+      </p>
+    </div>
+  </div>
+
+  <div class="assembly-track-wrap">
+    <div class="assembly-track" id="assemblyTrack">
+      <div class="assembly-card">
+        <span class="assembly-card-num">STEP 01 / 05</span>
+        <img src="images/mastay/Assembly/Mastay-assem-01.png" alt="Assembly Step 1" onclick="openZoom(this.src)">
+      </div>
+      <div class="assembly-card">
+        <span class="assembly-card-num">STEP 02 / 05</span>
+        <img src="images/mastay/Assembly/Mastay-assem-02.png" alt="Assembly Step 2" onclick="openZoom(this.src)">
+      </div>
+      <div class="assembly-card">
+        <span class="assembly-card-num">STEP 03 / 05</span>
+        <img src="images/mastay/Assembly/Mastay-assem-03.png" alt="Assembly Step 3" onclick="openZoom(this.src)">
+      </div>
+      <div class="assembly-card">
+        <span class="assembly-card-num">STEP 04 / 05</span>
+        <img src="images/mastay/Assembly/Mastay-assem-04.png" alt="Assembly Step 4" onclick="openZoom(this.src)">
+      </div>
+      <div class="assembly-card">
+        <span class="assembly-card-num">STEP 05 / 05</span>
+        <img src="images/mastay/Assembly/Mastay-assem-05.png" alt="Assembly Step 5" onclick="openZoom(this.src)">
+      </div>
+    </div>
+    <div class="assembly-hint">
+      <div class="assembly-hint-line"></div>
+      <span>DRAG OR USE ARROWS</span>
+      <div class="assembly-hint-line"></div>
+    </div>
+    <div class="assembly-arrows">
+      <button class="asm-arrow" onclick="scrollAssembly(-1)">&#8592;</button>
+      <button class="asm-arrow" onclick="scrollAssembly(1)">&#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PHASE 03: PROTOTYPE ─────────────────────────────────────────── -->
+<section id="prototype">
+  <div class="section-header">
+    <span class="section-num">PHASE 03</span>
+    <h2 class="section-title">Prototype Process</h2>
+    <p class="section-desc">
+      Full fabrication documentation — from raw material and initial cuts through mechanism
+      testing, iteration, and surface finishing. 34 steps captured in sequence.
+    </p>
+  </div>
+
+  <!-- Deck (start state) -->
+  <div id="proto-deck" onclick="protoStart()">
+    <div id="proto-stack">
+      <div class="m-card" style="transform:rotate(-4deg) translate(-6px,10px);z-index:1;"><img src="images/mastay/mastay 4.png" alt=""></div>
+      <div class="m-card" style="transform:rotate(-2deg) translate(-3px,6px);z-index:2;"><img src="images/mastay/mastay 3.png" alt=""></div>
+      <div class="m-card" style="transform:rotate(2deg) translate(3px,4px);z-index:3;"><img src="images/mastay/mastay 2.png" alt=""></div>
+      <div class="m-card" style="transform:rotate(0deg);z-index:4;"><img src="images/mastay/mastay 1.png" alt=""></div>
+    </div>
+    <div class="deck-tag">PROTOTYPE ARCHIVE × 34</div>
+    <div class="deck-sub">CLICK TO DEAL</div>
+  </div>
+
+  <!-- Grid + canvas (shown after click) -->
+  <div id="proto-grid-wrap">
+    <div id="proto-grid"></div>
+    <canvas id="proto-canvas"></canvas>
+  </div>
+  <button id="proto-back" onclick="protoReset()">↑ STACK BACK</button>
+</section>
+
+<!-- ─── PHASE 04: FINAL ──────────────────────────────────────────────── -->
+<section id="final">
+  <div class="section-header">
+    <span class="section-num">PHASE 04</span>
+    <h2 class="section-title">Final Model</h2>
+    <p class="section-desc">
+      Completed piece — both tower and workspace configurations. Industrial drawer sliders,
+      high-strength hinges, clean wood finish.
+    </p>
+  </div>
+
+  <div style="position: relative; width: 100%; max-width: 1400px; margin: 0 auto;">
+    <button id="nav-left" class="nav-arrow" style="left: 10px;" onclick="scrollFinal(-1)">←</button>
+    <button id="nav-right" class="nav-arrow" style="right: 10px;" onclick="scrollFinal(1)">→</button>
+
+    <div id="carousel">
+      <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 500px;
+        background: #000; display: flex; align-items: center; justify-content: center;">
+        <img src="images/mastay/DSC00699.png" ondblclick="openZoom(this.src)"
+          style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+      </div>
+      <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 500px;
+        background: #000; display: flex; align-items: center; justify-content: center;">
+        <img src="images/mastay/DSC01522.png" ondblclick="openZoom(this.src)"
+          style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+      </div>
+      <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 500px;
+        background: #000; display: flex; align-items: center; justify-content: center;">
+        <img src="images/mastay/DSC01527 (1).png" ondblclick="openZoom(this.src)"
+          style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 20px; margin-bottom: 40px;">
+    <p style="color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 2px;">
+      ← Swipe or use arrows to view gallery →
+    </p>
+    <p style="color: #444; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px;">
+      Double tap to view full resolution
+    </p>
+  </div>
+</section>
+
+<footer>
+  <a href="./index.html"
+    style="font-family: 'Zen Dots'; color: #444; text-decoration: none; letter-spacing: 2px;">
+    RETURN TO WORK
+  </a>
+</footer>
+
+<script>
+  function openZoom(src) {
+    document.getElementById('zoomed-img').src = src;
+    document.getElementById('zoom-overlay').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeZoom() {
+    document.getElementById('zoom-overlay').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+
+  // Double-tap on carousel for zoom
+  let lastTap = 0;
+  document.querySelectorAll('#carousel img').forEach(img => {
+    img.addEventListener('touchend', function(e) {
+      const now = new Date().getTime();
+      if (now - lastTap < 500 && now - lastTap > 0) { openZoom(this.src); e.preventDefault(); }
+      lastTap = now;
+    });
+  });
+
+  // Final carousel arrows + hide when at limits
+  function updateNavArrows() {
+    const c = document.getElementById('carousel');
+    document.getElementById('nav-left').classList.toggle('hidden', c.scrollLeft <= 4);
+    document.getElementById('nav-right').classList.toggle('hidden', c.scrollLeft + c.clientWidth >= c.scrollWidth - 4);
+  }
+  function scrollFinal(dir) {
+    const c = document.getElementById('carousel');
+    c.scrollBy({ left: dir * c.clientWidth, behavior: 'smooth' });
+    setTimeout(updateNavArrows, 500);
+  }
+  document.getElementById('carousel').addEventListener('scroll', updateNavArrows, { passive: true });
+
+  // Assembly arrow scroll + hide when at limits
+  function updateAsmArrows() {
+    const t = document.getElementById('assemblyTrack');
+    const arrows = document.querySelectorAll('.asm-arrow');
+    if (!t || arrows.length < 2) return;
+    arrows[0].classList.toggle('hidden', t.scrollLeft <= 4);
+    arrows[1].classList.toggle('hidden', t.scrollLeft + t.clientWidth >= t.scrollWidth - 4);
+  }
+  function scrollAssembly(dir) {
+    const t = document.getElementById('assemblyTrack');
+    t.scrollBy({ left: dir * 440, behavior: 'smooth' });
+    setTimeout(updateAsmArrows, 500);
+  }
+  document.getElementById('assemblyTrack').addEventListener('scroll', updateAsmArrows, { passive: true });
+
+  // Init both after full layout is calculated
+  window.addEventListener('load', function() {
+    updateNavArrows();
+    updateAsmArrows();
+  });
+
+  // Drag-to-scroll on assembly track
+  const track = document.getElementById('assemblyTrack');
+  let isDragging = false, startX, scrollLeft;
+  track.addEventListener('mousedown', e => { isDragging = true; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
+  track.addEventListener('mouseleave', () => isDragging = false);
+  track.addEventListener('mouseup', () => isDragging = false);
+  track.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    e.preventDefault();
+    track.scrollLeft = scrollLeft - (e.pageX - track.offsetLeft - startX);
+  });
+
+  // ── MATRIX PROTOTYPE GALLERY ─────────────────
+  const M_IMGS = Array.from({length:34}, (_,i) => `images/mastay/mastay ${i+1}.png`);
+  const M_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#%&*<>/|{}[]=+~^';
+  const M_COLS = 4, M_COL_DELAY = 320, M_DROP_SPEED = 0.9, M_CHAR_H = 14, M_CHAR_W = 13, M_TRAIL = 22;
+  let mCells = [], mActive = false;
+
+  function protoBuildGrid() {
+    const g = document.getElementById('proto-grid');
+    g.innerHTML = '';
+    M_IMGS.forEach((src, i) => {
+      const d = document.createElement('div');
+      d.className = 'mgc';
+      d.innerHTML = `<img src="${src}" alt="Step ${i+1}"><span class="mgc-num">${String(i+1).padStart(2,'0')}</span>`;
+      d.addEventListener('click', () => openZoom(src));
+      g.appendChild(d);
+    });
+    mCells = Array.from(g.querySelectorAll('.mgc'));
+  }
+
+  function protoStart() {
+    if (mActive) return;
+    mActive = true;
+    const deck = document.getElementById('proto-deck');
+    deck.style.transition = 'opacity 0.35s, transform 0.35s';
+    deck.style.opacity = '0'; deck.style.transform = 'scale(0.9)';
+    setTimeout(() => { deck.style.display = 'none'; }, 360);
+
+    protoBuildGrid();
+    const wrap = document.getElementById('proto-grid-wrap');
+    wrap.style.display = 'block';
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      const g = document.getElementById('proto-grid');
+      const cv = document.getElementById('proto-canvas');
+      const rect = g.getBoundingClientRect();
+      cv.width  = Math.round(rect.width);
+      cv.height = Math.round(rect.height);
+      cv.style.width  = cv.width  + 'px';
+      cv.style.height = cv.height + 'px';
+      protoRunMatrix(cv, mCells, cv.width, cv.height);
+    }));
+  }
+
+  function protoRunMatrix(canvas, cells, W, H) {
+    const ctx = canvas.getContext('2d');
+    const ROWS = Math.ceil(cells.length / M_COLS);
+    const cW = W / M_COLS, cH = H / ROWS;
+    const leads = Array(M_COLS).fill(0);
+    const colStart = Array(M_COLS).fill(0).map((_,i) => performance.now() + i * M_COL_DELAY);
+    const colActive = Array(M_COLS).fill(false);
+    const revealed = new Set();
+    let lastT = null;
+
+    function rndCh() { return M_CHARS[Math.floor(Math.random() * M_CHARS.length)]; }
+
+    function revealCell(idx) {
+      if (!cells[idx]) return;
+      cells[idx].style.opacity = '1';
+      cells[idx].style.filter = 'brightness(3) saturate(0.2)';
+      setTimeout(() => {
+        cells[idx].style.filter = 'brightness(1.3)';
+        setTimeout(() => { if (cells[idx]) cells[idx].style.filter = ''; }, 200);
+      }, 80);
+    }
+
+    function frame(now) {
+      if (!lastT) lastT = now;
+      const dt = Math.min(now - lastT, 40); lastT = now;
+
+      ctx.clearRect(0, 0, W, H);
+      // Paint black over unrevealed cells
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < M_COLS; c++) {
+          if (!revealed.has(r * M_COLS + c)) {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(Math.round(c*cW), Math.round(r*cH), Math.round(cW)+1, Math.round(cH)+1);
+          }
+        }
+      }
+
+      ctx.font = `${M_CHAR_H}px monospace`;
+      for (let col = 0; col < M_COLS; col++) {
+        if (now < colStart[col]) continue;
+        colActive[col] = true;
+        leads[col] += M_DROP_SPEED * dt;
+        const lead = leads[col];
+
+        for (let ti = 0; ti < M_TRAIL; ti++) {
+          const charY = lead - ti * M_CHAR_H;
+          if (charY < 0 || charY > H + M_CHAR_H) continue;
+          const charRow = Math.floor(charY / cH);
+          if (revealed.has(charRow * M_COLS + col)) continue;
+          if (charRow >= ROWS) continue;
+          let color;
+          if (ti === 0)      color = '#ffffff';
+          else if (ti === 1) color = 'rgba(200,255,200,0.95)';
+          else if (ti < 5)   color = `rgba(0,255,0,${0.9 - ti*0.06})`;
+          else               color = `rgba(0,180,0,${Math.max(0, 0.7-(ti-5)/(M_TRAIL-5)*0.7)})`;
+          ctx.fillStyle = color;
+          const x0 = col * cW;
+          for (let dx = 0; dx < cW - M_CHAR_W + 2; dx += M_CHAR_W + 1) ctx.fillText(rndCh(), x0+dx, charY);
+        }
+
+        const tail = lead - M_TRAIL * M_CHAR_H;
+        for (let row = 0; row < ROWS; row++) {
+          const idx = row * M_COLS + col;
+          if (idx >= cells.length || revealed.has(idx)) continue;
+          if (tail >= (row+1) * cH) { revealed.add(idx); revealCell(idx); }
+        }
+      }
+
+      const allDone = revealed.size >= cells.length && leads.every(y => y - M_TRAIL*M_CHAR_H > H);
+      if (!allDone) { requestAnimationFrame(frame); }
+      else {
+        let op = 1;
+        const fade = setInterval(() => {
+          op -= 0.05; canvas.style.opacity = Math.max(0, op);
+          if (op <= 0) { clearInterval(fade); canvas.style.display = 'none'; document.getElementById('proto-back').style.display = 'block'; }
+        }, 16);
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function protoReset() {
+    mActive = false;
+    document.getElementById('proto-back').style.display = 'none';
+    const wrap = document.getElementById('proto-grid-wrap');
+    const cv = document.getElementById('proto-canvas');
+    const reversed = [...mCells].reverse();
+    reversed.forEach((c, i) => {
+      setTimeout(() => {
+        c.style.transition = 'opacity 0.22s, transform 0.22s';
+        c.style.opacity = '0'; c.style.transform = 'scale(0.85) translateY(-8px)';
+      }, i * 30);
+    });
+    setTimeout(() => {
+      wrap.style.display = 'none';
+      cv.style.display = 'block'; cv.style.opacity = '1';
+      mCells = [];
+      const deck = document.getElementById('proto-deck');
+      deck.style.display = 'flex'; deck.style.transform = 'scale(0.9)'; deck.style.opacity = '0';
+      requestAnimationFrame(() => {
+        deck.style.transition = 'opacity 0.4s, transform 0.4s';
+        deck.style.opacity = '1'; deck.style.transform = 'scale(1)';
+      });
+    }, reversed.length * 30 + 320);
+  }
+
+  // Deck glitch on hover
+  (function() {
+    const deck  = document.getElementById('proto-deck');
+    const stack = document.getElementById('proto-stack');
+    let glitching = false, loopTimer = null, glitchCv = null;
+
+    function runGlitch() {
+      if (glitching || mActive) return;
+      glitching = true;
+      stack.classList.add('glitching');
+      stack.addEventListener('animationend', () => stack.classList.remove('glitching'), {once:true});
+      const topCard = stack.querySelector('.m-card:last-child');
+      if (!topCard) { glitching = false; return; }
+      glitchCv = document.createElement('canvas');
+      const cr = topCard.getBoundingClientRect();
+      glitchCv.width = Math.round(cr.width); glitchCv.height = Math.round(cr.height);
+      glitchCv.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:30;border-radius:4px;';
+      topCard.style.position = 'relative';
+      topCard.appendChild(glitchCv);
+      const ctx = glitchCv.getContext('2d');
+      const img = topCard.querySelector('img');
+      let tick = 0;
+      function gf() {
+        ctx.clearRect(0, 0, glitchCv.width, glitchCv.height);
+        const nb = Math.floor(Math.random()*3)+2;
+        for (let b = 0; b < nb; b++) {
+          const by = Math.random()*glitchCv.height, bh = Math.random()*12+3, sx = (Math.random()-0.5)*24;
+          if (img.complete && img.naturalWidth > 0) {
+            const sx2 = img.naturalWidth/glitchCv.width, sy2 = img.naturalHeight/glitchCv.height;
+            ctx.drawImage(img, 0, by*sy2, img.naturalWidth, bh*sy2, sx, by, glitchCv.width, bh);
+          }
+          ctx.fillStyle = b%2===0 ? `rgba(255,0,60,${0.2+Math.random()*0.15})` : `rgba(0,255,200,${0.14+Math.random()*0.12})`;
+          ctx.fillRect(sx, by, glitchCv.width, bh);
+        }
+        ctx.font = '13px monospace';
+        for (let c = 0; c < Math.floor(Math.random()*5)+2; c++) {
+          const a = 0.35+Math.random()*0.55;
+          ctx.fillStyle = Math.random()>0.8 ? `rgba(255,255,255,${a})` : `rgba(0,255,0,${a})`;
+          ctx.fillText(M_CHARS[Math.floor(Math.random()*M_CHARS.length)], Math.random()*(glitchCv.width-14), Math.random()*glitchCv.height);
+        }
+        if (tick===1||tick===5) { ctx.fillStyle='rgba(0,255,0,0.07)'; ctx.fillRect(0,0,glitchCv.width,glitchCv.height); }
+        tick++;
+        if (tick < 8) setTimeout(() => requestAnimationFrame(gf), 38);
+        else {
+          glitchCv.style.transition = 'opacity 0.18s'; glitchCv.style.opacity = '0';
+          setTimeout(() => { glitchCv && glitchCv.remove(); glitchCv = null; glitching = false; }, 200);
+        }
+      }
+      requestAnimationFrame(gf);
+    }
+
+    deck.addEventListener('mouseenter', () => { runGlitch(); loopTimer = setInterval(runGlitch, 1600); });
+    deck.addEventListener('mouseleave', () => {
+      clearInterval(loopTimer); loopTimer = null;
+      if (glitchCv) { glitchCv.style.transition='opacity 0.15s'; glitchCv.style.opacity='0'; setTimeout(()=>{glitchCv&&glitchCv.remove();glitchCv=null;glitching=false;},160); }
+    });
+  })();
+
+  // Nav active state on scroll
+  const sections = document.querySelectorAll('section, .assembly-section');
+  const navLinks = document.querySelectorAll('.steps a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.steps a[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

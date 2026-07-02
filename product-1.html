@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -79,11 +79,19 @@
   .tech-list li { border-bottom: 1px solid #1a1a1a; padding: 12px 0; display: flex; justify-content: space-between; }
   .tech-list b { color: #fff; font-weight: 400; }
 
+  .proto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .proto-cell { position: relative; background: #0d0d0d; aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in; }
+  .proto-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .proto-cell:hover img { transform: scale(1.03); }
+  .proto-num { position: absolute; top: 10px; left: 12px; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 2px; pointer-events: none; font-family: monospace; display: none; }
+  .proto-cell.wide { grid-column: span 2; aspect-ratio: 16/7; }
   @media (max-width: 768px) {
     .tech-specs { grid-template-columns: 1fr; }
     .hero-alt h1 { font-size: 3rem; }
     .process-nav { padding: 15px 20px; }
     .steps { gap: 15px; font-size: 8px; }
+    .proto-grid { grid-template-columns: 1fr; }
+    .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; }
   }
 </style>
 </head>
@@ -98,7 +106,8 @@
   <div class="steps">
     <a href="#ideation">01 IDEATION</a>
     <a href="#cad">02 CAD</a>
-    <a href="#final">03 FINAL</a>
+    <a href="#prototype">03 PROTOTYPE</a>
+    <a href="#final">04 FINAL</a>
   </div>
 </nav>
 
@@ -116,12 +125,12 @@
     </p>
   </div>
 
-  <div style="display: flex; flex-direction: column; gap: 40px;">
-    <div class="bento-item" style="background: none; height: auto;">
-      <img src="wavy sketch 1.png" alt="Wavy Chair Concept Sketches">
+  <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 8px; align-items: start;">
+    <div style="border-radius: 4px; overflow: hidden; cursor: zoom-in;">
+      <img src="images/wavy sketch 1.png" alt="Wavy Chair Concept Sketches" style="width: 100%; height: auto; display: block;">
     </div>
-    <div class="bento-item" style="background: none; height: auto;">
-      <img src="wavy sketch 2.png" alt="Form Exploration Sketches">
+    <div style="border-radius: 4px; overflow: hidden; cursor: zoom-in;">
+      <img src="images/wavy sketch 2.png" alt="Form Exploration Sketches" style="width: 100%; height: auto; display: block;">
     </div>
   </div>
 </section>
@@ -137,7 +146,7 @@
 
   <div class="tech-specs">
     <div class="bento-item" style="background: #fff; border-radius: 8px; padding: 10px; overflow: hidden;">
-      <img src="wavy ortho view 2.png" alt="Wavy Chair Engineering Drawing">
+      <img src="images/wavy ortho view 2.png" alt="Wavy Chair Engineering Drawing">
     </div>
 
     <div class="tech-info">
@@ -152,12 +161,66 @@
   </div>
 </section>
 
+<section id="prototype" style="max-width: 1200px; margin: 0 auto; padding: 100px 40px;">
+  <div style="margin-bottom: 60px;">
+    <span style="font-family: 'Zen Dots'; font-size: 12px; color: #444; display: block; margin-bottom: 10px;">PHASE 03</span>
+    <h2 style="font-family: 'Zen Dots'; font-size: 24px; text-transform: uppercase;">Prototype Process</h2>
+    <p style="color: #666; margin-top: 20px; max-width: 600px; line-height: 1.7; font-size: 14px;">
+      CNC routing, hand-carving the wavy legs, casting concrete molds from 3D-printed formwork — documented in sequence.
+    </p>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;">
+
+    <!-- ROW 1 — portrait × 3 -->
+    <div style="grid-column: span 2; position: relative; background: #0d0d0d; aspect-ratio: 3/4; overflow: hidden; cursor: zoom-in;" onclick="openZoom('images/wavy-chair/Wavy 2.png')">
+      <img src="images/wavy-chair/Wavy 2.png" alt="Step 02" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s;">
+      <span style="position:absolute;top:10px;left:12px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">02</span>
+    </div>
+    <div style="grid-column: span 2; position: relative; background: #0d0d0d; aspect-ratio: 3/4; overflow: hidden; cursor: zoom-in;" onclick="openZoom('images/wavy-chair/Wavy 4.png')">
+      <img src="images/wavy-chair/Wavy 4.png" alt="Step 04" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s;">
+      <span style="position:absolute;top:10px;left:12px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">04</span>
+    </div>
+    <div style="grid-column: span 2; position: relative; background: #0d0d0d; aspect-ratio: 3/4; overflow: hidden; cursor: zoom-in;" onclick="openZoom('images/wavy-chair/Wavy 3.png')">
+      <img src="images/wavy-chair/Wavy 3.png" alt="Step 03" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s;">
+      <span style="position:absolute;top:10px;left:12px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">03</span>
+    </div>
+
+    <!-- ROW 2 — landscape × 2 -->
+    <div style="grid-column: span 3; position: relative; background: #0d0d0d; aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in;" onclick="openZoom('images/wavy-chair/Wavy 8.png')">
+      <img src="images/wavy-chair/Wavy 8.png" alt="Step 08" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s;">
+      <span style="position:absolute;top:10px;left:12px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">08</span>
+    </div>
+    <div style="grid-column: span 3; position: relative; background: #0d0d0d; aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in;" onclick="openZoom('images/wavy-chair/wavy 6.png')">
+      <img src="images/wavy-chair/wavy 6.png" alt="Step 06" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s;">
+      <span style="position:absolute;top:10px;left:12px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">06</span>
+    </div>
+
+    <!-- ROW 3 — portrait × 3 (contain para fotos con fondo) -->
+    <div style="grid-column: span 2; position: relative; background: #0d0d0d; aspect-ratio: 3/4; overflow: hidden; cursor: zoom-in;" onclick="openZoom('images/wavy-chair/Wavy 7.png')">
+      <img src="images/wavy-chair/Wavy 7.png" alt="Step 07" style="width:100%;height:100%;object-fit:contain;display:block;transition:transform 0.4s;">
+      <span style="position:absolute;top:10px;left:12px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">07</span>
+    </div>
+    <div style="grid-column: span 2; position: relative; background: #0d0d0d; aspect-ratio: 3/4; overflow: hidden; cursor: zoom-in;" onclick="openZoom('images/wavy-chair/Wavy 1.png')">
+      <img src="images/wavy-chair/Wavy 1.png" alt="Step 01" style="width:100%;height:100%;object-fit:contain;display:block;transition:transform 0.4s;">
+      <span style="position:absolute;top:10px;left:12px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">01</span>
+    </div>
+    <div style="grid-column: span 2; position: relative; background: #0d0d0d; aspect-ratio: 3/4; overflow: hidden; cursor: zoom-in;" onclick="openZoom('images/wavy-chair/Wavy 5.png')">
+      <img src="images/wavy-chair/Wavy 5.png" alt="Step 05" style="width:100%;height:100%;object-fit:contain;display:block;transition:transform 0.4s;">
+      <span style="position:absolute;top:10px;left:12px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">05</span>
+    </div>
+
+  </div>
+</section>
+
 <section id="final">
   <style>
     /* Desktop arrows hidden on mobile devices */
     @media (max-width: 768px) {
       .nav-arrow { display: none !important; }
     }
+
+    .nav-arrow { transition: opacity 0.3s; }
+    .nav-arrow.hidden { opacity: 0 !important; pointer-events: none; }
 
     /* Full-res overlay styles */
     #zoom-overlay {
@@ -195,11 +258,13 @@
 
   <div id="zoom-overlay" onclick="closeZoom()">
     <button class="close-zoom" onclick="closeZoom()">CLOSE ×</button>
-    <img src="" id="zoomed-img">
+    <div style="background:#fff; padding:20px; border-radius:6px; max-width:88vw; max-height:88vh; display:flex; align-items:center; justify-content:center; box-shadow:0 0 60px rgba(0,0,0,0.5); ">
+    <img src="" id="zoomed-img" style="max-width:100%; max-height:calc(88vh - 40px); object-fit:contain; display:block;">
+  </div>
   </div>
 
   <div class="section-header">
-    <span class="section-num">PHASE 03</span>
+    <span class="section-num">PHASE 04</span>
     <h2 class="section-title">Final Execution</h2>
     <p style="color: #666; margin-top: 20px; max-width: 600px;">
       The final realization of the Wavy Chair highlights the organic flow of the design and the structural harmony between its unique material components.
@@ -207,12 +272,12 @@
   </div>
   
   <div style="position: relative; width: 100%; max-width: 1400px; margin: 0 auto;">
-    <button class="nav-arrow" onclick="document.getElementById('carousel').scrollBy({left: -1000, behavior: 'smooth'})" 
+    <button class="nav-arrow" onclick="scrollCarousel(-1)"
             style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: white; width: 60px; height: 60px; cursor: pointer; border-radius: 50%; backdrop-filter: blur(10px); font-size: 24px;">
       ←
     </button>
-    
-    <button class="nav-arrow" onclick="document.getElementById('carousel').scrollBy({left: 1000, behavior: 'smooth'})" 
+
+    <button class="nav-arrow" onclick="scrollCarousel(1)"
             style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: white; width: 60px; height: 60px; cursor: pointer; border-radius: 50%; backdrop-filter: blur(10px); font-size: 24px;">
       →
     </button>
@@ -220,23 +285,23 @@
     <div id="carousel" style="display: flex; overflow-x: auto; gap: 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; border-radius: 12px;">
       
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="wavy photo 1.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+        <img src="images/wavy photo 1.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
       </div>
 
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="wavy photo 2.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+        <img src="images/wavy photo 2.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
       </div>
 
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="wavy photo 3.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+        <img src="images/wavy photo 3.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
       </div>
 
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="wavy photo 4.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+        <img src="images/wavy photo 4.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
       </div>
 
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="wavy photo 5.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+        <img src="images/wavy photo 5.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
       </div>
 
     </div>
@@ -301,6 +366,22 @@
     lightbox.classList.remove('active');
     document.body.style.overflow = 'auto';
   });
+
+  function scrollCarousel(dir) {
+    var c = document.getElementById('carousel');
+    c.scrollBy({ left: dir * c.clientWidth, behavior: 'smooth' });
+    setTimeout(updateCarouselArrows, 500);
+  }
+  function updateCarouselArrows() {
+    var c = document.getElementById('carousel');
+    if (!c) return;
+    var btns = document.querySelectorAll('.nav-arrow');
+    if (btns.length < 2) return;
+    btns[0].classList.toggle('hidden', c.scrollLeft <= 4);
+    btns[1].classList.toggle('hidden', c.scrollLeft + c.clientWidth >= c.scrollWidth - 4);
+  }
+  document.getElementById('carousel').addEventListener('scroll', updateCarouselArrows, { passive: true });
+  window.addEventListener('load', updateCarouselArrows);
 </script>
 
 </body>

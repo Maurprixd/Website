@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BuddhaCalm | Process Breakdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+<style>
+  :root { --accent: #ffffff; --dim: #444; --bg: #000; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    overflow-y: auto;
+    min-height: 100%;
+  }
+
+  .process-nav {
+    position: sticky; top: 0; width: 100%; padding: 20px 40px;
+    background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid #1a1a1a; z-index: 1000;
+  }
+  .nav-logo { font-family: 'Zen Dots'; font-size: 14px; text-decoration: none; color: #fff; }
+  .steps { display: flex; gap: 30px; font-size: 10px; font-weight: 600; letter-spacing: 2px; }
+  .steps a { text-decoration: none; color: var(--dim); transition: 0.3s; }
+  .steps a:hover { color: #fff; }
+
+  .hero-alt {
+    padding: 160px 40px 80px;
+    text-align: left;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hero-alt h1 {
+    font-family: 'Zen Dots'; font-size: 5rem;
+    line-height: 0.9; margin-bottom: 20px; text-transform: uppercase;
+  }
+  .hero-alt .meta { color: #888; letter-spacing: 3px; font-size: 12px; }
+
+  .project-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px;
+    margin-top: 60px; padding-top: 40px; border-top: 1px solid #1a1a1a;
+  }
+  .stat-label {
+    font-family: 'Zen Dots'; font-size: 9px; color: #444;
+    letter-spacing: 2px; display: block; margin-bottom: 8px; text-transform: uppercase;
+  }
+  .stat-value { font-size: 13px; color: #fff; font-weight: 300; line-height: 1.5; }
+
+  section { max-width: 1200px; margin: 0 auto; padding: 100px 40px; min-height: 50vh; }
+  .section-header { margin-bottom: 60px; }
+  .section-num {
+    font-family: 'Zen Dots'; font-size: 12px; color: var(--dim);
+    display: block; margin-bottom: 10px;
+  }
+  .section-title { font-family: 'Zen Dots'; font-size: 24px; text-transform: uppercase; }
+
+  .bento-item {
+    background: #111; border-radius: 8px; overflow: hidden;
+  }
+  .bento-item img {
+    width: 100%; height: 100%; object-fit: contain; display: block; cursor: zoom-in;
+  }
+
+  .tech-specs {
+    background: #0a0a0a; border: 1px solid #1a1a1a; padding: 40px; border-radius: 12px;
+    display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; align-items: start;
+  }
+  .tech-info h3 { font-family: 'Zen Dots'; font-size: 18px; margin-bottom: 20px; }
+  .tech-list { list-style: none; color: #888; font-size: 14px; }
+  .tech-list li {
+    border-bottom: 1px solid #1a1a1a; padding: 12px 0;
+    display: flex; justify-content: space-between;
+  }
+  .tech-list b { color: #fff; font-weight: 400; }
+
+  #carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    border-radius: 12px;
+  }
+  #carousel::-webkit-scrollbar { display: none; }
+
+  .nav-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    z-index: 10; background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.2); color: white;
+    width: 60px; height: 60px; cursor: pointer; border-radius: 50%;
+    backdrop-filter: blur(10px); display: flex;
+    align-items: center; justify-content: center; font-size: 24px;
+    transition: opacity 0.3s;
+  }
+  .nav-arrow.hidden { opacity: 0 !important; pointer-events: none; }
+
+  #zoom-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%; background: #000;
+    z-index: 3000; display: none;
+    align-items: center; justify-content: center; cursor: zoom-out;
+  }
+  #zoom-overlay img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .close-zoom {
+    position: absolute; top: 30px; right: 30px;
+    background: rgba(255,255,255,0.1); border: 1px solid #444;
+    color: #fff; padding: 10px 20px; border-radius: 30px;
+    cursor: pointer; font-family: 'Zen Dots', sans-serif; font-size: 10px;
+  }
+
+  footer { padding: 120px 40px; text-align: center; border-top: 1px solid #1a1a1a; }
+
+  @media (max-width: 768px) {
+    .project-stats { grid-template-columns: 1fr 1fr; }
+    .tech-specs { grid-template-columns: 1fr; }
+    .hero-alt h1 { font-size: 3rem; }
+    .nav-arrow { display: none !important; }
+    section { padding: 60px 20px; }
+    .hero-alt { padding: 120px 20px 60px; }
+    .process-nav { padding: 15px 20px; }
+    .steps { gap: 15px; font-size: 8px; }
+  }
+
+  /* ── SEAT AT THE TABLE ───────────────────────── */
+  .seat-block {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px 100px;
+  }
+  .seat-headline {
+    font-family: 'Zen Dots';
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #2a2a2a;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .seat-intro {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.85;
+    max-width: 660px;
+    margin-bottom: 48px;
+    border-left: 1px solid #1a1a1a;
+    padding-left: 24px;
+  }
+  .seat-intro em {
+    color: #999;
+    font-style: normal;
+  }
+  .seat-pills {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .seat-pill {
+    border: 1px solid #111;
+    border-radius: 6px;
+    padding: 24px 20px;
+  }
+  .pill-num {
+    font-family: 'Zen Dots';
+    font-size: 2rem;
+    color: #fff;
+    display: block;
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+  .pill-label {
+    font-size: 9px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 1.4;
+  }
+
+  /* ── DESIGN INTERVENTIONS ────────────────────── */
+  .interventions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .int-card {
+    background: #060606;
+    border: 1px solid #111;
+    border-radius: 8px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .int-tag {
+    display: inline-block;
+    font-family: 'Zen Dots';
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: #aaa;
+    border: 1px solid #333;
+    padding: 6px 14px;
+    border-radius: 20px;
+    align-self: flex-start;
+  }
+  .int-row { display: flex; flex-direction: column; gap: 8px; }
+  .int-row-label {
+    font-family: 'Zen Dots';
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #555;
+  }
+  .int-situation { color: #777; font-size: 14px; line-height: 1.8; }
+  .int-intervention {
+    color: #d0d0d0;
+    font-size: 14px;
+    line-height: 1.8;
+    border-left: 2px solid #fff;
+    padding-left: 16px;
+  }
+  .int-outcome { color: #888; font-size: 13px; line-height: 1.75; font-style: italic; }
+
+  /* ── BRAND IDENTITY ──────────────────────────── */
+  .brand-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 40px;
+    align-items: start;
+  }
+  .brand-section-label {
+    font-family: 'Zen Dots';
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #2a2a2a;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .brand-palette-row {
+    display: flex;
+    height: 56px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .brand-swatch { flex: 1; }
+  .brand-swatch-labels {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .bsl { text-align: center; }
+  .bsl-dot { width: 10px; height: 10px; border-radius: 50%; margin: 0 auto 4px; }
+  .bsl-name { font-size: 8px; color: #2a2a2a; letter-spacing: 0.5px; }
+  .brand-display-text {
+    font-family: Georgia, serif;
+    font-size: clamp(24px, 3.5vw, 42px);
+    color: #c8a96e;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 8px;
+    margin-top: 32px;
+  }
+  .brand-keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .brand-kw {
+    font-family: 'Zen Dots';
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #c8a96e;
+    border: 1px solid rgba(200,169,110,0.22);
+    background: rgba(200,169,110,0.05);
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+  .brand-kw.dim {
+    color: #222;
+    border-color: #111;
+    background: transparent;
+  }
+  .packaging-img-wrap {
+    margin-top: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: zoom-in;
+    border: 1px solid #111;
+  }
+  .packaging-img-wrap img {
+    width: 100%;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .packaging-img-wrap:hover img { transform: scale(1.012); }
+
+  /* ── SKETCH BENTO GRID ─────────────────────────────── */
+  .sketch-bento {
+    display: grid;
+    grid-template-columns: 3.5fr 4fr;
+    grid-template-rows: 160px 270px;
+    gap: 12px;
+  }
+  .sb-a, .sb-b, .sb-c {
+    border-radius: 8px;
+    overflow: hidden;
+    background: #050505;
+  }
+  .sb-b { grid-row: span 2; }
+  .sb-a img, .sb-b img, .sb-c img {
+    width: 100%; height: 100%; display: block;
+    object-fit: cover;
+  }
+
+  /* ── PROTOTYPE BENTO ─────────────────────────────── */
+  .proto-overview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 400px;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  /* 2-col pairs grid: each row = one prototype (or BUDL family pair)
+     Row 1 taller — BUDL pair (portrait + side, different IDs same family)
+     Rows 2-4 — T prototype pairs (top + side, same ID) */
+  .proto-pairs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 240px 200px 200px 200px;
+    gap: 12px;
+  }
+  .po-a, .po-b {
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .pp-budl-top, .pp-budl-side,
+  .pp-p0t, .pp-p0s,
+  .pp-p1t, .pp-p1s,
+  .pp-p2t, .pp-p2s {
+    border-radius: 8px;
+    overflow: hidden;
+    background: #050505;
+  }
+  .proto-overview img,
+  .proto-pairs img {
+    width: 100%; height: 100%; display: block;
+    object-fit: contain;
+  }
+  /* BUDL top view: rotated 180° to match BUDT triangle orientation */
+  .pp-budl-top img { transform: rotate(180deg); }
+
+  @media (max-width: 768px) {
+    .seat-pills { grid-template-columns: 1fr 1fr; }
+    .interventions-grid { grid-template-columns: 1fr; }
+    .brand-grid { grid-template-columns: 1fr; }
+    .seat-block { padding: 0 24px 60px; }
+    .sketch-bento { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .sb-b { grid-row: span 1; }
+    .sb-a img, .sb-b img, .sb-c img { height: 220px; }
+    .proto-overview { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .proto-overview img { height: 220px; }
+    .proto-pairs { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .proto-pairs img { height: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Lightbox for ideation/CAD images -->
+<div id="lightbox" onclick="this.style.display='none'; document.body.style.overflow='auto';"
+  style="position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; cursor: zoom-out;">
+  <img src="" style="max-width: 95%; max-height: 85%; border-radius: 4px;">
+</div>
+
+<!-- Zoom overlay for final carousel -->
+<div id="zoom-overlay" onclick="closeZoom()">
+  <button class="close-zoom" onclick="closeZoom()">CLOSE ×</button>
+  <div style="background:#fff; padding:20px; border-radius:6px; max-width:88vw; max-height:88vh; display:flex; align-items:center; justify-content:center; box-shadow:0 0 60px rgba(0,0,0,0.5); ">
+    <img src="" id="zoomed-img" style="max-width:100%; max-height:calc(88vh - 40px); object-fit:contain; display:block;">
+  </div>
+</div>
+
+<nav class="process-nav">
+  <a href="./index.html" class="nav-logo">← BACK</a>
+  <div class="steps">
+    <a href="#research">01 RESEARCH</a>
+    <a href="#brand">02 BRAND</a>
+    <a href="#thinking">03 THINKING</a>
+    <a href="#build">04 BUILD</a>
+  </div>
+</nav>
+
+<header class="hero-alt">
+  <span class="meta">WEARABLE TECHNOLOGY / WIMTACH 2026</span>
+  <h1>BUDDHA<br>CALM</h1>
+
+  <div class="project-stats">
+    <div>
+      <span class="stat-label">Role</span>
+      <span class="stat-value">Lead Designer</span>
+    </div>
+    <div>
+      <span class="stat-label">Timeline</span>
+      <span class="stat-value">Jan 2026 – Present</span>
+    </div>
+    <div>
+      <span class="stat-label">Team</span>
+      <span class="stat-value">Design, Circuit Engineering, Research</span>
+    </div>
+    <div>
+      <span class="stat-label">Status</span>
+      <span class="stat-value">Patent Pending</span>
+    </div>
+  </div>
+</header>
+
+<!-- ─── DESIGN'S SEAT AT THE TABLE ─────────────────────────────────── -->
+<div class="seat-block">
+  <p class="seat-headline">Design's Seat at the Table</p>
+  <p class="seat-intro">
+    BuddhaCalm was built by a team of engineers. I was the only designer —
+    which meant I wasn't just responsible for the enclosure.
+    <em>I was responsible for asking the questions nobody else was asking.</em>
+  </p>
+  <div class="seat-pills">
+    <div class="seat-pill">
+      <span class="pill-num">5</span>
+      <span class="pill-label">Person team, 1 designer</span>
+    </div>
+    <div class="seat-pill">
+      <span class="pill-num">6+</span>
+      <span class="pill-label">Prototype cycles</span>
+    </div>
+    <div class="seat-pill">
+      <span class="pill-num">01</span>
+      <span class="pill-label">Patent pending</span>
+    </div>
+    <div class="seat-pill">
+      <span class="pill-num">3</span>
+      <span class="pill-label">Design interventions</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PHASE 01: RESEARCH ─────────────────────────────────────────── -->
+<section id="research">
+  <div class="section-header">
+    <span class="section-num">PHASE 01</span>
+    <h2 class="section-title">Research & Ideation</h2>
+    <p style="color: #666; margin-top: 20px; max-width: 600px;">
+      BuddhaCalm began with research into stress physiology and wearable ergonomics.
+      Competitive benchmarking, mood board exploration, and user analysis shaped a direction
+      for a discreet, body-worn form that integrates biometric sensing without sacrificing
+      comfort or discretion.
+    </p>
+  </div>
+
+  <div class="sketch-bento">
+    <div class="sb-a">
+      <img src="images/budda calm/budda calm sketch 1.png" alt="BuddhaCalm Concept Sketches">
+    </div>
+    <div class="sb-b">
+      <img src="images/budda calm/budda calm sketch 3.jpeg" alt="BuddhaCalm Design Development">
+    </div>
+    <div class="sb-c">
+      <img src="images/budda calm/budda calm sketch 2.png" alt="BuddhaCalm Form Exploration">
+    </div>
+  </div>
+</section>
+
+<!-- ─── PHASE 02: BRAND IDENTITY ──────────────────────────────────────── -->
+<section id="brand">
+  <div class="section-header">
+    <span class="section-num">PHASE 02</span>
+    <h2 class="section-title">Brand Identity & Packaging</h2>
+    <p style="color:#666;margin-top:20px;max-width:620px;line-height:1.75;font-size:14px;">
+      Visual identity developed in parallel with prototyping — the Lotus Bloom direction.
+      Warmth, organic calm, and precision as a unified design language.
+    </p>
+  </div>
+
+  <div class="brand-grid">
+
+    <!-- Left: palette + typography -->
+    <div>
+      <span class="brand-section-label">Color Palette</span>
+      <div class="brand-palette-row">
+        <div class="brand-swatch" style="background:#0d0905;"></div>
+        <div class="brand-swatch" style="background:#2d2010;"></div>
+        <div class="brand-swatch" style="background:#c8a96e;"></div>
+        <div class="brand-swatch" style="background:#f5e6c8;"></div>
+        <div class="brand-swatch" style="background:#e8f0e8;"></div>
+      </div>
+      <div class="brand-swatch-labels">
+        <div class="bsl"><div class="bsl-dot" style="background:#0d0905;border:1px solid #222;"></div><span class="bsl-name">Deep Soil</span></div>
+        <div class="bsl"><div class="bsl-dot" style="background:#2d2010;border:1px solid #222;"></div><span class="bsl-name">Bark</span></div>
+        <div class="bsl"><div class="bsl-dot" style="background:#c8a96e;"></div><span class="bsl-name">Amber Gold</span></div>
+        <div class="bsl"><div class="bsl-dot" style="background:#f5e6c8;border:1px solid #222;"></div><span class="bsl-name">Warm Cream</span></div>
+        <div class="bsl"><div class="bsl-dot" style="background:#e8f0e8;border:1px solid #222;"></div><span class="bsl-name">Sage</span></div>
+      </div>
+
+      <p class="brand-display-text">BuddhaCalm</p>
+      <p style="font-size:10px;color:#555;letter-spacing:4px;font-family:'Zen Dots';">PATENT PENDING / 2026</p>
+      <p style="color:#666;font-size:13px;line-height:1.8;margin-top:20px;">
+        Georgia serif for headlines — warmth and authority. Zen Dots for clinical precision.
+        The contrast is intentional: organic calm meets engineered trust.
+      </p>
+    </div>
+
+    <!-- Right: design language + packaging directions -->
+    <div>
+      <span class="brand-section-label">Design Language</span>
+      <p style="color:#777;font-size:14px;line-height:1.85;margin-bottom:24px;">
+        The Lotus Bloom — a device at rest that opens through use.
+        Packaging as ceremony. Warmth as trust signal. Precision as proof of craft.
+      </p>
+      <div class="brand-keywords">
+        <span class="brand-kw">Calm</span>
+        <span class="brand-kw">Rooted</span>
+        <span class="brand-kw">Organic</span>
+        <span class="brand-kw">Intentional</span>
+        <span class="brand-kw dim">Premium</span>
+        <span class="brand-kw dim">Clinical</span>
+        <span class="brand-kw dim">Warm</span>
+      </div>
+
+      <div style="margin-top:36px;padding:24px;border:1px solid #1a1a1a;border-radius:8px;">
+        <span class="brand-section-label" style="margin-bottom:18px;">Packaging Concepts Developed</span>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;gap:14px;font-size:13px;color:#444;">
+            <span style="width:20px;height:1px;background:#2a2a2a;flex-shrink:0;"></span>Origami Unfold — structural fold geometry
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;font-size:13px;color:#444;">
+            <span style="width:20px;height:1px;background:#2a2a2a;flex-shrink:0;"></span>Stone Vessel — weight and permanence
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;font-size:13px;color:#444;">
+            <span style="width:20px;height:1px;background:#2a2a2a;flex-shrink:0;"></span>Scroll Reveal — ceremony of discovery
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;font-size:13px;color:#c8a96e;">
+            <span style="width:20px;height:1px;background:#c8a96e;flex-shrink:0;"></span>Lotus Bloom — selected direction
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Packaging moodboard -->
+  <div style="margin-top:64px;">
+    <span class="brand-section-label">Packaging Research</span>
+    <div class="packaging-img-wrap" onclick="openZoom('images/budda calm/packaging/Mood board bodda packaging.png')">
+      <img src="images/budda calm/packaging/Mood board bodda packaging.png" alt="BuddhaCalm Packaging Research Board">
+    </div>
+  </div>
+
+</section>
+
+<!-- ─── PHASE 03: DESIGN INTERVENTIONS ──────────────────────────────── -->
+<section id="thinking">
+  <div class="section-header">
+    <span class="section-num">PHASE 03</span>
+    <h2 class="section-title">Design Interventions</h2>
+    <p style="color:#666;margin-top:20px;max-width:620px;line-height:1.75;font-size:14px;">
+      Being the only designer on an engineering team means advocating for the user at every stage.
+      These are three moments where design thinking changed the direction of the product.
+    </p>
+  </div>
+
+  <div class="interventions-grid">
+
+    <!-- Card 1 — User Definition -->
+    <div class="int-card">
+      <span class="int-tag">01 / User Definition</span>
+      <div class="int-row">
+        <span class="int-row-label">Situation</span>
+        <p class="int-situation">The team defined our target audience as "adults 24+." Too broad to design for — a 28-year-old office worker and a 55-year-old with chronic stress have completely different needs, postures, and expectations from a wearable.</p>
+      </div>
+      <div class="int-row">
+        <span class="int-row-label">Intervention</span>
+        <p class="int-intervention">I pushed back and led the team through a sharper user definition exercise — narrowing by lifestyle context, stress trigger type, and relationship with wellness technology.</p>
+      </div>
+      <div class="int-row">
+        <span class="int-row-label">Outcome</span>
+        <p class="int-outcome">A grounded persona that shaped every subsequent ergonomic, form, and interaction decision. Design anchored in a real human, not a demographic bracket.</p>
+      </div>
+    </div>
+
+    <!-- Card 2 — Packaging -->
+    <div class="int-card">
+      <span class="int-tag">02 / Packaging Strategy</span>
+      <div class="int-row">
+        <span class="int-row-label">Situation</span>
+        <p class="int-situation">Packaging wasn't on the team's roadmap. The engineers saw it as a post-production concern — something to solve after the hardware shipped.</p>
+      </div>
+      <div class="int-row">
+        <span class="int-row-label">Intervention</span>
+        <p class="int-intervention">I raised it proactively: the unboxing moment is the first brand touchpoint. If packaging isn't considered before the form is locked, you lose the ability to design for it at all — the enclosure geometry constrains your options.</p>
+      </div>
+      <div class="int-row">
+        <span class="int-row-label">Outcome</span>
+        <p class="int-outcome">4 packaging concept directions developed in parallel with prototyping — origami unfold, stone vessel, scroll reveal, lotus bloom. The brand conversation started before hardware handoff.</p>
+      </div>
+    </div>
+
+    <!-- Card 3 — Motor Control -->
+    <div class="int-card">
+      <span class="int-tag">03 / Motor Control UX</span>
+      <div class="int-row">
+        <span class="int-row-label">Situation</span>
+        <p class="int-situation">The circuit engineer proposed individual motor control per motor in the app interface — technically accurate, and a trust problem for a wellness product.</p>
+      </div>
+      <div class="int-row">
+        <span class="int-row-label">Intervention</span>
+        <p class="int-intervention">The average user has no reference point for "too much" electrical stimulation. Exposing raw motor control without guidance puts the burden of safety on the user. I proposed progressive disclosure: 3 preset modes (Low / Medium / High) as the default interaction, with Advanced controls accessible through a deliberate extra step.</p>
+      </div>
+      <div class="int-row">
+        <span class="int-row-label">Outcome</span>
+        <p class="int-outcome">Progressive disclosure applied to a wellness hardware context — the right level of control, at the right moment of user trust.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── PHASE 04: BUILD ───────────────────────────────────────────── -->
+<section id="build">
+  <div class="section-header">
+    <span class="section-num">PHASE 04</span>
+    <h2 class="section-title">Engineering & Build</h2>
+    <p style="color: #666; margin-top: 20px; max-width: 600px;">
+      The core challenge was a 3-pogo-pin charging architecture spanning three mating
+      components — PCB, charging cradle, and enclosure shell. Positional tolerances were
+      tightened from ±0.5mm to ±0.15mm through iterative SolidWorks geometry revisions
+      across 6+ prototype cycles, before finalizing production drawings for hardware handoff.
+    </p>
+  </div>
+
+  <div class="tech-specs">
+
+    <!--
+      ADD IMAGE → save as "BuddhaCalm cad.png" in this folder
+      Use: SolidWorks technical drawing, assembly screenshot, or exploded view
+      White background works best here (set background: #fff on the bento-item)
+    -->
+    <div class="bento-item" style="background: #fff; border-radius: 8px; padding: 20px;
+      display: flex; align-items: center; justify-content: center; min-height: 400px;">
+      <img src="BuddhaCalm cad.png" alt="BuddhaCalm Engineering Drawing"
+        style="width: auto; height: auto; max-width: 100%; max-height: 500px; object-fit: scale-down;">
+    </div>
+
+    <div class="tech-info">
+      <h3>Technical Specification</h3>
+      <p style="color: #888; margin-bottom: 20px;">
+        Enclosure designed for anatomy-aware body contact, integrating biometric sensors,
+        PCB, and production-ready form.
+      </p>
+      <ul class="tech-list">
+        <li><span>Software</span>          <b>SolidWorks 2024</b></li>
+        <li><span>Units</span>             <b>mm (Millimeters)</b></li>
+        <li><span>Prototype Machine</span> <b>Bambu Lab P1S</b></li>
+        <li><span>Pogo Tolerance</span>    <b>±0.15 mm</b></li>
+        <li><span>Prototype Cycles</span>  <b>6+</b></li>
+        <li><span>Status</span>            <b>Patent Pending</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top: 40px;">
+    <!-- Row 0: All-variants overview -->
+    <div class="proto-overview">
+      <div class="po-a">
+        <img src="images/budda calm/budda prototype/BUDL-ALL.png" alt="BUDL Series — All Variants">
+      </div>
+      <div class="po-b">
+        <img src="images/budda calm/budda prototype/BUDT-ALL.png" alt="BUDT Series — All Variants">
+      </div>
+    </div>
+    <!-- 2-col pairs: each row = one family/prototype
+         Row 1: BUDL pair (P2-top + P1-side, same family different IDs)
+         Rows 2-4: T prototype pairs (same ID, top + side) -->
+    <div class="proto-pairs">
+      <!-- BUDL family pair -->
+      <div class="pp-budl-top">
+        <img src="images/budda calm/budda prototype/BUDL-P2-top-view.png" alt="BUDL P2 — Top View">
+      </div>
+      <div class="pp-budl-side">
+        <img src="images/budda calm/budda prototype/BUDL-P1-side-view.png" alt="BUDL P1 — Side View">
+      </div>
+      <!-- T P0 pair -->
+      <div class="pp-p0t">
+        <img src="images/budda calm/budda prototype/BUDT-P0-top-view.png" alt="BUDT P0 — Top View">
+      </div>
+      <div class="pp-p0s">
+        <img src="images/budda calm/budda prototype/BUDT-P0-side-view.png" alt="BUDT P0 — Side View">
+      </div>
+      <!-- T P1 pair -->
+      <div class="pp-p1t">
+        <img src="images/budda calm/budda prototype/BUDT-P1-top-view.png" alt="BUDT P1 — Top View">
+      </div>
+      <div class="pp-p1s">
+        <img src="images/budda calm/budda prototype/BUDT-P1-side-view.png" alt="BUDT P1 — Side View">
+      </div>
+      <!-- T P2 pair -->
+      <div class="pp-p2t">
+        <img src="images/budda calm/budda prototype/BUDT-P2-top-view.png" alt="BUDT P2 — Top View">
+      </div>
+      <div class="pp-p2s">
+        <img src="images/budda calm/budda prototype/BUDT-P2-side-view.png" alt="BUDT P2 — Side View">
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<footer style="padding: 100px 40px; text-align: center; border-top: 1px solid #1a1a1a;">
+  <a href="./index.html"
+    style="font-family: 'Zen Dots'; color: #444; text-decoration: none; letter-spacing: 2px;">
+    RETURN TO WORK
+  </a>
+</footer>
+
+<script>
+  function openZoom(imgSrc) {
+    const overlay = document.getElementById('zoom-overlay');
+    document.getElementById('zoomed-img').src = imgSrc;
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeZoom() {
+    document.getElementById('zoom-overlay').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+
+  document.querySelectorAll('section img').forEach(image => {
+    image.addEventListener('click', () => {
+      const lb = document.getElementById('lightbox');
+      lb.querySelector('img').src = image.src;
+      lb.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+  });
+</script>
+</body>
+</html>

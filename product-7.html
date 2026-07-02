@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -71,7 +71,14 @@
     .bento-grid, .tech-specs { grid-template-columns: 1fr; }
     .hero-alt h1 { font-size: 3rem; }
   }
-</style>
+
+  .proto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .proto-cell { position: relative; background: #0d0d0d; aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in; }
+  .proto-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .proto-cell:hover img { transform: scale(1.03); }
+  .proto-num { position: absolute; top: 10px; left: 12px; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 2px; pointer-events: none; font-family: monospace; display: none; }
+  .proto-cell.wide { grid-column: span 2; aspect-ratio: 16/7; }
+  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }</style>
 </head>
 <body>
 
@@ -80,7 +87,7 @@
   <div class="steps">
     <a href="#ideation">01 IDEATION</a>
     <a href="#cad">02 CAD</a>
-    <a href="#final">03 FINAL</a>
+    <a href="#prototype">03 PROTOTYPE</a>    <a href="#final">04 FINAL</a>
   </div>
 </nav>
 
@@ -98,13 +105,18 @@
     </p>
   </div>
 
-  <div style="display: flex; flex-direction: column; gap: 40px;">
-    <div class="bento-item" style="background: #fff; padding: 40px; border-radius: 12px; cursor: zoom-in; display: flex; justify-content: center; align-items: center;">
-      <img src="Fleed drawing 1.png" alt="Fleed Concept Sketch 1" style="max-width: 100%; height: auto; object-fit: contain; display: block;">
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <div style="background: #fff; padding: 32px; border-radius: 4px; cursor: zoom-in;">
+      <img src="images/Fleed drawing 1.png" alt="Fleed Concept Sketch 1" style="width: 100%; max-height: 540px; object-fit: contain; display: block; margin: 0 auto;">
     </div>
-    
-    <div class="bento-item" style="background: #fff; padding: 40px; border-radius: 12px; cursor: zoom-in; display: flex; justify-content: center; align-items: center;">
-      <img src="Fleed drawing 2.png" alt="Fleed Concept Sketch 2" style="max-width: 100%; height: auto; object-fit: contain; display: block;">
+    <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 6px; align-items: stretch;">
+      <div style="background: #fff; padding: 24px; border-radius: 4px; cursor: zoom-in;">
+        <img src="images/Fleed drawing 2.png" alt="Fleed Concept Sketch 2" style="width: 100%; height: 100%; object-fit: contain; display: block; min-height: 160px;">
+      </div>
+      <div style="background: #0e0e0e; border: 1px solid #1e1e1e; border-radius: 4px; padding: 28px; display: flex; flex-direction: column; justify-content: center; gap: 14px;">
+        <span style="font-family: 'Zen Dots'; font-size: 9px; color: #444; letter-spacing: 3px; text-transform: uppercase;">Ideation</span>
+        <p style="color: #555; font-size: 12px; line-height: 1.8; margin: 0;">Bike helmet aerodynamics adapted for agricultural payload — streamlined housing, articulating arms, swappable bay.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -120,7 +132,7 @@
 
   <div class="tech-specs">
     <div class="bento-item" style="background: #fff; border-radius: 8px; padding: 40px; cursor: zoom-in; display: flex; align-items: center; justify-content: center; min-height: 400px;">
-      <img src="Fleed cad.png" alt="Fleed Engineering Drawing" style="width: auto; height: auto; max-width: 100%; max-height: 500px; object-fit: scale-down; display: block;">
+      <img src="images/Fleed cad.png" alt="Fleed Engineering Drawing" style="width: auto; height: auto; max-width: 100%; max-height: 500px; object-fit: scale-down; display: block;">
     </div>
 
     <div class="tech-info">
@@ -136,6 +148,113 @@
         <li><span>Final Materials</span> <b>Carbon Fiber & Aluminum</b></li>
       </ul>
     </div>
+  </div>
+</section>
+
+<section id="prototype" style="max-width: 1200px; margin: 0 auto; padding: 100px 40px;">
+  <div style="margin-bottom: 60px;">
+    <span style="font-family: 'Zen Dots'; font-size: 12px; color: #444; display: block; margin-bottom: 10px;">PHASE 03</span>
+    <h2 style="font-family: 'Zen Dots'; font-size: 24px; text-transform: uppercase;">Prototype Process</h2>
+    <p style="color: #666; margin-top: 20px; max-width: 600px; line-height: 1.7; font-size: 14px;">18-step build: articulating arm assembly, payload bay, motor pod mounting, landing skid testing.</p>
+  </div>
+  <!-- Proto: columna derecha tall (Fleed 9+10) + área izquierda 3 filas. Sin fondo — PNGs transparentes -->
+  <div style="display:flex; gap:8px; height:680px;">
+
+    <!-- IZQUIERDA: 3 filas -->
+    <div style="flex:640; display:flex; flex-direction:column; gap:8px;">
+
+      <!-- Fila 1: Fleed 1-4 -->
+      <div style="flex:191; display:flex; gap:8px; min-height:0;">
+        <div style="flex:172; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 1.png')">
+          <img src="images/fleed-drone/Fleed 1.png" alt="Step 01" style="width:100%;height:100%;object-fit:contain;display:block;">
+          <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">01</span>
+        </div>
+        <div style="flex:103; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 2.png')">
+          <img src="images/fleed-drone/Fleed 2.png" alt="Step 02" style="width:100%;height:100%;object-fit:contain;display:block;">
+          <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">02</span>
+        </div>
+        <div style="flex:157; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 3.png')">
+          <img src="images/fleed-drone/Fleed 3.png" alt="Step 03" style="width:100%;height:100%;object-fit:contain;display:block;">
+          <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">03</span>
+        </div>
+        <div style="flex:153; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 4.png')">
+          <img src="images/fleed-drone/Fleed 4.png" alt="Step 04" style="width:100%;height:100%;object-fit:contain;display:block;">
+          <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">04</span>
+        </div>
+      </div>
+
+      <!-- Fila 2: Fleed 5-8 -->
+      <div style="flex:205; display:flex; gap:8px; min-height:0;">
+        <div style="flex:83; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 5.png')">
+          <img src="images/fleed-drone/Fleed 5.png" alt="Step 05" style="width:100%;height:100%;object-fit:contain;display:block;">
+          <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">05</span>
+        </div>
+        <div style="flex:168; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 6.png')">
+          <img src="images/fleed-drone/Fleed 6.png" alt="Step 06" style="width:100%;height:100%;object-fit:contain;display:block;">
+          <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">06</span>
+        </div>
+        <div style="flex:250; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 7.png')">
+          <img src="images/fleed-drone/Fleed 7.png" alt="Step 07" style="width:100%;height:100%;object-fit:contain;display:block;">
+          <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">07</span>
+        </div>
+        <div style="flex:80; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 8.png')">
+          <img src="images/fleed-drone/Fleed 8.png" alt="Step 08" style="width:100%;height:100%;object-fit:contain;display:block;">
+          <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">08</span>
+        </div>
+      </div>
+
+      <!-- Fila 3: Fleed 11 (izq) + grid anidado (der) -->
+      <div style="flex:284; display:flex; gap:8px; min-height:0;">
+        <!-- Fleed 11: celda grande izquierda -->
+        <div style="flex:250; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 11.png')">
+          <img src="images/fleed-drone/Fleed 11.png" alt="Step 11" style="width:100%;height:100%;object-fit:contain;display:block;">
+          <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">11</span>
+        </div>
+        <!-- Derecha de fila 3: 2 filas anidadas -->
+        <div style="flex:370; display:flex; flex-direction:column; gap:8px;">
+          <!-- Top: Fleed 12, 16, 14 -->
+          <div style="flex:1; display:flex; gap:8px; min-height:0;">
+            <div style="flex:159; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 12.png')">
+              <img src="images/fleed-drone/Fleed 12.png" alt="Step 12" style="width:100%;height:100%;object-fit:contain;display:block;">
+              <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">12</span>
+            </div>
+            <div style="flex:80; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 16.png')">
+              <img src="images/fleed-drone/Fleed 16.png" alt="Step 16" style="width:100%;height:100%;object-fit:contain;display:block;">
+              <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">16</span>
+            </div>
+            <div style="flex:80; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 14.png')">
+              <img src="images/fleed-drone/Fleed 14.png" alt="Step 14" style="width:100%;height:100%;object-fit:contain;display:block;">
+              <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">14</span>
+            </div>
+          </div>
+          <!-- Bottom: Fleed 13, 15 -->
+          <div style="flex:1; display:flex; gap:8px; min-height:0;">
+            <div style="flex:170; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 13.png')">
+              <img src="images/fleed-drone/Fleed 13.png" alt="Step 13" style="width:100%;height:100%;object-fit:contain;display:block;">
+              <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">13</span>
+            </div>
+            <div style="flex:166; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 15.png')">
+              <img src="images/fleed-drone/Fleed 15.png" alt="Step 15" style="width:100%;height:100%;object-fit:contain;display:block;">
+              <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">15</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DERECHA: Fleed 9 + Fleed 10 (columna tall) -->
+    <div style="flex:221; display:flex; flex-direction:column; gap:8px;">
+      <div style="flex:290; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 9.png')">
+        <img src="images/fleed-drone/Fleed 9.png" alt="Step 09" style="width:100%;height:100%;object-fit:contain;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">09</span>
+      </div>
+      <div style="flex:300; position:relative; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/fleed-drone/Fleed 10.png')">
+        <img src="images/fleed-drone/Fleed 10.png" alt="Step 10" style="width:100%;height:100%;object-fit:contain;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">10</span>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -169,7 +288,9 @@
       align-items: center;
       justify-content: center;
       font-size: 24px;
+      transition: opacity 0.3s;
     }
+    .nav-arrow.hidden { opacity: 0 !important; pointer-events: none; }
 
     #zoom-overlay {
       position: fixed;
@@ -203,33 +324,42 @@
     @media (max-width: 768px) {
       .nav-arrow { display: none !important; }
     }
-  </style>
+  
+  .proto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .proto-cell { position: relative; background: #0d0d0d; aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in; }
+  .proto-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .proto-cell:hover img { transform: scale(1.03); }
+  .proto-num { position: absolute; top: 10px; left: 12px; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 2px; pointer-events: none; font-family: monospace; display: none; }
+  .proto-cell.wide { grid-column: span 2; aspect-ratio: 16/7; }
+  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }</style>
 
   <div id="zoom-overlay" onclick="closeZoom()">
     <button class="close-zoom" onclick="closeZoom()">CLOSE ×</button>
-    <img src="" id="zoomed-img">
+    <div style="background:#fff; padding:20px; border-radius:6px; max-width:88vw; max-height:88vh; display:flex; align-items:center; justify-content:center; box-shadow:0 0 60px rgba(0,0,0,0.5); ">
+    <img src="" id="zoomed-img" style="max-width:100%; max-height:calc(88vh - 40px); object-fit:contain; display:block;">
+  </div>
   </div>
 
   <div class="section-header">
-    <span class="section-num">PHASE 03</span>
+    <span class="section-num">PHASE 04</span>
     <h2 class="section-title">Final Execution</h2>
   </div>
   
   <div style="position: relative; width: 100%; max-width: 1400px; margin: 0 auto;">
-    <button class="nav-arrow" style="left: 10px;" onclick="document.getElementById('carousel').scrollBy({left: -1000, behavior: 'smooth'})">←</button>
-    <button class="nav-arrow" style="right: 10px;" onclick="document.getElementById('carousel').scrollBy({left: 1000, behavior: 'smooth'})">→</button>
+    <button class="nav-arrow" style="left: 10px;" onclick="scrollCarousel(-1)">←</button>
+    <button class="nav-arrow" style="right: 10px;" onclick="scrollCarousel(1)">→</button>
 
     <div id="carousel">
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="fleed render 1.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+        <img src="images/fleed render 1.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
       </div>
 
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="fleed render 2.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+        <img src="images/fleed render 2.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
       </div>
 
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="fleed render 3.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+        <img src="images/fleed render 3.png" ondblclick="openZoom(this.src)" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
       </div>
     </div>
   </div>
@@ -285,6 +415,22 @@
       document.body.style.overflow = 'hidden';
     });
   });
+
+  function scrollCarousel(dir) {
+    var c = document.getElementById('carousel');
+    c.scrollBy({ left: dir * c.clientWidth, behavior: 'smooth' });
+    setTimeout(updateCarouselArrows, 500);
+  }
+  function updateCarouselArrows() {
+    var c = document.getElementById('carousel');
+    if (!c) return;
+    var btns = document.querySelectorAll('.nav-arrow');
+    if (btns.length < 2) return;
+    btns[0].classList.toggle('hidden', c.scrollLeft <= 4);
+    btns[1].classList.toggle('hidden', c.scrollLeft + c.clientWidth >= c.scrollWidth - 4);
+  }
+  document.getElementById('carousel').addEventListener('scroll', updateCarouselArrows, { passive: true });
+  window.addEventListener('load', updateCarouselArrows);
 </script>
 </body>
 </html>

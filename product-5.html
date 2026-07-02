@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -71,7 +71,14 @@
     .bento-grid, .tech-specs { grid-template-columns: 1fr; }
     .hero-alt h1 { font-size: 3rem; }
   }
-</style>
+
+  .proto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .proto-cell { position: relative; background: #0d0d0d; aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in; }
+  .proto-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .proto-cell:hover img { transform: scale(1.03); }
+  .proto-num { position: absolute; top: 10px; left: 12px; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 2px; pointer-events: none; font-family: monospace; }
+  .proto-cell.wide { grid-column: span 2; aspect-ratio: 16/7; }
+  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }</style>
 </head>
 <body>
 
@@ -80,7 +87,7 @@
   <div class="steps">
     <a href="#ideation">01 IDEATION</a>
     <a href="#cad">02 CAD</a>
-    <a href="#final">03 FINAL</a>
+    <a href="#prototype">03 PROTOTYPE</a>    <a href="#final">04 FINAL</a>
   </div>
 </nav>
 
@@ -98,14 +105,28 @@
     </p>
   </div>
 
-  <div style="display: flex; flex-direction: column; gap: 40px;">
-    <div class="bento-item" style="background: none; height: auto;">
-      <img src="glassese.png" alt="Boring Glasses Concept Sketch" style="width: 100%; height: auto; object-fit: contain; display: block; opacity: 1;">
-    </div>
-    <div class="bento-item" style="background: none; height: auto;">
-      <img src="glassese3.png" alt="Boring Glasses Form Exploration" style="width: 100%; height: auto; object-fit: contain; display: block; opacity: 1;">
+  <div style="margin: 0 -40px; position: relative;">
+    <!-- Left arrow -->
+    <button onclick="glassesStripScroll(-1)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);z-index:10;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:#fff;width:40px;height:40px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseenter="this.style.background='rgba(255,255,255,0.15)'" onmouseleave="this.style.background='rgba(0,0,0,0.6)'">&#8592;</button>
+    <!-- Right arrow -->
+    <button onclick="glassesStripScroll(1)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);z-index:10;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);color:#fff;width:40px;height:40px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseenter="this.style.background='rgba(255,255,255,0.15)'" onmouseleave="this.style.background='rgba(0,0,0,0.6)'">&#8594;</button>
+    <!-- Strip -->
+    <div id="glasses-strip" style="display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;padding:0 40px 16px;cursor:grab;">
+      <div style="flex:0 0 clamp(500px,75vw,860px);height:600px;scroll-snap-align:start;border-radius:4px;overflow:hidden;cursor:zoom-in;" onclick="openZoom('images/glassese.png')">
+        <img src="images/glassese.png" alt="Boring Glasses Sketch 1" style="width:100%;height:600px;object-fit:contain;display:block;">
+      </div>
+      <div style="flex:0 0 clamp(500px,75vw,860px);height:600px;scroll-snap-align:start;border-radius:4px;overflow:hidden;cursor:zoom-in;" onclick="openZoom('images/glassese3.png')">
+        <img src="images/glassese3.png" alt="Boring Glasses Sketch 2" style="width:100%;height:600px;object-fit:contain;display:block;">
+      </div>
     </div>
   </div>
+  <script>
+    function glassesStripScroll(dir) {
+      var strip = document.getElementById('glasses-strip');
+      var cardW = strip.querySelector('div').offsetWidth + 8;
+      strip.scrollBy({ left: dir * cardW, behavior: 'smooth' });
+    }
+  </script>
 </section>
 
 <section id="cad">
@@ -119,7 +140,7 @@
 
   <div class="tech-specs">
     <div style="background: #fff; border-radius: 8px; padding: 10px; overflow: hidden;">
-      <img src="glasses drawing.png" alt="Boring Glasses Engineering Drawing" style="width: 100%; height: auto; display: block; object-fit: contain;">
+      <img src="images/glasses drawing.png" alt="Boring Glasses Engineering Drawing" style="width: 100%; height: auto; display: block; object-fit: contain;">
     </div>
 
     <div class="tech-info">
@@ -137,12 +158,65 @@
   </div>
 </section>
 
+<section id="prototype" style="max-width: 1200px; margin: 0 auto; padding: 100px 40px;">
+  <div style="margin-bottom: 60px;">
+    <span style="font-family: 'Zen Dots'; font-size: 12px; color: #444; display: block; margin-bottom: 10px;">PHASE 03</span>
+    <h2 style="font-family: 'Zen Dots'; font-size: 24px; text-transform: uppercase;">Prototype Process</h2>
+    <p style="color: #666; margin-top: 20px; max-width: 600px; line-height: 1.7; font-size: 14px;">FDM 3D printed iterations, identifying and fixing thin temple failure points, final assembly.</p>
+  </div>
+  <!-- Split layout: texto (izq, 35%) + grid de fotos (der, 65%) -->
+  <div style="display:grid; grid-template-columns:35fr 65fr; gap:40px; align-items:start;">
+
+    <!-- Columna de texto -->
+    <div style="position:sticky; top:80px; display:flex; flex-direction:column; gap:32px;">
+      <p style="color:#999; font-size:13px; line-height:1.8; margin:0;">
+        The first step I took was 3D printing the slot where the lenses would fit. This allowed me to verify that my measurements were accurate and ensured a proper fit for the lenses in the final design.
+      </p>
+      <p style="color:#666; font-size:13px; line-height:1.8; margin:0;">
+        While creating my prototypes, I gained a clearer understanding of the dimensions my glasses needed. This process also allowed me to identify and address issues, such as widening certain parts of the temples that were too thin and broke during printing. Through prototyping, I was able to confirm that the final dimensions of my glasses were correct and practical for production.
+      </p>
+    </div>
+
+    <!-- Grid de fotos: 3×2 + fila 3 span completo -->
+    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
+      <!-- Fila 1 -->
+      <div style="position:relative; aspect-ratio:4/3; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/boring-glasses/boring 1.png')">
+        <img src="images/boring-glasses/boring 1.png" alt="Step 01" style="width:100%;height:100%;object-fit:contain;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">01</span>
+      </div>
+      <div style="position:relative; aspect-ratio:4/3; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/boring-glasses/boring 2.png')">
+        <img src="images/boring-glasses/boring 2.png" alt="Step 02" style="width:100%;height:100%;object-fit:contain;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">02</span>
+      </div>
+      <div style="position:relative; aspect-ratio:4/3; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/boring-glasses/boring 3.png')">
+        <img src="images/boring-glasses/boring 3.png" alt="Step 03" style="width:100%;height:100%;object-fit:contain;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">03</span>
+      </div>
+      <!-- Fila 2 -->
+      <div style="position:relative; aspect-ratio:4/3; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/boring-glasses/boring 4.png')">
+        <img src="images/boring-glasses/boring 4.png" alt="Step 04" style="width:100%;height:100%;object-fit:contain;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">04</span>
+      </div>
+      <div style="position:relative; aspect-ratio:4/3; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/boring-glasses/boring 5.png')">
+        <img src="images/boring-glasses/boring 5.png" alt="Step 05" style="width:100%;height:100%;object-fit:contain;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">05</span>
+      </div>
+      <div style="position:relative; aspect-ratio:4/3; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/boring-glasses/boring 6.png')">
+        <img src="images/boring-glasses/boring 6.png" alt="Step 06" style="width:100%;height:100%;object-fit:contain;display:block;">
+        <span style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:2px;font-family:monospace;pointer-events:none;">06</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <section id="final">
   <style>
     /* Desktop arrows hidden on mobile */
     @media (max-width: 768px) {
       .nav-arrow { display: none !important; }
     }
+    .nav-arrow.hidden { opacity: 0 !important; pointer-events: none; }
 
     /* Full-res overlay styles */
     #zoom-overlay {
@@ -176,15 +250,24 @@
       backdrop-filter: blur(10px);
       z-index: 3001;
     }
-  </style>
+  
+  .proto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .proto-cell { position: relative; background: #0d0d0d; aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in; }
+  .proto-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .proto-cell:hover img { transform: scale(1.03); }
+  .proto-num { position: absolute; top: 10px; left: 12px; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 2px; pointer-events: none; font-family: monospace; }
+  .proto-cell.wide { grid-column: span 2; aspect-ratio: 16/7; }
+  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }</style>
 
   <div id="zoom-overlay" onclick="closeZoom()">
     <button class="close-zoom" onclick="closeZoom()">CLOSE ×</button>
-    <img src="" id="zoomed-img">
+    <div style="background:#fff; padding:20px; border-radius:6px; max-width:88vw; max-height:88vh; display:flex; align-items:center; justify-content:center; box-shadow:0 0 60px rgba(0,0,0,0.5); ">
+    <img src="" id="zoomed-img" style="max-width:100%; max-height:calc(88vh - 40px); object-fit:contain; display:block;">
+  </div>
   </div>
 
   <div class="section-header">
-    <span class="section-num">PHASE 03</span>
+    <span class="section-num">PHASE 04</span>
     <h2 class="section-title">Final Execution</h2>
     <p style="color: #666; margin-top: 20px; max-width: 600px;">
       The final prototype showcases the contrast between the rigid, professional frames and the fluid, beach-inspired temples.
@@ -192,36 +275,36 @@
   </div>
   
   <div style="position: relative; width: 100%; max-width: 1400px; margin: 0 auto;">
-    <button class="nav-arrow" onclick="document.getElementById('carousel').scrollBy({left: -1000, behavior: 'smooth'})" 
-            style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: white; width: 60px; height: 60px; cursor: pointer; border-radius: 50%; backdrop-filter: blur(10px); font-size: 24px;">
+    <button class="nav-arrow" onclick="scrollCarousel(-1)"
+            style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: white; width: 60px; height: 60px; cursor: pointer; border-radius: 50%; backdrop-filter: blur(10px); font-size: 24px; transition: opacity 0.3s;">
       ←
     </button>
-    
-    <button class="nav-arrow" onclick="document.getElementById('carousel').scrollBy({left: 1000, behavior: 'smooth'})" 
-            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: white; width: 60px; height: 60px; cursor: pointer; border-radius: 50%; backdrop-filter: blur(10px); font-size: 24px;">
+
+    <button class="nav-arrow" onclick="scrollCarousel(1)"
+            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: white; width: 60px; height: 60px; cursor: pointer; border-radius: 50%; backdrop-filter: blur(10px); font-size: 24px; transition: opacity 0.3s;">
       →
     </button>
 
     <div id="carousel" style="display: flex; overflow-x: auto; gap: 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; border-radius: 12px;">
       
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="Boring 1.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+        <img src="images/Boring 1.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
       </div>
 
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="Boring 2.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+        <img src="images/Boring 2.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
       </div>
 
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="Boring 3.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+        <img src="images/Boring 3.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
       </div>
 
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="Boring 4.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+        <img src="images/Boring 4.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
       </div>
 
       <div style="flex: 0 0 100%; scroll-snap-align: center; height: 90vh; min-height: 600px; background: #000; display: flex; align-items: center; justify-content: center;">
-        <img src="glasses poster ice 1.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
+        <img src="images/glasses poster ice 1.png" ondblclick="openZoom(this.src)" style="width: 100%; height: 100%; object-fit: contain; display: block; cursor: pointer;">
       </div>
 
     </div>
@@ -269,6 +352,22 @@
       lastTap = currentTime;
     });
   });
+
+  function scrollCarousel(dir) {
+    var c = document.getElementById('carousel');
+    c.scrollBy({ left: dir * c.clientWidth, behavior: 'smooth' });
+    setTimeout(updateCarouselArrows, 500);
+  }
+  function updateCarouselArrows() {
+    var c = document.getElementById('carousel');
+    if (!c) return;
+    var btns = document.querySelectorAll('.nav-arrow');
+    if (btns.length < 2) return;
+    btns[0].classList.toggle('hidden', c.scrollLeft <= 4);
+    btns[1].classList.toggle('hidden', c.scrollLeft + c.clientWidth >= c.scrollWidth - 4);
+  }
+  document.getElementById('carousel').addEventListener('scroll', updateCarouselArrows, { passive: true });
+  window.addEventListener('load', updateCarouselArrows);
 </script>
 
 </body>
