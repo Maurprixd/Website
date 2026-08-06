@@ -93,6 +93,10 @@
     .steps { gap: 15px; font-size: 8px; }
     .proto-grid { grid-template-columns: 1fr; }
     .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; }
+
+    /* Prototype bento was a bespoke desktop grid with no mobile fallback, so it rendered as 6 squished columns. Flatten to a single-column stack instead of hand-tuning each layout. */
+    #proto-mosaic, #proto-mosaic * { display: block !important; flex: none !important; height: auto !important; width: 100% !important; margin: 0 !important; }
+    #proto-mosaic div[style*="relative"] { margin-bottom: 8px !important; }
   }
 </style>
 </head>
@@ -122,7 +126,8 @@
     <span class="section-num">PHASE 01</span>
     <h2 class="section-title">Ideation & Form</h2>
     <p style="color: #666; margin-top: 20px; max-width: 600px;">
-        The Wavy Chair bridges the organic and the industrial, seamlessly blending wood and concrete.
+        The Wavy Chair bridges the organic and the industrial, seamlessly blending wood and concrete —
+        assembled entirely through friction fit, with no adhesives or fasteners holding it together.
     </p>
   </div>
 
@@ -156,7 +161,8 @@
         <li><span>Software</span> <b>SolidWorks</b></li>
         <li><span>Units</span> <b>Millimeters (mm)</b></li>
         <li><span>Prototype Scale</span> <b>1:6</b></li>
-        <li><span>Primary Material</span> <b>Maple Plywood</b></li>
+        <li><span>Primary Materials</span> <b>Maple Plywood + Cast Concrete</b></li>
+        <li><span>Assembly</span> <b>Friction-Fit — No Adhesives</b></li>
       </ul>
     </div>
   </div>
@@ -167,10 +173,10 @@
     <span style="font-family: 'Zen Dots'; font-size: 12px; color: #444; display: block; margin-bottom: 10px;">PHASE 03</span>
     <h2 style="font-family: 'Zen Dots'; font-size: 24px; text-transform: uppercase;">Prototype Process</h2>
     <p style="color: #666; margin-top: 20px; max-width: 600px; line-height: 1.7; font-size: 14px;">
-      CNC routing, hand-carving the wavy legs, casting concrete molds from 3D-printed formwork — documented in sequence.
+      CNC routing, hand-carving the wavy legs, casting concrete molds from 3D-printed formwork — every joint angle and pour tolerance engineered to lock together under load through friction alone, no glue or fasteners, documented in sequence.
     </p>
   </div>
-  <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;">
+  <div id="proto-mosaic" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;">
 
     <!-- ROW 1 — portrait × 3 -->
     <div style="grid-column: span 2; position: relative; background: #0d0d0d; aspect-ratio: 3/4; overflow: hidden; cursor: zoom-in;" onclick="openZoom('images/wavy-chair/Wavy 2.png')">

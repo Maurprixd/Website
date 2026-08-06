@@ -71,7 +71,13 @@
   .proto-cell:hover img { transform: scale(1.03); }
   .proto-num { position: absolute; top: 10px; left: 12px; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 2px; pointer-events: none; font-family: monospace; display: none; }
   .proto-cell.wide { grid-column: span 2; aspect-ratio: 16/7; }
-  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }</style>
+  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }
+  /* Prototype bento was a bespoke desktop flex mosaic with no mobile fallback, so it rendered squished across 4+ nested columns. Flatten to a single-column stack instead of hand-tuning each layout. */
+  @media (max-width: 768px) {
+    #proto-mosaic, #proto-mosaic * { display: block !important; flex: none !important; height: auto !important; width: 100% !important; margin: 0 !important; }
+    #proto-mosaic div[style*="relative"] { margin-bottom: 8px !important; }
+  }
+  </style>
 </head>
 <body>
 
@@ -153,7 +159,7 @@
     <p style="color: #666; margin-top: 20px; max-width: 600px; line-height: 1.7; font-size: 14px;">Interlocking vertebra segments — FDM iterations, flex validation, Casio movement disassembly and integration.</p>
   </div>
   <!-- Proto: 4 col flex. Cols 1,2,4 son portrats tall. Col 3 = centro anidado (top 3+4 / bottom 7+6+8) -->
-  <div style="display:flex; gap:8px; height:520px;">
+  <div id="proto-mosaic" style="display:flex; gap:8px; height:520px;">
 
     <!-- Col 1: true 1 (tall, contain) -->
     <div style="flex:137; position:relative; background:#0d0d0d; overflow:hidden; cursor:zoom-in;" onclick="openZoom('images/true-human/true 1.png')">

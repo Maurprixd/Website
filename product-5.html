@@ -79,7 +79,15 @@
   .proto-cell:hover img { transform: scale(1.03); }
   .proto-num { position: absolute; top: 10px; left: 12px; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 2px; pointer-events: none; font-family: monospace; }
   .proto-cell.wide { grid-column: span 2; aspect-ratio: 16/7; }
-  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }</style>
+  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }
+  /* Prototype bento was a bespoke desktop grid with no mobile fallback, so it rendered squished (35/65 split + sticky text). Flatten to a single-column stack instead of hand-tuning each layout. */
+  @media (max-width: 768px) {
+    #proto-mosaic, #proto-mosaic * { display: block !important; flex: none !important; height: auto !important; width: 100% !important; margin: 0 !important; }
+    #proto-mosaic div[style*="relative"] { margin-bottom: 8px !important; }
+    #proto-text { position: static !important; margin-bottom: 24px !important; }
+    #proto-text p { margin-bottom: 16px !important; }
+  }
+  </style>
 </head>
 <body>
 
@@ -166,10 +174,10 @@
     <p style="color: #666; margin-top: 20px; max-width: 600px; line-height: 1.7; font-size: 14px;">FDM 3D printed iterations, identifying and fixing thin temple failure points, final assembly.</p>
   </div>
   <!-- Split layout: texto (izq, 35%) + grid de fotos (der, 65%) -->
-  <div style="display:grid; grid-template-columns:35fr 65fr; gap:40px; align-items:start;">
+  <div id="proto-mosaic" style="display:grid; grid-template-columns:35fr 65fr; gap:40px; align-items:start;">
 
     <!-- Columna de texto -->
-    <div style="position:sticky; top:80px; display:flex; flex-direction:column; gap:32px;">
+    <div id="proto-text" style="position:sticky; top:80px; display:flex; flex-direction:column; gap:32px;">
       <p style="color:#999; font-size:13px; line-height:1.8; margin:0;">
         The first step I took was 3D printing the slot where the lenses would fit. This allowed me to verify that my measurements were accurate and ensured a proper fit for the lenses in the final design.
       </p>

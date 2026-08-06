@@ -78,7 +78,13 @@
   .proto-cell:hover img { transform: scale(1.03); }
   .proto-num { position: absolute; top: 10px; left: 12px; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 2px; pointer-events: none; font-family: monospace; display: none; }
   .proto-cell.wide { grid-column: span 2; aspect-ratio: 16/7; }
-  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }</style>
+  @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } .proto-cell.wide { grid-column: span 1; aspect-ratio: 4/3; } }
+  /* Prototype bento was a bespoke desktop grid with no mobile fallback, so it rendered squished. Flatten to a single-column stack instead of hand-tuning each layout. */
+  @media (max-width: 768px) {
+    #proto-mosaic, #proto-mosaic * { display: block !important; flex: none !important; height: auto !important; width: 100% !important; margin: 0 !important; }
+    #proto-mosaic div[style*="relative"] { margin-bottom: 8px !important; }
+  }
+  </style>
 </head>
 <body>
 
@@ -156,7 +162,7 @@
     <p style="color: #666; margin-top: 20px; max-width: 600px; line-height: 1.7; font-size: 14px;">Vacuum brewing prototype — wood veneer application, aluminum spray finish, glass coil assembly.</p>
   </div>
   <!-- Proto grid: left 3×2 (narrow/wide/narrow, contain) + right 2 tall (cover) -->
-  <div style="display:grid; grid-template-columns:6fr 4fr; gap:8px; height:440px;">
+  <div id="proto-mosaic" style="display:grid; grid-template-columns:6fr 4fr; gap:8px; height:440px;">
 
     <!-- LEFT: 3-col × 2-row grid -->
     <div style="display:grid; grid-template-columns:2fr 3fr 2fr; grid-template-rows:1fr 1fr; gap:8px;">
