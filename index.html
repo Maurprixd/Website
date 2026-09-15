@@ -80,11 +80,12 @@
     filter: blur(15px);
     z-index: 2;
     cursor: pointer;
+    pointer-events: none;
     transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     -webkit-tap-highlight-color: transparent;
   }
 
-  .product.is-visible { opacity: 0.6; top: 0; filter: blur(4px); }
+  .product.is-visible { opacity: 0.6; top: 0; filter: blur(4px); pointer-events: auto; }
 
   .product.is-active {
     filter: blur(0px) !important;
@@ -223,7 +224,7 @@
   <div id="progress"></div>
   <div class="bg-text">MM</div>
 
-  <!-- ── SECTION TILES: WIMTACH + PERSONAL PROJECTS ───────────────── -->
+  <!-- ── SECTION TILES: WIMTACH (hardware + UX/UI) ───────────────── -->
   <div style="position: relative; z-index: 5; width: 100%; background: #000;">
   <div class="section-tiles-grid" style="max-width: 1300px; margin: 0 auto; padding: 110px 40px 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
 
@@ -241,16 +242,17 @@
       <span style="font-family:'Zen Dots'; font-size: 9px; color: #CA8A04; letter-spacing: 2px;">CASE STUDY →</span>
     </a>
 
-    <!-- PERSONAL PROJECTS tile — watch -->
-    <a id="personal" href="project-watch.html" style="display: block; text-decoration: none; padding: 36px; border: 2px solid #1c1c1c; background: #050505; animation: border-flicker 6s linear infinite 2s;">
-      <span style="font-family:'Zen Dots'; font-size: 9px; color: #333; letter-spacing: 3px; text-transform: uppercase; display: block; margin-bottom: 18px;">PERSONAL PROJECT · 2025</span>
-      <div style="font-family:'Zen Dots'; font-size: clamp(2rem,3.5vw,3rem); color: #fff; line-height: 0.9; text-transform: uppercase; margin-bottom: 18px;">ESP32<br>WATCH</div>
-      <p style="font-size: 11px; color: #666; line-height: 1.65; margin-bottom: 24px;">7mm thin dual-screen wristwatch — designed entirely with AI assistance, zero prior KiCad experience. Custom PCB, ESP32 microcontroller.</p>
-      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-top: 1px solid #111; padding-top: 20px;">
-        <div><span style="font-family:'Share Tech Mono'; font-size: 8px; color: #2a2a2a; letter-spacing: 2px; display: block; margin-bottom: 6px;">THICKNESS</span><span style="font-family:'Zen Dots'; font-size: 13px; color: #CA8A04;">7mm</span></div>
-        <div><span style="font-family:'Share Tech Mono'; font-size: 8px; color: #2a2a2a; letter-spacing: 2px; display: block; margin-bottom: 6px;">DISPLAYS</span><span style="font-family:'Zen Dots'; font-size: 13px; color: #CA8A04;">DUAL</span></div>
-        <div><span style="font-family:'Share Tech Mono'; font-size: 8px; color: #2a2a2a; letter-spacing: 2px; display: block; margin-bottom: 6px;">MCU</span><span style="font-family:'Zen Dots'; font-size: 13px; color: #CA8A04;">ESP32</span></div>
+    <!-- WIMTACH UX/UI tile — ICC Immigration portal -->
+    <a id="icc-ux" href="project-icc.html" style="display: block; text-decoration: none; padding: 36px; border: 2px solid rgba(202,138,4,0.45); background: rgba(202,138,4,0.04); animation: border-flicker 4s linear infinite 2s;">
+      <span style="font-family:'Share Tech Mono'; font-size: 9px; color: rgba(202,138,4,0.6); letter-spacing: 3px; text-transform: uppercase; display: block; margin-bottom: 18px;">WIMTACH · 2026</span>
+      <div style="font-family:'Zen Dots'; font-size: clamp(2rem,3.5vw,3rem); color: #fff; line-height: 0.9; text-transform: uppercase; margin-bottom: 18px;">ICC<br>PORTAL</div>
+      <p style="font-size: 11px; color: #666; line-height: 1.65; margin-bottom: 24px;">Client portal and internal CRM redesign for a Canadian immigration consultancy. Three role-based views for admin, staff, and client, prototyped in HTML and refined in Figma.</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-top: 1px solid rgba(202,138,4,0.2); padding-top: 20px; margin-bottom: 20px;">
+        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size: 8px; color: rgba(255,255,255,0.25); letter-spacing: 2px; display: block; margin-bottom: 6px;">ROLE</span><span style="font-family:'Share Tech Mono'; font-size: 10px; color: #CA8A04;">UX/UI</span></div>
+        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size: 8px; color: rgba(255,255,255,0.25); letter-spacing: 2px; display: block; margin-bottom: 6px;">VIEWS</span><span style="font-family:'Share Tech Mono'; font-size: 10px; color: #CA8A04;">3</span></div>
+        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size: 8px; color: rgba(255,255,255,0.25); letter-spacing: 2px; display: block; margin-bottom: 6px;">SESSIONS</span><span style="font-family:'Share Tech Mono'; font-size: 10px; color: #CA8A04;">27+</span></div>
       </div>
+      <span style="font-family:'Zen Dots'; font-size: 9px; color: #CA8A04; letter-spacing: 2px;">CASE STUDY →</span>
     </a>
 
   </div>
