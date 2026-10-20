@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snow Robot 4S | Mechanical Case Study</title>
+<meta name="description" content="Snow Robot 4S: an electric, four-season snow robot concept designed in three days at the WIMTACH hackathon. Twelve body versions, three docks and two animations, built with AI-driven fast CAD.">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="icon" href="data:,">
+<script>document.documentElement.className = 'js';</script>
+<style>
+  /* ── TOKENS ─────────────────────────────────────────────────────────────
+     One theme (dark), one accent (gold), one radius rule:
+     media 8px, controls pill. Same system as index, project-icc, wimtach. */
+  :root {
+    color-scheme: dark;
+    --bg: #000;
+    --ink: #f4f4f4;
+    --ink-2: #bdbdbd;
+    --ink-3: #8f8f8f;
+    --line: #1d1d1d;
+    --line-2: #2c2c2c;
+    --gold: #CA8A04;
+    --gold-soft: rgba(202,138,4,0.12);
+    --gold-line: rgba(202,138,4,0.45);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --r: 8px;
+    --wrap: 1240px;
+    --gutter: 40px;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  img, video { display: block; max-width: 100%; }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  /* Grain: same fixed, non-scrolling overlay as the rest of the site */
+  body::after {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 900; opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px;
+  }
+
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+  section { padding: 128px 0; }
+
+  /* ── NAV ────────────────────────────────────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 100; height: 64px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    padding: 0 var(--gutter);
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .back { font-family: 'Zen Dots'; font-size: 12px; letter-spacing: 0.08em; text-decoration: none; }
+  .nav ul { display: flex; gap: 28px; list-style: none; font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.18em; }
+  .nav ul a { color: var(--ink-3); text-decoration: none; text-transform: uppercase; transition: color 0.25s; }
+  .nav ul a:hover { color: #fff; }
+  .progress {
+    position: absolute; left: 0; bottom: -1px; width: 100%; height: 1px;
+    background: linear-gradient(90deg, var(--gold), #fff);
+    transform-origin: 0 50%; transform: scaleX(0); display: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    .progress { display: block; animation: grow linear both; animation-timeline: scroll(root block); }
+    @keyframes grow { to { transform: scaleX(1); } }
+  }
+
+  /* ── BUTTONS ────────────────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'Zen Dots'; font-size: 11px; letter-spacing: 0.14em; white-space: nowrap;
+    padding: 15px 28px; min-height: 44px; border-radius: 999px; text-decoration: none; cursor: pointer;
+    transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.2s;
+  }
+  .btn:active { transform: translateY(1px) scale(0.98); }
+  .btn-primary { background: var(--gold); color: #000; border: 1px solid var(--gold); }
+  .btn-primary:hover { background: transparent; color: var(--gold); }
+  .btn-ghost { border: 1px solid var(--line-2); color: var(--ink-2); }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+  /* ── HERO ───────────────────────────────────────────────────────────── */
+  .hero { min-height: calc(100dvh - 64px); display: flex; align-items: center; padding: 56px 0 40px; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: center; width: 100%; }
+  .eyebrow { font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.28em; color: var(--gold); text-transform: uppercase; margin-bottom: 28px; }
+  .title {
+    font-family: 'Zen Dots'; font-weight: 400; text-transform: uppercase;
+    font-size: clamp(2.6rem, 5.4vw, 5rem); line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 28px; white-space: nowrap;
+  }
+  .title .dim { display: inline-block; animation: flick 5.5s linear infinite 1.2s; }
+  .title .dim.d2 { animation-duration: 7s; animation-delay: 2.4s; }
+  @keyframes flick { 0%, 80%, 100% { opacity: 1; } 82%, 90% { opacity: 0.1; } 86%, 94% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .title .dim { animation: none; } }
+  .lede { font-size: clamp(1rem, 1.35vw, 1.2rem); color: var(--ink-2); max-width: 30em; margin-bottom: 36px; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .hero-art { position: relative; margin-right: -5vw; }
+  .hero-art::before {   /* soft floor light under the wheels, not a glow */
+    content: ''; position: absolute; left: 12%; right: 8%; bottom: 3%; height: 14%;
+    background: radial-gradient(closest-side, rgba(255,255,255,0.10), rgba(255,255,255,0));
+  }
+  .hero-art img { position: relative; width: 100%; height: auto; }
+  @media (prefers-reduced-motion: no-preference) {
+    .js .hero-art img { clip-path: inset(0 100% 0 0); animation: wipe 1.3s var(--ease) 0.2s forwards; }
+    @keyframes wipe { to { clip-path: inset(0 0 0 0); } }
+    .js .hero-copy > * { opacity: 0; transform: translateY(16px); animation: rise 0.9s var(--ease) forwards; }
+    .js .hero-copy > :nth-child(2) { animation-delay: 0.08s; }
+    .js .hero-copy > :nth-child(3) { animation-delay: 0.16s; }
+    .js .hero-copy > :nth-child(4) { animation-delay: 0.24s; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-art { animation: drift linear both; animation-timeline: view(); animation-range: exit 0% exit 100%; }
+      @keyframes drift { to { transform: translateY(-7%) scale(1.04); } }
+    }
+  }
+
+  /* ── FACTS ──────────────────────────────────────────────────────────── */
+  .facts { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .facts-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; padding: 36px 0; }
+  .k { display: block; font-family: 'Share Tech Mono'; font-size: 10px; letter-spacing: 0.24em; color: var(--ink-3); text-transform: uppercase; margin-bottom: 8px; }
+  .v { font-size: 15px; color: var(--ink); line-height: 1.5; }
+
+  /* ── SHARED TYPE ────────────────────────────────────────────────────── */
+  .h2 {
+    font-family: 'Zen Dots'; font-weight: 400; text-transform: uppercase;
+    font-size: clamp(1.7rem, 3.3vw, 2.85rem); line-height: 1.1; letter-spacing: -0.01em; max-width: 17em; margin-bottom: 28px;
+  }
+  .body { color: var(--ink-2); font-size: 1.0625rem; max-width: 62ch; }
+  .body + .body { margin-top: 18px; }
+  .small { font-size: 13px; color: var(--ink-3); }
+
+  [data-reveal] { transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+  .js [data-reveal] { opacity: 0; transform: translateY(26px); }
+  .js [data-reveal].in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js [data-reveal] { opacity: 1; transform: none; transition: none; } }
+
+  /* ── BRIEF ──────────────────────────────────────────────────────────── */
+  .changes { margin-top: 56px; border-top: 1px solid var(--line); }
+  .change { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; padding: 26px 0; border-bottom: 1px solid var(--line); }
+  .change h3 { font-family: 'Zen Dots'; font-weight: 400; font-size: 15px; line-height: 1.4; text-transform: uppercase; }
+  .change p { color: var(--ink-2); max-width: 56ch; }
+  .change .tag { font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.16em; color: var(--ink-3); text-transform: uppercase; margin-left: 6px; white-space: nowrap; }
+
+  /* ── ROLE ───────────────────────────────────────────────────────────── */
+  .role { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; margin-top: 64px; }
+  .col { border-left: 2px solid var(--line-2); padding-left: 28px; }
+  .col.mine { border-left-color: var(--gold); }
+  .col h3 { font-family: 'Zen Dots'; font-weight: 400; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 30px; }
+  .col ul { list-style: none; }
+  .col li { margin-bottom: 24px; color: var(--ink-2); }
+  .col li b { display: block; color: var(--ink); font-weight: 600; margin-bottom: 2px; }
+  .team-note { margin-top: 32px; font-size: 14px; color: var(--ink-3); max-width: 52ch; }
+  .pull { margin-top: 96px; font-size: clamp(1.35rem, 2.5vw, 2rem); font-weight: 300; line-height: 1.4; color: var(--ink); max-width: 28em; }
+  .pull em { font-style: normal; color: var(--gold); }
+
+  /* ── METHOD ─────────────────────────────────────────────────────────── */
+  .flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 64px; }
+  .step { position: relative; padding: 28px 28px 0 0; border-top: 1px solid var(--line-2); }
+  .step h3 { font-family: 'Zen Dots'; font-weight: 400; font-size: 14px; text-transform: uppercase; margin-bottom: 10px; }
+  .step p { font-size: 14px; color: var(--ink-2); line-height: 1.65; }
+  .step .tool { display: block; margin-top: 14px; font-family: 'Share Tech Mono'; font-size: 10px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; }
+  .step::before {   /* a comet that walks the loop, so the order reads without numbers */
+    content: ''; position: absolute; top: -1px; left: 0; width: 70%; height: 1px;
+    background: linear-gradient(90deg, rgba(202,138,4,0), var(--gold)); opacity: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .flow.in .step::before { animation: comet 5s var(--ease) infinite; animation-delay: calc(var(--i) * 0.55s); }
+    @keyframes comet {
+      0% { opacity: 0; transform: translateX(-30%); }
+      8% { opacity: 1; }
+      22% { opacity: 1; transform: translateX(40%); }
+      30%, 100% { opacity: 0; transform: translateX(60%); }
+    }
+  }
+  .loopback { margin-top: 20px; font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.16em; color: var(--ink-3); text-transform: uppercase; }
+
+  .method-split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; margin-top: 96px; align-items: start; }
+  pre.code {
+    font-family: 'Share Tech Mono', monospace; font-size: 13px; line-height: 1.75; color: var(--ink-2);
+    background: #060606; border: 1px solid var(--line); border-radius: var(--r); padding: 28px; overflow-x: auto; tab-size: 4;
+  }
+  pre.code .c { color: var(--ink-3); }
+  pre.code .n { color: var(--gold); }
+  figure img { width: 100%; height: auto; border-radius: var(--r); border: 1px solid var(--line); }
+  .hero-art img, .shot img { border: 0; border-radius: 0; }
+  figcaption { margin-top: 14px; font-size: 13px; color: var(--ink-3); max-width: 60ch; }
+
+  /* ── TIME ───────────────────────────────────────────────────────────── */
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; margin-top: 72px; }
+  .stat { border-top: 1px solid var(--line-2); padding-top: 22px; }
+  .stat .num { font-family: 'Zen Dots'; font-size: clamp(2.4rem, 4.4vw, 3.6rem); line-height: 1; color: var(--gold); letter-spacing: -0.02em; }
+  .stat .unit { font-family: 'Share Tech Mono'; font-size: 12px; letter-spacing: 0.2em; color: var(--ink-3); text-transform: uppercase; margin-left: 8px; }
+  .stat p { margin-top: 14px; font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .stat .when { display: block; margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.12em; color: var(--ink-3); }
+
+  .chart { margin-top: 96px; }
+  .chart h3 { font-size: 16px; font-weight: 400; color: var(--ink); }
+  .chart .small { margin-top: 2px; }
+  .plot { position: relative; height: 220px; margin-top: 36px; padding-left: 36px; }
+  .gl { position: absolute; left: 36px; right: 0; border-top: 1px solid var(--line); }
+  .gl span { position: absolute; left: -36px; top: -9px; width: 28px; text-align: right; font-family: 'Share Tech Mono'; font-size: 10px; color: var(--ink-3); }
+  .gl.base { border-top-color: var(--line-2); }
+  .bars { position: absolute; left: 36px; right: 0; top: 0; bottom: 0; display: flex; align-items: flex-end; gap: 2px; }
+  .slot { position: relative; flex: 1 1 0; height: 100%; max-width: 24px; display: flex; align-items: flex-end; }
+  .bar {
+    width: 100%; height: calc(var(--v) / 24 * 100%); background: var(--gold); border-radius: 4px 4px 0 0;
+    transform-origin: 50% 100%; transform: scaleY(0);
+    transition: transform 0.8s var(--ease), background 0.2s; transition-delay: calc(var(--i) * 16ms), 0s;
+  }
+  .chart.in .bar { transform: scaleY(1); }
+  .slot:hover .bar, .slot:focus-visible .bar { background: #E8A91A; }
+  .slot:focus-visible { outline-offset: 1px; }
+  .lab { position: absolute; bottom: calc(var(--v) / 24 * 100% + 8px); left: 50%; font-size: 12px; color: var(--ink); white-space: nowrap; transform: translateX(-50%); pointer-events: none; }
+  .lab.right { transform: translateX(-12px); }
+  .xaxis { position: relative; height: 28px; margin-left: 36px; }
+  .xaxis span { position: absolute; top: 10px; font-family: 'Share Tech Mono'; font-size: 10px; letter-spacing: 0.1em; color: var(--ink-3); white-space: nowrap; transform: translateX(-50%); text-transform: uppercase; }
+  .xaxis span:first-child { transform: none; }
+  .xaxis span:last-child { transform: translateX(-100%); }
+  .tip {
+    position: absolute; z-index: 5; pointer-events: none; opacity: 0; transition: opacity 0.15s;
+    background: #0d0d0d; border: 1px solid var(--line-2); border-radius: 6px; padding: 8px 12px; font-size: 12px; line-height: 1.4; white-space: nowrap;
+  }
+  .tip strong { display: block; font-size: 14px; font-weight: 600; color: var(--ink); }
+  .tip span { color: var(--ink-3); }
+  details.table { margin-top: 24px; }
+  details.table summary { cursor: pointer; font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.16em; color: var(--ink-3); text-transform: uppercase; min-height: 44px; display: flex; align-items: center; }
+  details.table table { border-collapse: collapse; margin-top: 12px; font-size: 13px; width: 100%; max-width: 420px; }
+  details.table th, details.table td { text-align: left; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line); font-weight: 300; color: var(--ink-2); }
+  details.table th { font-family: 'Share Tech Mono'; font-size: 10px; letter-spacing: 0.16em; color: var(--ink-3); text-transform: uppercase; }
+  .src { margin-top: 28px; font-size: 13px; color: var(--ink-3); max-width: 70ch; }
+
+  /* ── ITERATIONS ─────────────────────────────────────────────────────── */
+  .strip-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .strip {
+    --pad: max(var(--gutter), calc((100% - var(--wrap)) / 2 + var(--gutter)));
+    display: flex; gap: 22px; overflow-x: auto; scroll-snap-type: x proximity; margin-top: 56px;
+    padding: 4px var(--gutter) 32px var(--pad); scroll-padding-left: var(--pad);
+    scrollbar-width: thin; scrollbar-color: #333 transparent;
+  }
+  .frame { flex: 0 0 min(82vw, 540px); scroll-snap-align: start; border-top: 2px solid var(--line-2); padding-top: 20px; }
+  .frame.keep { border-top-color: var(--gold); }
+  .shot { display: block; width: 100%; padding: 0; border-radius: var(--r); overflow: hidden; border: 1px solid var(--line); background: #0b0b0b; cursor: zoom-in; }
+  .shot img { width: 100%; height: auto; transition: transform 0.9s var(--ease); }
+  .shot:hover img { transform: scale(1.035); }
+  .f-top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-top: 18px; }
+  .f-top h3 { font-family: 'Zen Dots'; font-weight: 400; font-size: 18px; text-transform: uppercase; }
+  .f-top time { font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.1em; color: var(--ink-3); white-space: nowrap; }
+  .verdict { margin-top: 6px; font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-3); }
+  .frame.keep .verdict { color: var(--gold); }
+  .why { margin-top: 10px; font-size: 14px; color: var(--ink-2); line-height: 1.65; }
+  .frame.note { flex-basis: min(72vw, 300px); border-top-color: transparent; display: flex; align-items: center; scroll-snap-align: center; }
+  .frame.note p { font-size: 15px; color: var(--ink-2); border-left: 1px solid var(--line-2); padding-left: 20px; }
+  .frame.note b { display: block; color: var(--ink); font-weight: 600; margin-bottom: 6px; }
+
+  .strip-ctl { display: flex; align-items: center; gap: 20px; margin-top: 8px; }
+  .track { flex: 1; height: 1px; background: var(--line-2); position: relative; }
+  .track i { position: absolute; inset: 0; background: var(--gold); transform-origin: 0 50%; transform: scaleX(0.05); }
+  .arrow { width: 44px; height: 44px; border: 1px solid var(--line-2); border-radius: 50%; font-size: 16px; transition: border-color 0.25s, color 0.25s; }
+  .arrow:hover { border-color: var(--gold); color: var(--gold); }
+
+  .exploded { margin-top: 96px; }
+  .exploded .shot { background: #e9e9ea; }
+
+  /* ── DOCKS ──────────────────────────────────────────────────────────── */
+  .dock-main { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 40px; margin-top: 64px; align-items: end; }
+  .dock-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; margin-top: 48px; }
+  .dock h3 { font-family: 'Zen Dots'; font-weight: 400; font-size: 16px; text-transform: uppercase; margin-bottom: 10px; }
+  .dock .specs { font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.12em; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; display: block; }
+  .dock p { font-size: 14px; color: var(--ink-2); line-height: 1.65; }
+  .dock .shot + * { margin-top: 18px; }
+  .finding { margin-top: 72px; padding: 28px 32px; border: 1px solid var(--gold-line); background: var(--gold-soft); border-radius: var(--r); max-width: 760px; }
+  .finding b { font-family: 'Zen Dots'; font-weight: 400; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 8px; }
+  .finding p { color: var(--ink); }
+
+  .vid { position: relative; border-radius: var(--r); overflow: hidden; border: 1px solid var(--line); background: #050505; }
+  .vid video { width: 100%; height: auto; aspect-ratio: 16 / 9; background: #050505; }
+  .vid-block { margin-top: 96px; }
+  .vid-block figcaption { max-width: 70ch; }
+
+  /* ── CONNECTOR ──────────────────────────────────────────────────────── */
+  .quote { margin-top: 40px; font-size: clamp(1.15rem, 1.9vw, 1.5rem); color: var(--ink); max-width: 30em; line-height: 1.5; border-left: 2px solid var(--gold); padding-left: 24px; }
+  .quote cite { display: block; margin-top: 10px; font-style: normal; font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.16em; color: var(--ink-3); text-transform: uppercase; }
+  .diag { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; margin-top: 56px; }
+  .diag h3 { font-family: 'Zen Dots'; font-weight: 400; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 18px; }
+  .diag ul { list-style: none; }
+  .diag li { color: var(--ink-2); padding: 12px 0; border-top: 1px solid var(--line); font-size: 15px; }
+  .ba { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; margin-top: 72px; align-items: start; }
+  .ba figure.after img { border-color: var(--gold-line); }
+  .ba .tagline { display: block; margin-bottom: 12px; font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-3); }
+  .ba .after .tagline { color: var(--gold); }
+  .steps4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; margin-top: 56px; counter-reset: s; list-style: none; }
+  .steps4 li { counter-increment: s; border-top: 1px solid var(--line-2); padding-top: 18px; font-size: 14px; color: var(--ink-2); }
+  .steps4 li::before { content: counter(s); display: block; font-family: 'Zen Dots'; font-size: 22px; color: var(--gold); margin-bottom: 10px; }
+  .steps4 b { display: block; color: var(--ink); font-weight: 600; }
+
+  /* ── NUMBERS ────────────────────────────────────────────────────────── */
+  .spec-row { display: grid; grid-template-columns: 1.7fr 1fr 1fr 1fr; gap: 32px; margin-top: 64px; }
+  .spec { border-top: 1px solid var(--line-2); padding-top: 18px; }
+  .spec .big { font-family: 'Zen Dots'; font-size: clamp(1.15rem, 1.7vw, 1.5rem); line-height: 1.2; white-space: nowrap; }
+  .spec .big small { font-family: 'Inter'; font-size: 0.5em; color: var(--ink-3); margin-left: 4px; }
+  .calc { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px; margin-top: 88px; align-items: start; }
+  table.ledger { width: 100%; border-collapse: collapse; font-size: 15px; }
+  table.ledger caption { text-align: left; font-size: 13px; color: var(--ink-3); padding-bottom: 14px; }
+  table.ledger th, table.ledger td { text-align: left; padding: 14px 0; border-top: 1px solid var(--line); font-weight: 300; color: var(--ink-2); }
+  table.ledger td:last-child { text-align: right; font-family: 'Share Tech Mono'; font-size: 14px; letter-spacing: 0.04em; color: var(--ink); white-space: nowrap; }
+  table.ledger tr.total th, table.ledger tr.total td { border-top: 1px solid var(--line-2); color: var(--ink); font-weight: 600; }
+  table.ledger tr.total td { color: var(--gold); }
+  table.ledger tr.warn td:last-child { color: var(--ink-3); }
+  .panel { border: 1px solid var(--line-2); border-radius: var(--r); padding: 32px; background: #050505; }
+  .panel h3 { font-family: 'Zen Dots'; font-weight: 400; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 8px; }
+  .field { margin-top: 26px; }
+  .field label { display: flex; justify-content: space-between; font-size: 14px; color: var(--ink-2); margin-bottom: 10px; }
+  .field output { font-family: 'Share Tech Mono'; color: var(--ink); }
+  input[type=range] { width: 100%; accent-color: var(--gold); height: 24px; cursor: pointer; }
+  .readout { margin-top: 30px; border-top: 1px solid var(--line); }
+  .readout div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--ink-2); }
+  .readout b { font-family: 'Share Tech Mono'; font-weight: 400; color: var(--ink); }
+  .readout .ok b { color: var(--gold); }
+  .decision { margin-top: 24px; font-size: 15px; color: var(--ink); min-height: 3.2em; }
+  .decision-wide { margin-top: 56px; max-width: 62ch; color: var(--ink-2); font-size: 1.0625rem; }
+  .decision-wide b { color: var(--ink); font-weight: 600; }
+
+  /* ── LIMITS ─────────────────────────────────────────────────────────── */
+  .limits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 72px; margin-top: 56px; list-style: none; }
+  .limits li { padding: 22px 0; border-top: 1px solid var(--line); color: var(--ink-2); font-size: 15px; }
+  .limits b { display: block; color: var(--ink); font-weight: 600; margin-bottom: 2px; }
+  .credit { margin-top: 56px; font-size: 13px; color: var(--ink-3); max-width: 70ch; }
+
+  footer { padding: 120px var(--gutter); text-align: center; border-top: 1px solid var(--line); }
+  footer a { font-family: 'Zen Dots'; letter-spacing: 0.16em; font-size: 13px; text-decoration: none; color: var(--ink-3); transition: color 0.25s; }
+  footer a:hover { color: var(--gold); }
+  footer p { margin-top: 20px; font-size: 12px; color: var(--ink-3); }
+
+  /* ── ZOOM ───────────────────────────────────────────────────────────── */
+  dialog { background: transparent; border: 0; width: 100%; max-width: none; height: 100%; max-height: none; padding: 32px; }
+  dialog::backdrop { background: rgba(0,0,0,0.94); }
+  dialog img { max-width: min(96vw, 1800px); max-height: 90vh; margin: auto; position: absolute; inset: 0; border-radius: var(--r); object-fit: contain; }
+  dialog form { position: absolute; top: 20px; right: 20px; }
+  dialog .btn { border: 1px solid #444; background: rgba(255,255,255,0.08); color: #fff; }
+
+  /* ── RESPONSIVE ─────────────────────────────────────────────────────── */
+  @media (max-width: 960px) {
+    .flow { grid-template-columns: minmax(0, 1fr); margin-top: 48px; }
+    .step { border-top: 0; border-left: 1px solid var(--line-2); padding: 0 0 32px 24px; }
+    .step::before { display: none; }
+    .stats, .spec-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .spec .big { white-space: normal; }
+    .steps4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .method-split, .calc, .diag, .ba, .dock-main { grid-template-columns: minmax(0, 1fr); }
+    .dock-main { align-items: start; }
+  }
+  @media (max-width: 760px) {
+    :root { --gutter: 20px; }
+    section { padding: 80px 0; }
+    .nav ul { display: none; }
+    .hero { padding-top: 32px; }
+    .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .hero-art { margin-right: 0; order: -1; }
+    .facts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+    .change { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .role, .limits, .dock-pair { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .limits { gap: 0; }
+    .pull { margin-top: 64px; }
+    .xaxis span { font-size: 9px; letter-spacing: 0; }
+    .xaxis span:nth-child(even) { display: none; }
+    .lab { display: none; }
+    .panel { padding: 24px; }
+  }
+  .nda { font-family: 'Share Tech Mono'; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px; }
+  .hero-art .nda { text-align: center; position: relative; }
+</style>
+<noscript><style>.js [data-reveal]{opacity:1!important;transform:none!important}.bar{transform:none!important}</style></noscript>
+</head>
+<body>
+
+<nav class="nav" aria-label="Case study">
+  <a class="back" href="./index.html" onclick="if (window.history.length > 1) { history.back(); return false; }">&larr; BACK</a>
+  <ul>
+    <li><a href="#brief">Brief</a></li>
+    <li><a href="#method">Method</a></li>
+    <li><a href="#time">Time</a></li>
+    <li><a href="#iterations">Iterations</a></li>
+    <li><a href="#docks">Dock</a></li>
+    <li><a href="#numbers">Numbers</a></li>
+  </ul>
+  <span class="progress" aria-hidden="true"></span>
+</nav>
+
+<!-- ─── HERO ─────────────────────────────────────────────────────────── -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">WIMTACH / Hackathon 2026</p>
+      <h1 class="title" aria-label="Snow Robot 4S">S<span class="dim">N</span>OW<br>RO<span class="dim d2">B</span>OT</h1>
+      <p class="lede">An electric snow robot for all four seasons. Three days, AI doing the CAD, me directing every decision.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#iterations">SEE ITERATIONS</a>
+        <a class="btn btn-ghost" href="#method">THE METHOD</a>
+      </div>
+    </div>
+    <figure class="hero-art">
+      <img src="images/snow-robot/hero.webp" width="1317" height="989" fetchpriority="high"
+           alt="Snow Robot 4S, blurred front three-quarter render: graphite body with a silver top shell, four wheels in angular pods, orange auger in the front head and a curved chute.">
+      <figcaption class="nda">Blurred for now, under NDA</figcaption>
+    </figure>
+  </div>
+</header>
+
+<div class="facts">
+  <div class="wrap facts-grid">
+    <div data-reveal><span class="k">Role</span><span class="v">Mechanical lead on a team of five</span></div>
+    <div data-reveal><span class="k">When</span><span class="v">Sep 29 to Oct 1, 2026, Toronto</span></div>
+    <div data-reveal><span class="k">Output</span><span class="v">12 body versions, 3 docks, 2 animations</span></div>
+    <div data-reveal><span class="k">Status</span><span class="v">Concept stage, not built</span></div>
+  </div>
+</div>
+
+<!-- ─── BRIEF + ROLE ─────────────────────────────────────────────────── -->
+<section id="brief">
+  <div class="wrap">
+    <h2 class="h2" data-reveal>Five people, one brief. I owned the machine.</h2>
+    <p class="body" data-reveal>The client's snow robot runs on gas and rubber tracks. The brief was to make it autonomous and useful all year. We split the work by discipline, and I took the mechanical half: the body, how it moves, how it docks and how it is built.</p>
+
+    <div class="changes">
+      <div class="change" data-reveal>
+        <h3>Electric, not gas</h3>
+        <p>Only an electric robot can charge itself, and real autonomy needs that. It is not cheaper upfront. It wins on running cost.</p>
+      </div>
+      <div class="change" data-reveal>
+        <h3>A fence of beacon stakes <span class="tag">electrical team</span></h3>
+        <p>UWB and RTK stakes at the corners draw an invisible wall that keeps working when snow or grass blinds the cameras.</p>
+      </div>
+      <div class="change" data-reveal>
+        <h3>Wheels on lifting pods</h3>
+        <p>Tracks tear a lawn every time they turn. Wheels do not, and a pod that lifts 180 mm lets the robot climb out of a plow berm by itself.</p>
+      </div>
+      <div class="change" data-reveal>
+        <h3>One head, four seasons</h3>
+        <p>The housing rotates 90 degrees and the rotor swaps: auger for snow, flail for grass, brush for leaves. One motor, one shaft.</p>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="col mine" data-reveal>
+        <h3>I decided</h3>
+        <ul>
+          <li><b>Wheels over tracks.</b>The mechanical direction, backed with traction and torque numbers.</li>
+          <li><b>The bar for the look.</b>EcoFlow Blade and Altoz as the reference, and a no for every render that fell short.</li>
+          <li><b>A rotating head.</b>Manual 90 degree turn with an index plunger and a damper, so a 20 to 30 kg head cannot drop on a hand.</li>
+          <li><b>Plastic mower blades.</b>A paddle that breaks does not throw metal, and blades become a consumable.</li>
+          <li><b>Plug-in charging.</b>A floating plug in the dock instead of wireless, so the robot reverses in and connects itself.</li>
+          <li><b>Never edit a version.</b>Every iteration is a copy, so every earlier one stays comparable.</li>
+        </ul>
+      </div>
+      <div class="col" data-reveal>
+        <h3>The AI executed</h3>
+        <ul>
+          <li><b>Parametric CAD.</b>One script per version, dimensions at the top, exported as STL for rendering and STEP for SolidWorks.</li>
+          <li><b>Render scripts.</b>Studio shots, photoreal snow scenes and animation, run on my own GPU.</li>
+          <li><b>Parallel variants.</b>Four architectures built and rendered side by side in about half an hour.</li>
+          <li><b>The calculations.</b>Traction, torque and energy, from the assumptions I fixed.</li>
+          <li><b>The exploded view.</b>The team's parts list placed inside the machine and annotated.</li>
+        </ul>
+        <p class="team-note">Electrical and software teammates supplied sensing, compute and the BOM. I fitted their parts inside the machine.</p>
+      </div>
+    </div>
+
+    <p class="pull" data-reveal>AI did not replace the designer. It changed the job. <em>Give direction, say what is good and what is not, repeat until it is right.</em></p>
+  </div>
+</section>
+
+<!-- ─── METHOD ───────────────────────────────────────────────────────── -->
+<section id="method" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <h2 class="h2" data-reveal>Fast CAD with AI, one loop at a time.</h2>
+    <p class="body" data-reveal>Five steps, repeated about a dozen times. The loop is fast enough that a bad idea costs minutes, not an afternoon.</p>
+
+    <div class="flow" data-reveal>
+      <div class="step" style="--i:0"><h3>Direction</h3><p>I write what the machine must be, name the references and set the rules.</p><span class="tool">Me</span></div>
+      <div class="step" style="--i:1"><h3>Code</h3><p>Claude Code writes one parametric script per version. Change a number, regenerate.</p><span class="tool">build123d</span></div>
+      <div class="step" style="--i:2"><h3>Build</h3><p>One STL per material for rendering, and STEP so SolidWorks opens real solids.</p><span class="tool">STL + STEP</span></div>
+      <div class="step" style="--i:3"><h3>Render</h3><p>About 30 seconds for a studio shot, about a minute for a photoreal scene.</p><span class="tool">Blender, RTX 3080</span></div>
+      <div class="step" style="--i:4"><h3>Critique</h3><p>Side by side with the references. I list the 3 or 4 biggest gaps and send them back.</p><span class="tool">Me</span></div>
+    </div>
+    <p class="loopback" data-reveal>Then back to the first step, on a new copy.</p>
+
+    <div class="method-split">
+      <div data-reveal>
+        <pre class="code" tabindex="0"><span class="c"># robot.py, the top of the file. Units: mm.</span>
+WHEEL_D, WHEEL_W = <span class="n">340</span>, <span class="n">130</span>
+BODY_HALF = <span class="n">340</span>      <span class="c"># wheel outer width + pod skin</span>
+AX = <span class="n">290</span>             <span class="c"># axle x, front +AX, rear -AX</span>
+LIFT_MAX = <span class="n">180</span>       <span class="c"># vertical pod travel</span>
+LIFT = {<span class="n">"snow"</span>: <span class="n">70</span>, <span class="n">"grass"</span>: <span class="n">40</span>, <span class="n">"rotor"</span>: <span class="n">0</span>}</pre>
+        <p class="small" style="margin-top:14px;max-width:46ch">This is why iteration is cheap. Changing the lift travel is one edit, and every render updates.</p>
+      </div>
+      <figure data-reveal>
+        <img src="images/snow-robot/v5-real.webp" width="1400" height="875" loading="lazy"
+             alt="Version 5 of the robot in a photoreal snow scene, clearing a driveway lane and throwing snow from its chute.">
+        <figcaption>The same pipeline also makes photoreal scenes: a snowy-field HDRI, about a minute per frame. The snow particles still read as balls, which I logged as open. Blurred for now, under NDA.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TIME ─────────────────────────────────────────────────────────── -->
+<section id="time" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <h2 class="h2" data-reveal>A week of work in three days.</h2>
+    <p class="body" data-reveal>My estimate for the same scope by hand, in SolidWorks and KeyShot, is about a week of full-time work. It took three days, and a good part of the render time ran while I was away from the keyboard. Below is what I can prove from file timestamps.</p>
+
+    <div class="stats">
+      <div class="stat" data-reveal>
+        <div><span class="num" data-count="68">68</span><span class="unit">min</span></div>
+        <p>From the first file in the project folder to the first rendered robot.</p>
+        <span class="when">Sep 29, 18:46 to 19:54</span>
+      </div>
+      <div class="stat" data-reveal>
+        <div><span class="num" data-count="30">30</span><span class="unit">min</span></div>
+        <p>Four alternative architectures, each a full parametric model, coded and rendered.</p>
+        <span class="when">Sep 30, 00:03 to 00:33</span>
+      </div>
+      <div class="stat" data-reveal>
+        <div><span class="num" data-count="21">21</span><span class="unit">min</span></div>
+        <p>Three dock concepts, 24 still renders, up to three passes each.</p>
+        <span class="when">Sep 30, 12:53 to 13:14</span>
+      </div>
+      <div class="stat" data-reveal>
+        <div><span class="num" data-count="870">870</span><span class="unit">frames</span></div>
+        <p>Two animations rendered unattended: 420 of the dock exit and 450 of the connector.</p>
+        <span class="when">Dock exit: about 17 s a frame, 1080p</span>
+      </div>
+    </div>
+
+    <div class="chart" id="chart" data-reveal>
+      <h3>Still renders saved per hour</h3>
+      <p class="small">126 stills across 46 hours, from Sep 29 18:00 to Oct 1 16:00. Flat stretches are sleep and the rest of life.</p>
+      <div class="plot" id="plot" role="img" aria-label="Bar chart of still renders saved per hour. Peaks: 17 at midnight on Sep 30, 22 at 1 pm on Sep 30, 21 at 11 pm on Sep 30. A table view follows.">
+        <div class="gl" style="bottom:0"><span>0</span></div>
+        <div class="gl" style="bottom:calc(10 / 24 * 100%)"><span>10</span></div>
+        <div class="gl" style="bottom:calc(20 / 24 * 100%)"><span>20</span></div>
+        <div class="bars" id="bars"></div>
+        <div class="tip" id="tip"><strong></strong><span></span></div>
+      </div>
+      <div class="xaxis" id="xaxis" aria-hidden="true"></div>
+      <details class="table">
+        <summary>Table view</summary>
+        <table id="tbl"><thead><tr><th>Hour starting</th><th>Stills</th></tr></thead><tbody></tbody></table>
+      </details>
+      <p class="src">Source: modification times of the PNG files in the project's renders folder, animation frames excluded. Scripts and renders were saved as they were made, so the bursts are real.</p>
+    </div>
+
+    <p class="body" style="margin-top:72px" data-reveal>What the method did not save is the judging. Twelve versions exist because I kept saying no. What it removed was the wait between an opinion and a picture of that opinion.</p>
+  </div>
+</section>
+
+<!-- ─── ITERATIONS ───────────────────────────────────────────────────── -->
+<section id="iterations" style="border-top:1px solid var(--line);padding-bottom:96px">
+  <div class="wrap">
+    <h2 class="h2" data-reveal>Twelve versions, and why each one moved on.</h2>
+    <p class="body" data-reveal>Real renders in the order they were made, with the time each file was saved. Gold means the idea survived. Gray means I said no.</p>
+  </div>
+
+  <div class="strip" id="strip" tabindex="0" role="region" aria-label="Iteration timeline, scroll sideways">
+
+    <article class="frame">
+      <button class="shot" data-zoom="images/snow-robot/v1.webp" aria-label="Enlarge version 1"><img src="images/snow-robot/v1.webp" width="1200" height="750" loading="lazy" alt="Version 1: a boxy light grey body on stick legs with a plain orange auger housing and a tall flat chute."></button>
+      <div class="f-top"><h3>V1</h3><time>Sep 29, 19:54</time></div>
+      <p class="verdict">Rejected</p>
+      <p class="why">Looked like a toy. Box body, stick legs, no fillets. It lasted twelve minutes.</p>
+    </article>
+
+    <article class="frame">
+      <button class="shot" data-zoom="images/snow-robot/v2.webp" aria-label="Enlarge version 2"><img src="images/snow-robot/v2.webp" width="1200" height="750" loading="lazy" alt="Version 2: graphite body with orange coil springs, a light bar and faceted low-poly tires."></button>
+      <div class="f-top"><h3>V2</h3><time>Sep 29, 20:06</time></div>
+      <p class="verdict">Rejected</p>
+      <p class="why">Springs, a light bar and a graphite body. Better parts, same toy: still boxy and low-poly.</p>
+    </article>
+
+    <article class="frame keep">
+      <button class="shot" data-zoom="images/snow-robot/v3.webp" aria-label="Enlarge version 3"><img src="images/snow-robot/v3.webp" width="1200" height="750" loading="lazy" alt="Version 3: silver shell with tight fillets over a dark lower body, turbine wheel caps, exposed coilover springs on thin legs."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+      <div class="f-top"><h3>V3</h3><time>Sep 29, 21:47</time></div>
+      <p class="verdict">Direction kept</p>
+      <p class="why">The look arrives: flat planes, tight fillets, a two-tone split. Exposed legs and springs still read as a toy car.</p>
+    </article>
+
+    <article class="frame keep">
+      <button class="shot" data-zoom="images/snow-robot/v4.webp" aria-label="Enlarge version 4"><img src="images/snow-robot/v4.webp" width="1200" height="750" loading="lazy" alt="Version 4: suspension hidden inside faceted silver arm fairings, an Altoz-style curved orange chute."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+      <div class="f-top"><h3>V4</h3><time>Sep 29, 22:24</time></div>
+      <p class="verdict">Direction kept</p>
+      <p class="why">Suspension hidden in arm fairings, Altoz-style chute. My verdict: getting very close. Ten gaps still on the list.</p>
+    </article>
+
+    <article class="frame keep">
+      <button class="shot" data-zoom="images/snow-robot/v5.webp" aria-label="Enlarge version 5"><img src="images/snow-robot/v5.webp" width="1200" height="750" loading="lazy" alt="Version 5: wheel fenders that move with the legs, a dark face mask with two cameras, a top spine and a silver chute."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+      <div class="f-top"><h3>V5</h3><time>Sep 29, 23:51</time></div>
+      <p class="verdict">Kept as base</p>
+      <p class="why">Gap list applied: fenders that move with the legs, 60 mm plan radii, a face mask with two cameras, orange under 10%.</p>
+    </article>
+
+    <article class="frame note">
+      <p><b>00:03 to 00:33</b>Four architectures, coded and rendered in about half an hour. Same base and head, four answers to one question: how does it get over a berm?</p>
+    </article>
+
+    <article class="frame">
+      <button class="shot" data-zoom="images/snow-robot/rover6.webp" aria-label="Enlarge Rover 6"><img src="images/snow-robot/rover6.webp" width="1200" height="750" loading="lazy" alt="Rover 6: a long low body on six wheels with a passive rocker-bogie suspension under silver fairings."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+      <div class="f-top"><h3>Rover 6</h3><time>Sep 30, 00:23</time></div>
+      <p class="verdict">Discarded</p>
+      <p class="why">A passive rocker-bogie climbs about 300 mm with no control. Six hub motors, 30 to 40% more drivetrain cost, and it scrubs lawn when it turns.</p>
+    </article>
+
+    <article class="frame">
+      <button class="shot" data-zoom="images/snow-robot/articulated.webp" aria-label="Enlarge Articulated"><img src="images/snow-robot/articulated.webp" width="1200" height="750" loading="lazy" alt="Articulated: two body modules joined by a ribbed black bellows joint, with the snow head on the front module."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+      <div class="f-top"><h3>Articulated</h3><time>Sep 30, 00:24</time></div>
+      <p class="verdict">Discarded</p>
+      <p class="why">Bends in the middle, so it does not tear lawn. But the bellows joint has to survive salt, and the turning circle is 3.4 m.</p>
+    </article>
+
+    <article class="frame">
+      <button class="shot" data-zoom="images/snow-robot/bladex.webp" aria-label="Enlarge Blade-X"><img src="images/snow-robot/bladex.webp" width="1200" height="750" loading="lazy" alt="Blade-X: a compact tall body on large wheels with the snow head hung from exposed polished parallel links."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+      <div class="f-top"><h3>Blade-X</h3><time>Sep 30, 00:27</time></div>
+      <p class="verdict">Discarded</p>
+      <p class="why">Closest to the EcoFlow reference, with the head on polished links. Those links sit exposed to salt and ice, and the robot grows to 1.68 m.</p>
+    </article>
+
+    <article class="frame keep">
+      <button class="shot" data-zoom="images/snow-robot/monolith.webp" aria-label="Enlarge Monolith"><img src="images/snow-robot/monolith.webp" width="1200" height="750" loading="lazy" alt="Monolith: one graphite block with wheels tucked into angular pods, black bellows above each pod and a silver top shell."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+      <div class="f-top"><h3>Monolith</h3><time>Sep 30, 00:31</time></div>
+      <p class="verdict">Chosen</p>
+      <p class="why">One block, wheels tucked into pods, 180 mm vertical lift. Weakest on sealing and cost, strongest as one object. The team picked it.</p>
+    </article>
+
+    <article class="frame keep">
+      <button class="shot" data-zoom="images/snow-robot/monolith-v2.webp" aria-label="Enlarge Monolith v2"><img src="images/snow-robot/monolith-v2.webp" width="1200" height="750" loading="lazy" alt="Monolith v2: real sensors in the front mask, screws at true size, a recessed stop button and a sealed access hatch on the top deck."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+      <div class="f-top"><h3>Monolith v2</h3><time>Sep 30, 13:15</time></div>
+      <p class="verdict">Kept</p>
+      <p class="why">Real parts at true size: RealSense D455, Livox Mid-360, ISO 7380 screws, a rear brine boom. Open issues: nozzle overspray, GNSS antenna shadows the LiDAR, no front bumper.</p>
+    </article>
+
+    <article class="frame keep">
+      <button class="shot" data-zoom="images/snow-robot/monolith-v3.webp" aria-label="Enlarge Monolith v3"><img src="images/snow-robot/monolith-v3.webp" width="1200" height="750" loading="lazy" alt="Monolith v3: a top handle for rotating the head and an index plunger with a rotary damper on the head side plate."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+      <div class="f-top"><h3>Monolith v3</h3><time>Sep 30, 22:21</time></div>
+      <p class="verdict">Kept</p>
+      <p class="why">Head rotation with a spring plunger and rotary damper, plus tool-free blade rods. Rejected inside it: a bolt per blade (needs tools) and snap-in blades (retention risk).</p>
+    </article>
+
+    <article class="frame keep">
+      <button class="shot" data-zoom="images/snow-robot/monolith-v4.webp" aria-label="Enlarge Monolith v4"><img src="images/snow-robot/monolith-v4.webp" width="1200" height="750" loading="lazy" alt="Monolith v4 exploded: top cover, battery, brine tank, wheel pods, head housing, auger and chute separated along their assembly axes."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+      <div class="f-top"><h3>Monolith v4</h3><time>Oct 1, 11:32</time></div>
+      <p class="verdict">Final</p>
+      <p class="why">The team's BOM placed inside the machine: battery, BMS, Jetson, tank, actuators and motors. Exploded and annotated in three passes.</p>
+    </article>
+  </div>
+
+  <div class="wrap">
+    <div class="strip-ctl">
+      <button class="arrow" id="prev" aria-label="Previous versions">&larr;</button>
+      <div class="track" aria-hidden="true"><i id="trackfill"></i></div>
+      <button class="arrow" id="next" aria-label="Next versions">&rarr;</button>
+    </div>
+
+    <figure class="exploded" data-reveal>
+      <button class="shot" data-zoom="images/snow-robot/exploded-annotated.webp" aria-label="Enlarge the annotated exploded view"><img src="images/snow-robot/exploded-annotated.webp" width="2000" height="896" loading="lazy" alt="Annotated exploded view of the snow robot with 18 numbered callouts: top cover and sensor deck, chassis, battery, BMS, computing, brine tank, compressor, blind-mate interface, pump and boom, wheel pods, linear actuators, hub motors, wheels, head rotation mechanism, winter module, impeller, auger and chute."></button>
+      <figcaption>The last pass: 18 callouts, built from the team's BOM. Battery capacity is still an estimate until the electrical team confirms it. Blurred for now, under NDA.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ─── DOCKS ────────────────────────────────────────────────────────── -->
+<section id="docks" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <h2 class="h2" data-reveal>A robot that lives outside needs a home. Three concepts.</h2>
+    <p class="body" data-reveal>All three sit 250 to 300 mm above the ground with a ramp that lands above the snow, so the robot never has to dig itself out.</p>
+
+    <div class="dock-main">
+      <div class="dock" data-reveal>
+        <button class="shot" data-zoom="images/snow-robot/dock-garage.webp" aria-label="Enlarge the Garage dock"><img src="images/snow-robot/dock-garage.webp" width="1400" height="875" loading="lazy" alt="Garage dock: a boxy aluminum shelter with a solar roof and an antenna mast, its front door lowered as a ramp with the robot rolling out."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+      </div>
+      <div class="dock" data-reveal>
+        <h3>Garage</h3>
+        <span class="specs">280 mm floor, 12.8 degree ramp</span>
+        <p>The drawbridge door becomes the ramp. The cheapest of the three to build: one winch, no lids, no compressor. Risks are icing on the door seal and the door actuator load. This is the one that went into the animation.</p>
+      </div>
+    </div>
+
+    <div class="dock-pair">
+      <div class="dock" data-reveal>
+        <button class="shot" data-zoom="images/snow-robot/dock-hangar.webp" aria-label="Enlarge the Hangar dock"><img src="images/snow-robot/dock-hangar.webp" width="1200" height="750" loading="lazy" alt="Hangar dock: a clamshell with two lids opened upward and a textured ramp, the robot just outside."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+        <h3>Hangar</h3>
+        <span class="specs">250 mm floor, 14.3 degree ramp</span>
+        <p>A clamshell in the style of a DJI Dock 2. Lowest floor, steepest ramp. Risks: cost, 110 kg of snow load per lid, and wind.</p>
+      </div>
+      <div class="dock" data-reveal>
+        <button class="shot" data-zoom="images/snow-robot/dock-capsule.webp" aria-label="Enlarge the Capsule dock"><img src="images/snow-robot/dock-capsule.webp" width="1200" height="750" loading="lazy" alt="Capsule dock: an octagonal tunnel with light strips and a telescoping ramp extended under the robot."></button>
+      <p class="nda">Blurred for now, under NDA</p>
+        <h3>Capsule</h3>
+        <span class="specs">300 mm floor, 13 degree ramp, 3.4 m footprint</span>
+        <p>An octagon tunnel with a telescoping ramp and an air knife. The most striking and the most expensive. Risk: ice in the ramp cassette.</p>
+      </div>
+    </div>
+
+    <div class="finding" data-reveal>
+      <b>Finding that changed the design</b>
+      <p>The snow head strikes any ramp steeper than about 13 to 14 degrees. Either the head lifts into its transport pose before docking, or the ramp stays at 13 degrees or less.</p>
+    </div>
+    <p class="body" style="margin-top:40px" data-reveal>My own cost table is blunt. At production cost multiples, all three docks cost more than a complete Yarbo robot. A consumer would not pay that, so the next step is a lean version without the extras.</p>
+  </div>
+</section>
+
+<!-- ─── CONNECTOR ────────────────────────────────────────────────────── -->
+<section id="connector" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <h2 class="h2" data-reveal>The first charging animation explained nothing.</h2>
+    <blockquote class="quote" data-reveal>
+      Only red and orange springs glowing are visible. Nothing visibly connects to anything.
+      <cite>My feedback after watching it</cite>
+    </blockquote>
+
+    <div class="diag">
+      <div data-reveal>
+        <h3>What was wrong</h3>
+        <ul>
+          <li>The bezel and float plate sat between the camera and the pins.</li>
+          <li>The orange springs were the most saturated thing in frame, so they read as the subject.</li>
+          <li>The socket was seen at a grazing angle.</li>
+          <li>The LED change was too subtle.</li>
+        </ul>
+      </div>
+      <div data-reveal>
+        <h3>What changed</h3>
+        <ul>
+          <li>A true side profile, perpendicular to the mating axis.</li>
+          <li>A half-section cut through socket, bezel and plug, so pins slide into sleeves in view.</li>
+          <li>Steel gray springs, a slower last 30 mm, a one second hold on the mated state.</li>
+          <li>A larger LED ring that turns green only when the pilot pin confirms.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ba">
+      <figure data-reveal>
+        <span class="tagline">Before, rejected</span>
+        <img src="images/snow-robot/connector-before.webp" width="1280" height="1080" loading="lazy"
+             alt="Six frames of the first connector animation from a three-quarter angle: orange springs and plates glow, but the pins are hidden behind the bezel.">
+        <figcaption>Six frames, grazing angle. The springs are the loudest thing and the pins are hidden.</figcaption>
+      </figure>
+      <figure class="after" data-reveal>
+        <span class="tagline">After, shipped</span>
+        <img src="images/snow-robot/connector-after.webp" width="1280" height="720" loading="lazy"
+             alt="Four frames of the fixed animation in section view: a plug approaches a spring-mounted socket, enters it, and a green light shows the connection is confirmed.">
+        <figcaption>Four frames, section view. The plug enters the floating socket and the ring turns green.</figcaption>
+      </figure>
+    </div>
+
+    <ol class="steps4">
+      <li data-reveal><b>Shutter opens</b>A cover keeps snow and salt out of the robot's socket.</li>
+      <li data-reveal><b>Plug self-centers</b>A floating plate on four springs absorbs 10 to 15 mm of misalignment.</li>
+      <li data-reveal><b>Pilot confirms</b>A shorter third pin makes contact last.</li>
+      <li data-reveal><b>Power goes live</b>The charger energizes only after the pilot confirms.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ─── NUMBERS ──────────────────────────────────────────────────────── -->
+<section id="numbers" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <h2 class="h2" data-reveal>The numbers that drove the design.</h2>
+    <p class="body" data-reveal>Estimates are marked as estimates. The one that mattered most came out of a short calculation.</p>
+
+    <div class="spec-row">
+      <div class="spec" data-reveal><span class="k">Size, L x W x H</span><div class="big">1,492 x 846 x 836<small>mm</small></div></div>
+      <div class="spec" data-reveal><span class="k">Dry mass (est.)</span><div class="big">~105<small>kg</small></div></div>
+      <div class="spec" data-reveal><span class="k">Pod lift travel</span><div class="big">180<small>mm</small></div></div>
+      <div class="spec" data-reveal><span class="k">Team hardware BOM</span><div class="big">CAD 2,425</div></div>
+    </div>
+
+    <div class="calc">
+      <table class="ledger" data-reveal>
+        <caption>Drive force. Assumes 110 kg, a 10% slope, 0.5 m/s and a 0.17 m wheel radius.</caption>
+        <tbody>
+          <tr><th>Rolling resistance in snow (Crr 0.15)</th><td>162 N</td></tr>
+          <tr><th>Auger intake (estimate)</th><td>150 N</td></tr>
+          <tr><th>10% slope</th><td>108 N</td></tr>
+          <tr class="total"><th>Total drive force</th><td>~420 N</td></tr>
+          <tr class="warn"><th>Traction, bare tires on packed snow (&mu; 0.25)</th><td>270 N, not enough</td></tr>
+          <tr><th>Traction with chains (&mu; 0.45)</th><td>486 N, +16%</td></tr>
+          <tr><th>Torque per wheel</th><td>~18 N&middot;m at ~28 rpm</td></tr>
+        </tbody>
+      </table>
+
+      <div class="panel" data-reveal>
+        <h3>Try it</h3>
+        <p class="small">Change the mass and the slope. Drive force, torque and traction update.</p>
+        <div class="field">
+          <label for="mass">Robot mass <output id="massOut">110 kg</output></label>
+          <input id="mass" type="range" min="90" max="140" step="5" value="110">
+        </div>
+        <div class="field">
+          <label for="slope">Slope <output id="slopeOut">10%</output></label>
+          <input id="slope" type="range" min="0" max="15" step="1" value="10">
+        </div>
+        <div class="readout" aria-live="polite">
+          <div><span>Total drive force</span><b id="rTotal">420 N</b></div>
+          <div><span>Torque per wheel</span><b id="rTorque">18 N&middot;m</b></div>
+          <div><span>Bare tires hold</span><b id="rBare">270 N</b></div>
+          <div class="ok"><span>With chains</span><b id="rChains">485 N</b></div>
+        </div>
+        <p class="decision" id="decision"></p>
+      </div>
+    </div>
+
+    <p class="decision-wide" data-reveal><b>The decision the numbers drive.</b> The robot is traction-limited, not motor-limited. So it clears early, when snow is thin, it runs chains in winter, and it keeps its weight over the wheels. The blower also takes about 80% of the energy, so it sets the battery size, not the wheels.</p>
+  </div>
+</section>
+
+<!-- ─── LIMITS ───────────────────────────────────────────────────────── -->
+<section id="limits" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <h2 class="h2" data-reveal>What is not proven yet.</h2>
+    <p class="body" data-reveal>This is a concept, and I would rather say where it is weak than have someone find it.</p>
+
+    <ul class="limits">
+      <li data-reveal><b>Estimated inputs.</b>Mass, auger intake force and battery capacity are estimates, not measurements.</li>
+      <li data-reveal><b>Visualization-grade CAD.</b>Parts and surfaces built for form and packaging. No FEA and no physical test.</li>
+      <li data-reveal><b>Untested in the cold.</b>Traction on packed snow, auger load in wet snow and seals at -30 &deg;C still need testing.</li>
+      <li data-reveal><b>Sealing.</b>The lift pods and the connector against salt and ice are the biggest open engineering problem.</li>
+      <li data-reveal><b>Dock cost.</b>Priced above what a home owner would pay. A lean version is the next step.</li>
+      <li data-reveal><b>Grass bag.</b>Still a plain box in every variant.</li>
+      <li data-reveal><b>Outdoors only.</b>The robot never enters the house and stairs are dropped from the design.</li>
+      <li data-reveal><b>Benchmarks.</b>Compared against Yarbo and Snowbot S1. Look references: EcoFlow Blade, Altoz and the Harto Plow concept.</li>
+    </ul>
+
+    <p class="credit" data-reveal>Built with Claude Code (parametric CAD and render scripts), build123d, Blender Cycles and Python. Every design call on this page is mine.</p>
+  </div>
+</section>
+
+<footer>
+  <a href="./index.html">RETURN TO WORK</a>
+  <p>Mauricio Mena, Industrial and Product Designer, Toronto</p>
+</footer>
+
+<dialog id="zoom" aria-label="Enlarged image">
+  <form method="dialog"><button class="btn" aria-label="Close enlarged image">CLOSE</button></form>
+  <img id="zoomImg" alt="">
+</dialog>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Reveal on scroll. Sequence and hierarchy: content arrives in reading order. */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+      e.target.querySelectorAll('[data-count]').forEach(countUp);
+      if (e.target.dataset.count) countUp(e.target);
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('[data-reveal]').forEach(function (el) { io.observe(el); });
+
+  /* Count-up on the measured numbers, so the eye lands on them. */
+  function countUp(el) {
+    if (el.dataset.done) return; el.dataset.done = 1;
+    var end = +el.dataset.count;
+    if (reduce) { el.textContent = end; return; }
+    var t0 = performance.now(), d = 1100;
+    (function tick(t) {
+      var p = Math.min((t - t0) / d, 1);
+      el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }
+  if (!reduce) document.querySelectorAll('[data-count]').forEach(function (el) { el.textContent = '0'; });
+
+  /* Hourly stills, from file timestamps (Sep 29 18:00 start). */
+  var HOURLY = [0,5,6,7,4,10, 17,0,0,0,0,0,0,0,0,0,0,0, 9,22,0,0,0,0,0,0,0, 5,7,21, 7,0,0,0,0,0,0,0,0,0,0, 6,0,0,0,0];
+  var MON = ['Sep 29', 'Sep 30', 'Oct 1'];
+  function hourLabel(k) {
+    var h = 18 + k, d = Math.floor(h / 24), hh = h % 24;
+    return MON[d] + ', ' + (hh < 10 ? '0' : '') + hh + ':00';
+  }
+  var bars = document.getElementById('bars'), tip = document.getElementById('tip'),
+      plot = document.getElementById('plot'), tbody = document.querySelector('#tbl tbody'),
+      xa = document.getElementById('xaxis'), chart = document.getElementById('chart');
+  HOURLY.forEach(function (n, k) {
+    var slot = document.createElement('div');
+    slot.className = 'slot';
+    var bar = document.createElement('div');
+    bar.className = 'bar'; bar.style.setProperty('--v', n); bar.style.setProperty('--i', k);
+    slot.appendChild(bar);
+    if (n > 0) {
+      slot.tabIndex = 0;
+      var show = function () {
+        tip.firstElementChild.textContent = n + (n === 1 ? ' still' : ' stills');
+        tip.lastElementChild.textContent = hourLabel(k);
+        var pr = plot.getBoundingClientRect(), sr = slot.getBoundingClientRect();
+        var left = sr.left - pr.left + sr.width / 2 - tip.offsetWidth / 2;
+        left = Math.max(36, Math.min(left, pr.width - tip.offsetWidth));
+        tip.style.left = left + 'px';
+        tip.style.top = Math.max(0, sr.bottom - pr.top - (n / 24) * pr.height - tip.offsetHeight - 10) + 'px';
+        tip.style.opacity = 1;
+      };
+      var hide = function () { tip.style.opacity = 0; };
+      slot.addEventListener('pointerenter', show); slot.addEventListener('pointerleave', hide);
+      slot.addEventListener('focus', show); slot.addEventListener('blur', hide);
+      slot.setAttribute('aria-label', n + ' stills, ' + hourLabel(k));
+      var tr = document.createElement('tr');
+      var a = document.createElement('td'), b = document.createElement('td');
+      a.textContent = hourLabel(k); b.textContent = n; tr.appendChild(a); tr.appendChild(b); tbody.appendChild(tr);
+    }
+    bars.appendChild(slot);
+  });
+  /* Direct labels only on the extremes. */
+  [[19, '22 in one hour: three docks'], [6, '17: four architectures']].forEach(function (p, idx) {
+    var s = bars.children[p[0]], l = document.createElement('span');
+    l.className = 'lab' + (idx === 1 ? ' right' : ''); l.style.setProperty('--v', HOURLY[p[0]]);
+    l.textContent = p[1]; s.appendChild(l);
+  });
+  [[0, 'Sep 29 18:00'], [6, 'Sep 30 00:00'], [18, 'Sep 30 12:00'], [30, 'Oct 1 00:00'], [42, 'Oct 1 12:00']].forEach(function (t) {
+    var s = document.createElement('span'); s.style.left = (t[0] / HOURLY.length * 100) + '%'; s.textContent = t[1]; xa.appendChild(s);
+  });
+  var co = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { chart.classList.add('in'); co.disconnect(); } }, { threshold: 0.3 });
+  co.observe(chart);
+  if (reduce) chart.classList.add('in');
+
+  /* Method flow starts its comet once visible. */
+  var flow = document.querySelector('.flow');
+  var fo = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { flow.classList.add('in'); fo.disconnect(); } }, { threshold: 0.4 });
+  fo.observe(flow);
+
+  /* Iteration strip: arrows + progress. */
+  var strip = document.getElementById('strip'), fill = document.getElementById('trackfill');
+  function prog() {
+    var max = strip.scrollWidth - strip.clientWidth;
+    fill.style.transform = 'scaleX(' + (max > 0 ? Math.max(0.05, strip.scrollLeft / max) : 1) + ')';
+  }
+  strip.addEventListener('scroll', prog, { passive: true });
+  prog();
+  function step(dir) {
+    var f = strip.querySelector('.frame');
+    strip.scrollBy({ left: dir * (f.getBoundingClientRect().width + 22) * 1.5, behavior: reduce ? 'auto' : 'smooth' });
+  }
+  document.getElementById('prev').addEventListener('click', function () { step(-1); });
+  document.getElementById('next').addEventListener('click', function () { step(1); });
+
+  /* Zoom dialog (native, closes on Esc). */
+  var dlg = document.getElementById('zoom'), zi = document.getElementById('zoomImg');
+  document.querySelectorAll('[data-zoom]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      zi.src = b.dataset.zoom; zi.alt = b.querySelector('img').alt; dlg.showModal();
+    });
+  });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg || e.target === zi) dlg.close(); });
+
+  /* Videos play once when first seen. After that the viewer is in control. */
+  if (!reduce) {
+    var vo = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var p = e.target.play(); if (p && p.catch) p.catch(function () {});
+        vo.unobserve(e.target);
+      });
+    }, { threshold: 0.45 });
+    document.querySelectorAll('video[data-autoplay]').forEach(function (v) { vo.observe(v); });
+  }
+
+  /* Drive-force calculator: same model as the ledger. */
+  var mass = document.getElementById('mass'), slope = document.getElementById('slope');
+  function calc() {
+    var m = +mass.value, s = +slope.value, W = m * 9.81;
+    var total = 0.15 * W + W * s / 100 + 150;
+    var torque = total * 0.17 / 4, bare = 0.25 * W, chains = 0.45 * W;
+    document.getElementById('massOut').textContent = m + ' kg';
+    document.getElementById('slopeOut').textContent = s + '%';
+    document.getElementById('rTotal').textContent = Math.round(total) + ' N';
+    document.getElementById('rTorque').textContent = Math.round(torque) + ' N·m';
+    document.getElementById('rBare').textContent = Math.round(bare) + ' N';
+    document.getElementById('rChains').textContent = Math.round(chains) + ' N';
+    var d = document.getElementById('decision');
+    if (bare >= total) d.textContent = 'Bare tires hold. Chains are a margin, not a necessity.';
+    else if (chains >= total) d.textContent = 'Bare tires slip. Chains hold, with ' + Math.round((chains / total - 1) * 100) + '% to spare.';
+    else d.textContent = 'Even with chains the tires slip. Clear earlier or lighten the robot.';
+  }
+  mass.addEventListener('input', calc); slope.addEventListener('input', calc); calc();
+})();
+</script>
+<script src="analytics.js" defer></script>
+</body>
+</html>

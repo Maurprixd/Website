@@ -1,392 +1,234 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mauricio | Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@100;300&family=Share+Tech+Mono&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<meta name="description" content="Mauricio Mena, industrial and product designer in Toronto. Wearables, furniture and hardware that can be manufactured.">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-  /* ── DESIGN SYSTEM ─────────────────────────────────────────────────── */
-  :root {
-    --bg: #000;
-    --accent: rgba(255,255,255,0.8);
-    --gold: #CA8A04;
-    --gold-dim: rgba(202,138,4,0.15);
-    --glass-bg: rgba(0,0,0,0.55);
-    --glass-border: rgba(255,255,255,0.07);
-    --border-dim: #1a1a1a;
+/* Shared chrome for the landing-page mockups (landing-a .. landing-d).
+   Same tokens, fonts and nav as index.html so the options read as the real site. */
+:root {
+  --bg: #000; --ink: #f4f4f4; --ink-2: #bdbdbd; --ink-3: #8f8f8f;
+  --line: #1d1d1d; --line-2: #2c2c2c;
+  --gold: #CA8A04; --gold-soft: rgba(202,138,4,0.08); --gold-line: rgba(202,138,4,0.45);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --wrap: 1240px; --gutter: 40px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.65; overflow-x: hidden; }
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 900; opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+.wm { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Zen Dots'; font-size: 22vw; color: rgba(255,255,255,0.022); pointer-events: none; user-select: none; z-index: 0; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); position: relative; z-index: 1; }
+
+/* nav: identical to index.html */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 64px; padding: 0 var(--gutter); display: flex; align-items: center; justify-content: space-between; gap: 16px; background: rgba(0,0,0,0.6); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.logo { font-family: 'Zen Dots'; font-size: 14px; letter-spacing: 0.05em; }
+.pills { display: flex; gap: 10px; }
+.pills a { font-family: 'Zen Dots'; font-size: 10px; color: rgba(255,255,255,0.75); border: 1px solid #2a2a2a; padding: 8px 16px; border-radius: 20px; transition: 0.3s; }
+.pills a:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+.pills a.gold { background: var(--gold); border-color: var(--gold); color: #000; }
+.pills a.gold:hover { background: transparent; color: var(--gold); }
+.nav-tag { font-family: 'Zen Dots'; font-size: 9px; color: #666; letter-spacing: 0.15em; }
+
+/* type + controls */
+.eyebrow { font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.26em; color: var(--gold); text-transform: uppercase; }
+.h1 { font-family: 'Zen Dots'; font-weight: 400; text-transform: uppercase; line-height: 0.95; letter-spacing: -0.02em; }
+.h3 { font-family: 'Zen Dots'; font-weight: 400; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
+.lede { color: var(--ink-2); font-size: 1.05rem; max-width: 34em; }
+.mono { font-family: 'Share Tech Mono'; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.btn { display: inline-flex; align-items: center; justify-content: center; font-family: 'Zen Dots'; font-size: 11px; letter-spacing: 0.14em; white-space: nowrap; padding: 14px 26px; min-height: 44px; border-radius: 999px; transition: background 0.3s, color 0.3s, border-color 0.3s; }
+.btn.primary { background: var(--gold); color: #000; border: 1px solid var(--gold); }
+.btn.primary:hover { background: transparent; color: var(--gold); }
+.btn.ghost { border: 1px solid var(--line-2); color: var(--ink-2); }
+.btn.ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.stat-row { display: flex; gap: 28px; flex-wrap: wrap; }
+.stat-row span { display: block; }
+.stat-row .v { font-family: 'Share Tech Mono'; font-size: 12px; color: var(--gold); letter-spacing: 0.06em; text-transform: none; }
+
+/* the blur-focus effect from the real site: arrive blurred, the one near the center sharpens */
+.fx { opacity: 0; filter: blur(14px); transform: translateY(36px); transition: opacity 0.8s var(--ease), filter 0.8s var(--ease), transform 0.9s var(--ease); }
+.fx.is-visible { opacity: 0.55; filter: blur(4px); transform: none; }
+.fx.is-active { opacity: 1; filter: blur(0); }
+
+/* the wall: one object per row, staggered, with a slow drift */
+.wall { padding: 96px 0 40px; position: relative; z-index: 1; }
+.wall-head { max-width: var(--wrap); margin: 0 auto 24px; padding: 0 var(--gutter); }
+.wall-head h2 { font-family: 'Zen Dots'; font-weight: 400; font-size: clamp(1.4rem, 2.6vw, 2.2rem); text-transform: uppercase; line-height: 1.1; }
+.wall-head p { color: var(--ink-3); margin-top: 8px; max-width: 46ch; }
+.wall-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 0 24px; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+.obj { grid-column: var(--c, 1 / -1); display: flex; flex-direction: column; justify-content: center; gap: 22px; min-height: 66vh; padding: 5vh 0; }
+.obj .pic { display: flex; justify-content: center; }
+.obj img { max-height: 44vh; width: auto; max-width: 100%; }
+.cap h3 { font-family: 'Zen Dots'; font-weight: 400; font-size: 18px; text-transform: uppercase; }
+.cap p { color: var(--ink-2); font-size: 14px; max-width: 42ch; margin-top: 4px; }
+.cap .mono { display: block; margin-top: 8px; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .obj .pic { animation: drift linear both; animation-timeline: view(); }
+    @keyframes drift { from { transform: translateY(70px); } to { transform: translateY(-70px); } }
+  }
+}
+.about-link { text-align: center; padding: 96px 0 140px; position: relative; z-index: 1; }
+.about-link a { font-family: 'Zen Dots'; font-size: clamp(2.4rem, 8vw, 6rem); letter-spacing: -0.04em; }
+.about-link small { display: block; margin-top: 14px; font-family: 'Zen Dots'; font-size: 10px; letter-spacing: 2px; color: #666; }
+@media (prefers-reduced-motion: reduce) { .fx { opacity: 1; filter: none; transform: none; transition: none; } html { scroll-behavior: auto; } }
+@media (max-width: 760px) {
+  :root { --gutter: 20px; }
+  .nav { padding: 0 14px; } .logo { font-size: 12px; } .pills { gap: 6px; } .pills a { padding: 6px 9px; font-size: 9px; } .nav-tag { display: none; }   .obj { grid-column: 1 / -1 !important; min-height: 52vh; }
+}
+
+/* ---- home layout: sticky index + gallery ---- */
+
+  .shell { display: grid; grid-template-columns: minmax(300px, 370px) minmax(0, 1fr); max-width: 1440px; margin: 0 auto; padding-top: 64px; position: relative; z-index: 1; }
+  .rail { position: sticky; top: 64px; align-self: start; height: calc(100dvh - 64px); padding: 36px 32px 24px 40px; display: flex; flex-direction: column; gap: 18px; border-right: 1px solid var(--line); overflow-y: auto; scrollbar-width: none; }
+  .rail h1 { font-size: clamp(1.7rem, 2.4vw, 2.2rem); margin-top: 10px; }
+  .rail .lede { font-size: 0.95rem; }
+  .index h2 { margin: 18px 0 6px; }
+  .index ul { list-style: none; }
+  .index a { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 5px 0; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-3); transition: color 0.25s, padding-left 0.3s var(--ease); }
+  .index a:hover { color: #fff; }
+  .index a.on { color: var(--gold); padding-left: 10px; }
+  .index a span { font-family: 'Share Tech Mono'; font-size: 10px; letter-spacing: 0.1em; color: #666; }
+
+  .stage { padding: 0 40px 80px; }
+  .stage-h { padding: 56px 0 0; }
+  .stage-h h2 { font-family: 'Zen Dots'; font-weight: 400; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+  .stage .obj { min-height: 78vh; grid-column: auto; }
+  .stage .obj img { max-height: 50vh; }
+  .stage .obj.screen img { max-height: 46vh; border: 1px solid var(--line-2); border-radius: 8px; }
+  .stage .cap { border-top: 1px solid var(--line-2); padding-top: 16px; }
+  .stage .cap .go { display: block; margin-top: 12px; font-family: 'Zen Dots'; font-size: 9px; letter-spacing: 2px; color: var(--gold); }
+
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: minmax(0, 1fr); }
+    .rail { position: static; height: auto; border: 0; padding: 28px 20px 8px; }
+    .index ul { display: flex; flex-wrap: wrap; gap: 8px; }
+    .index a { border: 1px solid var(--line-2); border-radius: 999px; padding: 8px 14px; }
+    .index a span { display: none; }
+    .index a.on { padding-left: 14px; }
+    .stage { padding: 0 20px 60px; }
+    .stage .obj { min-height: 60vh; }
   }
 
-  html { scroll-behavior: smooth; }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: #fff;
-    font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
-    padding-bottom: 20vh;
-  }
-
-  /* ── GRAIN TEXTURE (premium feel) ──────────────────────────────────── */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9998;
-    opacity: 0.04;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 180px;
-    background-repeat: repeat;
-  }
-
-  /* ── SCROLL PROGRESS ────────────────────────────────────────────────── */
-  #progress {
-    position: fixed;
-    top: 0; left: 0;
-    width: 0%; height: 1px;
-    background: linear-gradient(90deg, var(--gold), #fff);
-    z-index: 9999;
-  }
-
-  /* ── BG WATERMARK ───────────────────────────────────────────────────── */
-  .bg-text {
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Zen Dots', cursive;
-    font-size: 22vw;
-    color: rgba(255,255,255,0.025);
-    z-index: 0;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  /* ── PARALLAX WRAPPER ───────────────────────────────────────────────── */
-  .parallax-wrapper {
-    position: relative;
-    width: 100%;
-    min-height: 700vh;
-  }
-
-  /* ── PRODUCTS ───────────────────────────────────────────────────────── */
-  .product {
-    position: relative;
-    display: block;
-    text-decoration: none;
-    opacity: 0;
-    top: 40px;
-    filter: blur(15px);
-    z-index: 2;
-    cursor: pointer;
-    pointer-events: none;
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .product.is-visible { opacity: 0.6; top: 0; filter: blur(4px); pointer-events: auto; }
-
-  .product.is-active {
-    filter: blur(0px) !important;
-    opacity: 1 !important;
-    z-index: 10;
-    transform: scale(1.03) translateY(var(--y-pos, 0));
-  }
-
-  .product img {
-    display: block;
-    max-height: 70vh;
-    max-width: 80vw;
-    object-fit: contain;
-    margin: 0 auto;
-  }
-
-  /* ── LABELS ─────────────────────────────────────────────────────────── */
-  .label {
-    position: absolute;
-    top: 50%;
-    font-weight: 300;
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    color: var(--gold);
-    text-transform: uppercase;
-    opacity: 0;
-    transition: all 0.4s ease;
-    white-space: nowrap;
-  }
-  .label-right { right: -180px; transform: translateX(-20px); }
-  .label-left  { left: -120px;  transform: translateX(20px); text-align: right; }
-  .product.is-active .label { opacity: 1; transform: translateX(0); }
-
-  /* ── WIMTACH label gold accent ──────────────────────────────────────── */
-  #p8 .label { letter-spacing: 0.5em; }
-
-  /* ── ALIGNMENT ──────────────────────────────────────────────────────── */
-  .align-left   { align-self: flex-start; }
-  .align-right  { align-self: flex-end; }
-  .align-center { align-self: center; }
-
-  /* ── RIPPLE ─────────────────────────────────────────────────────────── */
-  .ripple {
-    position: fixed;
-    width: 60px; height: 60px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50%;
-    pointer-events: none;
-    transform: scale(0);
-    animation: ripple-effect 0.6s ease-out;
-    z-index: 99;
-  }
-  @keyframes ripple-effect { to { transform: scale(2); opacity: 0; } }
-
-  /* ── BANNER J ───────────────────────────────────────────────────────── */
-  @keyframes border-flicker {
-    0%,84%,90%,94%,100% { border-color: rgba(202,138,4,0.55); box-shadow: 0 0 0 1px rgba(202,138,4,0.1); }
-    85%,91%,95% { border-color: rgba(202,138,4,0.04); box-shadow: none; }
-    86%,92%,96% { border-color: var(--gold); box-shadow: 0 0 10px rgba(202,138,4,0.35); }
-    87%,93%,97% { border-color: rgba(202,138,4,0.06); box-shadow: none; }
-  }
-  @keyframes letter-dim {
-    0%,100% { opacity: 1; }
-    50%      { opacity: 0.1; }
-  }
-
-  @media (max-width: 768px) {
-    /* section tiles stack on mobile */
-    .section-tiles-grid { grid-template-columns: 1fr !important; }
-  }
-
-  /* ── REDUCED MOTION ─────────────────────────────────────────────────── */
-  @media (prefers-reduced-motion: reduce) {
-    .product { transition: opacity 0.3s ease; }
-    #p1,#p2,#p3,#p4,#p5,#p6,#p7,#p8 { transition-delay: 0s; }
-    html { scroll-behavior: auto; }
-  }
-
-  /* ── MOBILE ─────────────────────────────────────────────────────────── */
-  @media (max-width: 768px) {
-    .product { margin-top: 60px !important; }
-    #p8 { margin-top: 20px !important; } /* first card, less top gap */
-
-    .bg-text { font-size: 30vw; }
-    .product {
-      position: relative !important;
-      top: 0 !important;
-      margin-left: auto !important;
-      margin-right: auto !important;
-      left: 0 !important; right: 0 !important;
-      width: 90%;
-    }
-    .label {
-      position: relative;
-      top: 0; left: 0 !important; right: 0 !important;
-      display: block;
-      margin-top: 15px;
-      text-align: center;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-    .product img { width: auto !important; max-width: 90vw !important; max-height: 50vh; }
-
-    /* Mastay is a 16:9 landscape shot; matched to same width as portrait cards it renders much shorter, so give it its own box + crop to fill it like the others */
-    #p8 img { width: 100% !important; height: 58vh !important; max-width: 100% !important; max-height: 58vh !important; object-fit: cover !important; }
-
-    /* .parallax-wrapper's 700vh min-height exists for desktop's absolute-positioned parallax canvas; on mobile the cards are in normal flow, so it just leaves a huge dead gap before the About section */
-    .parallax-wrapper { min-height: auto !important; }
-
-    /* nav: logo + 3 pills + meta text don't fit one row at mobile widths, cutting off WIMTACH — stack and center, drop the decorative meta text */
-    nav { flex-direction: column !important; justify-content: center !important; gap: 12px; padding: 16px 20px !important; }
-    nav > div:last-of-type { display: none; }
-  }
+  .stage .about-link { padding: 80px 0 40px; text-align: left; }
+  .stage .about-link a { font-size: clamp(2rem, 5vw, 3.6rem); }
 </style>
 </head>
 <body>
+<div class="wm">MM</div>
 
-<nav style="position: fixed; top: 0; width: 100%; padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.6); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid rgba(255,255,255,0.06);">
-  <a href="#" style="font-family: 'Zen Dots'; font-size: 14px; text-decoration: none; color: #fff; letter-spacing: 0.05em;">MAURICIO</a>
-
-  <div style="display: flex; gap: 10px; align-items: center;">
-    <a href="about.html" style="font-family: 'Zen Dots'; font-size: 10px; color: rgba(255,255,255,0.7); text-decoration: none; border: 1px solid #2a2a2a; padding: 8px 16px; border-radius: 20px; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.borderColor='rgba(255,255,255,0.4)'; this.style.color='#fff'" onmouseout="this.style.borderColor='#2a2a2a'; this.style.color='rgba(255,255,255,0.7)'">
-      ABOUT
-    </a>
-    <a href="project-watch.html" style="font-family: 'Zen Dots'; font-size: 10px; color: rgba(255,255,255,0.7); text-decoration: none; border: 1px solid #2a2a2a; padding: 8px 16px; border-radius: 20px; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.borderColor='rgba(255,255,255,0.4)'; this.style.color='#fff'" onmouseout="this.style.borderColor='#2a2a2a'; this.style.color='rgba(255,255,255,0.7)'">
-      PERSONAL
-    </a>
-    <a href="wimtach.html" style="font-family: 'Zen Dots'; font-size: 10px; color: #000; background: var(--gold); text-decoration: none; border: 1px solid var(--gold); padding: 8px 16px; border-radius: 20px; transition: all 0.3s ease; cursor: pointer; letter-spacing: 0.05em;" onmouseover="this.style.background='transparent'; this.style.color='var(--gold)'" onmouseout="this.style.background='#CA8A04'; this.style.color='#000'">
-      WIMTACH
-    </a>
-  </div>
-
-  <div style="font-family: 'Zen Dots'; font-size: 9px; color: #333; letter-spacing: 0.15em;">PRODUCT DESIGN 2026</div>
+<nav class="nav">
+  <a class="logo" href="index.html">MAURICIO</a>
+  <div class="pills"><a href="about.html">ABOUT</a><a href="project-watch.html">PERSONAL</a><a class="gold" href="wimtach.html">WIMTACH</a></div>
+  <span class="nav-tag">PRODUCT DESIGN 2026</span>
 </nav>
 
-  <div id="progress"></div>
-  <div class="bg-text">MM</div>
-
-  <!-- ── SECTION TILES: WIMTACH (hardware + UX/UI) ───────────────── -->
-  <div style="position: relative; z-index: 5; width: 100%; background: #000;">
-  <div class="section-tiles-grid" style="max-width: 1300px; margin: 0 auto; padding: 110px 40px 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-
-    <!-- BUDDHACALM tile -->
-    <a href="product-9.html" style="display: block; text-decoration: none; padding: 36px; border: 2px solid rgba(202,138,4,0.45); background: rgba(202,138,4,0.04); animation: border-flicker 4s linear infinite;">
-      <span style="font-family:'Share Tech Mono'; font-size: 9px; color: rgba(202,138,4,0.6); letter-spacing: 3px; text-transform: uppercase; display: block; margin-bottom: 18px;">WIMTACH · 2026</span>
-      <div style="font-family:'Zen Dots'; font-size: clamp(2rem,3.5vw,3rem); color: #fff; line-height: 0.9; text-transform: uppercase; margin-bottom: 18px;">BU<span style="display:inline-block;animation:letter-dim 2.1s step-end infinite 0.6s">D</span>DHA<br>CA<span style="display:inline-block;animation:letter-dim 3.3s step-end infinite 1.9s">L</span>M</div>
-      <p style="font-size: 11px; color: #666; line-height: 1.65; margin-bottom: 24px;">Lead designer on a wearable that earned a patent application. Six prototype cycles, pogo-pin electrode array for skin-contact stimulation, cross-functional team.</p>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0; border-top:1px solid rgba(202,138,4,0.2); padding-top:18px; margin-bottom:20px;">
-        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size:8px; color:rgba(255,255,255,0.25); letter-spacing:2px; display:block; margin-bottom:4px;">ROLE</span><span style="font-family:'Share Tech Mono'; font-size:10px; color:#CA8A04;">Lead Designer</span></div>
-        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size:8px; color:rgba(255,255,255,0.25); letter-spacing:2px; display:block; margin-bottom:4px;">CYCLES</span><span style="font-family:'Share Tech Mono'; font-size:10px; color:#CA8A04;">6+</span></div>
-        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size:8px; color:rgba(255,255,255,0.25); letter-spacing:2px; display:block; margin-bottom:4px;">TOLERANCE</span><span style="font-family:'Share Tech Mono'; font-size:10px; color:#CA8A04;">±0.15mm</span></div>
-        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size:8px; color:rgba(255,255,255,0.25); letter-spacing:2px; display:block; margin-bottom:4px;">IP STATUS</span><span style="font-family:'Share Tech Mono'; font-size:10px; color:#CA8A04; animation:letter-dim 2.8s step-end infinite 0.3s;">Patent Pending ●</span></div>
-      </div>
-      <span style="font-family:'Zen Dots'; font-size: 9px; color: #CA8A04; letter-spacing: 2px;">CASE STUDY →</span>
-    </a>
-
-    <!-- WIMTACH UX/UI tile — ICC Immigration portal -->
-    <a id="icc-ux" href="project-icc.html" style="display: block; text-decoration: none; padding: 36px; border: 2px solid rgba(202,138,4,0.45); background: rgba(202,138,4,0.04); animation: border-flicker 4s linear infinite 2s;">
-      <span style="font-family:'Share Tech Mono'; font-size: 9px; color: rgba(202,138,4,0.6); letter-spacing: 3px; text-transform: uppercase; display: block; margin-bottom: 18px;">WIMTACH · 2026</span>
-      <div style="font-family:'Zen Dots'; font-size: clamp(2rem,3.5vw,3rem); color: #fff; line-height: 0.9; text-transform: uppercase; margin-bottom: 18px;">ICC<br>PORTAL</div>
-      <p style="font-size: 11px; color: #666; line-height: 1.65; margin-bottom: 24px;">Client portal and internal CRM redesign for a Canadian immigration consultancy. Three role-based views for admin, staff, and client, prototyped in HTML and refined in Figma.</p>
-      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-top: 1px solid rgba(202,138,4,0.2); padding-top: 20px; margin-bottom: 20px;">
-        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size: 8px; color: rgba(255,255,255,0.25); letter-spacing: 2px; display: block; margin-bottom: 6px;">ROLE</span><span style="font-family:'Share Tech Mono'; font-size: 10px; color: #CA8A04;">UX/UI</span></div>
-        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size: 8px; color: rgba(255,255,255,0.25); letter-spacing: 2px; display: block; margin-bottom: 6px;">VIEWS</span><span style="font-family:'Share Tech Mono'; font-size: 10px; color: #CA8A04;">3</span></div>
-        <div style="padding:7px 0;"><span style="font-family:'Share Tech Mono'; font-size: 8px; color: rgba(255,255,255,0.25); letter-spacing: 2px; display: block; margin-bottom: 6px;">SESSIONS</span><span style="font-family:'Share Tech Mono'; font-size: 10px; color: #CA8A04;">27+</span></div>
-      </div>
-      <span style="font-family:'Zen Dots'; font-size: 9px; color: #CA8A04; letter-spacing: 2px;">CASE STUDY →</span>
-    </a>
-
-  </div>
-  </div>
-  <!-- ─────────────────────────────────────────────────────────────────── -->
-
-  <div class="parallax-wrapper">
-    <a href="product-8.html" id="p8" class="product scroll-item" data-speed="0.06" style="position:absolute; top:-75vh; left:-35vw;">
-      <picture>
-        <source media="(max-width: 768px)" srcset="images/Product%208-mobile.png">
-        <img src="images/Product 8.png" alt="MASTAY" style="width:170vw;height:auto;max-width:none;max-height:none;">
-      </picture>
-      <div class="label label-right" style="right: 80vw; top: 75%;">01 // MASTAY</div>
-    </a>
-
-    <a href="product-7.html" id="p7" class="product scroll-item" data-speed="0.12" style="position:absolute; top:120vh; left:58.4vw;">
-      <img src="images/Product 7.png" alt="FLEED">
-      <div class="label label-left">02 // FLEED</div>
-    </a>
-
-    <a href="product-1.html" id="p1" class="product scroll-item" data-speed="0.1" style="position:absolute; top:200vh; left:7.6vw;">
-      <img src="images/Product 1.png" alt="WAVY CHAIR">
-      <div class="label label-right">03 // WAVY CHAIR</div>
-    </a>
-
-    <a href="product-2.html" id="p2" class="product scroll-item" data-speed="0.05" style="position:absolute; top:300vh; left:66.9vw;">
-      <img src="images/Product 2.png" alt="C8H1">
-      <div class="label label-left">04 // C8H1</div>
-    </a>
-
-    <a href="product-3.html" id="p3" class="product scroll-item" data-speed="-0.08" style="position:absolute; top:430vh; left:42.4vw;">
-      <img src="images/Product 3.png" alt="PILL LAMP">
-      <div class="label label-right">05 // PILL LAMP</div>
-    </a>
-
-    <a href="product-4.html" id="p4" class="product scroll-item" data-speed="0.15" style="position:absolute; top:390.2vh; left:7.5vw;">
-      <img src="images/Product 4.png" alt="FLUIDO">
-      <div class="label label-right">06 // FLUIDO</div>
-    </a>
-
-    <a href="product-5.html" id="p5" class="product scroll-item" data-speed="0.1" style="position:absolute; top:500.5vh; left:56.1vw;">
-      <img src="images/Product 5.png" alt="BORING GLASSES">
-      <div class="label label-left" style="left: -170px;">07 // BORING GLASSES</div>
-    </a>
-
-    <a href="product-6.html" id="p6" class="product scroll-item" data-speed="-0.02" style="position:absolute; top:640.6vh; left:30vw;">
-      <img src="images/Product 6.png" alt="TRUE HUMAN">
-      <div class="label label-right">08 // TRUE HUMAN</div>
-    </a>
-  </div>
-
-<section id="about-bottom" class="align-center" style="position: relative; width: 100%; padding: 100px 0; text-align: center; z-index: 10;">
-  <a href="about.html" style="text-decoration: none; color: inherit; display: inline-block;">
-    <h2 style="font-family: 'Zen Dots'; font-size: 8vw; letter-spacing: -0.05em; color: #fff; margin: 0;">
-      ABOUT ME
-    </h2>
-    <div style="font-family: 'Zen Dots'; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #444; margin-top: 20px;">
-      CLICK TO VIEW CONTACT & BIO
+<div class="shell">
+  <aside class="rail">
+    <div>
+      <p class="eyebrow">Toronto</p>
+      <h1 class="h1">Mauricio Mena</h1>
     </div>
-  </a>
-</section>
+    <p class="lede">Industrial and product designer. Wearables, furniture and hardware that can be manufactured. Open to full-time roles.</p>
+    <div class="ctas">
+      <a class="btn primary" href="mailto:mena47831@gmail.com">EMAIL</a>
+      <a class="btn ghost" href="about.html">ABOUT</a>
+    </div>
+    <nav class="index" id="index" aria-label="Projects"></nav>
+  </aside>
+  <main class="stage" id="stage"></main>
+</div>
 
-  <script>
-    // Scroll Progress
-    window.addEventListener('scroll', () => {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      document.getElementById("progress").style.width = (winScroll / height) * 100 + "%";
-    });
+<script>
 
-    // Reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('is-visible');
+  /* SHOW_HACKATHON: keep false until the hackathon IP / publicity terms are confirmed in writing.
+     The entry needs project-hackathon.html and images/hackathon/ copied into this folder first. */
+  var SHOW_HACKATHON = true;
+
+  var PROJECTS = [
+    { id: 'buddha', name: 'BuddhaCalm', group: 'wimtach', year: '2026', role: 'Lead designer',
+      line: 'Patent-pending wearable. Six prototype cycles with a cross-functional engineering team.',
+      img: 'images/budda calm/budda prototype/BUDT-ALL.png', href: 'product-9.html' },
+    { id: 'icc', name: 'ICC Portal', group: 'wimtach', year: '2026', role: 'UX/UI designer', screen: true,
+      line: 'Client portal and CRM for an immigration consultancy. Three role views.',
+      img: 'images/icc/client.png', href: 'project-icc.html' },
+    { id: 'hackathon', name: 'Snow Robot 4S', group: 'hack', year: '2026', role: 'Mechanical lead', hidden: true,
+      line: 'Electric four-season snow robot. Twelve versions in three days with AI-driven CAD. Images blurred for now, under NDA.',
+      img: 'images/snow-robot/hero.webp', href: 'project-snow-robot.html' },
+    { id: 'mastay', name: 'Mastay', group: 'school', year: '2026', role: 'Capstone',
+      line: 'Kinetic 2-in-1 furniture, from storage tower to collaborative table.', img: 'images/landing/mastay.webp', href: 'product-8.html' },
+    { id: 'fleed', name: 'Fleed', group: 'school', year: '2023', role: 'Design',
+      line: 'Agricultural drone with a swappable payload bay.', img: 'images/landing/fleed.webp', href: 'product-7.html' },
+    { id: 'wavy', name: 'Wavy Chair', group: 'school', year: '2024', role: 'Design',
+      line: 'Concrete seat on carved wood legs, held by friction alone.', img: 'images/landing/wavy.webp', href: 'product-1.html' },
+    { id: 'c8h1', name: 'C8H1', group: 'school', year: '2024', role: 'Design',
+      line: 'Syphon coffee maker where the brewing is the show.', img: 'images/landing/c8h1.webp', href: 'product-2.html' },
+    { id: 'pill', name: 'Pill Lamp', group: 'school', year: '2023', role: 'Design',
+      line: 'Lamp, clock and speaker in one vacuum-formed capsule.', img: 'images/landing/pill.webp', href: 'product-3.html' },
+    { id: 'fluido', name: 'Fluido', group: 'school', year: '2025', role: 'Design',
+      line: 'Stackable stool whose legs capture water in motion.', img: 'images/landing/fluido.webp', href: 'product-4.html' },
+    { id: 'boring', name: 'Boring Glasses', group: 'school', year: '2024', role: 'Design',
+      line: 'Sunglasses with a plain frame and temples that carry the story.', img: 'images/landing/boring.webp', href: 'product-5.html' },
+    { id: 'human', name: 'True Human', group: 'school', year: '2024', role: 'Design',
+      line: 'A watch band built from interlocking, spine-like segments.', img: 'images/landing/human.webp', href: 'product-6.html' }
+  ].filter(function (p) { return SHOW_HACKATHON || !p.hidden; });
+
+  var GROUPS = [['wimtach', 'Professional, WIMTACH'], ['hack', 'Hackathon'], ['school', 'Centennial College']];
+
+  function wallItem(p) {
+    return '<a class="obj fx' + (p.screen ? ' screen' : '') + '" id="p-' + p.id + '" data-id="' + p.id + '" href="' + p.href + '">' +
+      '<div class="pic"><img src="' + p.img + '" alt="' + p.name + '" loading="lazy"></div>' +
+      '<div class="cap"><h3>' + p.name + '</h3><p>' + p.line + '</p><span class="mono">' + p.role + ', ' + p.year + '</span>' +
+      '<span class="go">OPEN \u2192</span></div></a>';
+  }
+
+  /* Blur-focus without scroll listeners: items arrive blurred; the one crossing the thin center band sharpens. */
+  function initFx(scope) {
+    var els = Array.prototype.slice.call(scope.querySelectorAll('.fx'));
+    var seen = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('is-visible'); });
+    }, { threshold: 0.08 });
+    var mid = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        els.forEach(function (x) { x.classList.remove('is-active'); });
+        e.target.classList.add('is-active');
+        document.dispatchEvent(new CustomEvent('focuschange', { detail: e.target.dataset.id }));
       });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.product').forEach(p => observer.observe(p));
+    }, { rootMargin: '-46% 0px -46% 0px' });
+    els.forEach(function (e) { seen.observe(e); mid.observe(e); });
+  }
 
-    // Parallax + scroll-based active product (closest to viewport center gets unblurred)
-    function updateActiveProduct() {
-      const mid = window.innerHeight / 2;
-      let closest = null, closestDist = Infinity;
-      document.querySelectorAll('.product.is-visible').forEach(p => {
-        const rect = p.getBoundingClientRect();
-        const dist = Math.abs((rect.top + rect.height / 2) - mid);
-        if (dist < closestDist) { closestDist = dist; closest = p; }
-      });
-      document.querySelectorAll('.product').forEach(p => p.classList.remove('is-active'));
-      if (closest) closest.classList.add('is-active');
-    }
-    const isMobileLayout = () => window.matchMedia('(max-width: 768px)').matches;
-    window.addEventListener('scroll', () => {
-      document.querySelectorAll('.scroll-item').forEach(item => {
-        if (isMobileLayout()) {
-          item.style.removeProperty('--y-pos');
-          item.style.removeProperty('transform');
-        } else if (item.classList.contains('is-visible')) {
-          let speed = item.getAttribute('data-speed');
-          let yVal = window.pageYOffset * speed;
-          item.style.setProperty('--y-pos', `${yVal}px`);
-          item.style.transform = `translateY(${yVal}px)`;
-        }
-      });
-      updateActiveProduct();
-    }, { passive: true });
+  var index = document.getElementById('index'), stage = document.getElementById('stage');
+  GROUPS.forEach(function (g) {
+    var items = PROJECTS.filter(function (p) { return p.group === g[0]; });
+    if (!items.length) return;
+    var ul = items.map(function (p) {
+      return '<li><a href="#p-' + p.id + '" data-id="' + p.id + '">' + p.name + '<span>' + p.year + '</span></a></li>';
+    }).join('');
+    index.insertAdjacentHTML('beforeend', '<h2 class="h3">' + g[1] + '</h2><ul>' + ul + '</ul>');
+    stage.insertAdjacentHTML('beforeend', '<div class="stage-h"><h2>' + g[1] + '</h2></div>');
+    items.forEach(function (p) { stage.insertAdjacentHTML('beforeend', wallItem(p)); });
+  });
+  stage.insertAdjacentHTML('beforeend', '<section class="about-link"><a href="about.html">ABOUT ME</a><small>CONTACT AND BIO</small></section>');
+  initFx(stage);
+  document.addEventListener('focuschange', function (e) {
+    index.querySelectorAll('a').forEach(function (a) { a.classList.toggle('on', a.dataset.id === e.detail); });
+  });
 
-    // Mobile Taps
-    let lastTap = 0;
-    const products = document.querySelectorAll('.product');
-
-    document.addEventListener('touchstart', (e) => {
-      const ripple = document.createElement('div');
-      ripple.className = 'ripple';
-      ripple.style.left = `${e.touches[0].clientX - 30}px`;
-      ripple.style.top = `${e.touches[0].clientY - 30}px`;
-      document.body.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
-
-      const targetProduct = e.target.closest('.product');
-      if (targetProduct && window.innerWidth <= 1024) {
-        const currentTime = new Date().getTime();
-        if (currentTime - lastTap < 300) {
-          window.location.href = targetProduct.getAttribute('href');
-        } else {
-          products.forEach(p => p.classList.remove('is-active'));
-          targetProduct.classList.add('is-active');
-        }
-        lastTap = currentTime;
-      } else if (!targetProduct) {
-        products.forEach(p => p.classList.remove('is-active'));
-      }
-    });
-
-    products.forEach(p => { p.addEventListener('click', (e) => { if(window.innerWidth <= 1024) e.preventDefault(); }); });
-  </script>
+</script>
+<script src="analytics.js" defer></script>
 </body>
 </html>

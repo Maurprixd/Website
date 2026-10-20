@@ -257,6 +257,17 @@
     margin-top: 16px;
   }
 
+
+  /* Hackathon: wide third row */
+  .tile-hack { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: center; padding: 40px; background: #060606; text-decoration: none; color: #fff; border-color: rgba(202,138,4,0.2) !important; transition: border-color 0.4s ease, background 0.4s ease; animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.52s both; }
+  .tile-hack:hover { border-color: rgba(202,138,4,0.5) !important; background: #0a0808; }
+  .tile-hack h2 { font-family: 'Zen Dots'; font-size: clamp(1.6rem, 3vw, 2.4rem); text-transform: uppercase; line-height: 1; margin-bottom: 12px; }
+  .tile-hack p { font-size: 12px; color: #777; font-weight: 300; letter-spacing: 0.5px; margin-bottom: 28px; max-width: 420px; line-height: 1.6; }
+  .tile-hack img { display: block; width: 100%; height: auto; transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+  .tile-hack:hover img { transform: translateX(10px) scale(1.03); }
+  @media (max-width: 900px) { .tile-hack { grid-template-columns: 1fr; padding: 28px; } .tile-hack img { order: -1; } }
+  @media (prefers-reduced-motion: reduce) { .tile-hack { animation: none; } .tile-hack img { transition: none; } }
+
   @media (max-width: 900px) {
     .bento { grid-template-columns: 1fr; }
     .tile-featured { grid-row: span 1; min-height: 460px; }
@@ -293,7 +304,7 @@
         <h2>Buddha<br>Calm</h2>
         <p>
           Patent-pending wearable stress-relief device — full design cycle from concept
-          to production-ready prototype, 6+ iteration cycles, pogo pin charging architecture.
+          to production-ready prototype, 6+ iteration cycles, pogo-pin contact architecture.
         </p>
         <span class="tile-cta">VIEW CASE STUDY →</span>
       </div>
@@ -312,8 +323,8 @@
           <span class="stat-desc">Depts. Coordinated</span>
         </div>
         <div class="stat-item">
-          <span class="stat-num">±0.15</span>
-          <span class="stat-desc">mm Pogo Tolerance</span>
+          <span class="stat-num">5</span>
+          <span class="stat-desc">Person Team, 1 Designer</span>
         </div>
         <div class="stat-item">
           <span class="stat-num">01</span>
@@ -331,8 +342,21 @@
       <span class="coming-tag" style="color: var(--gold); border-color: rgba(202,138,4,0.3);">VIEW CASE STUDY →</span>
     </a>
 
+    <!-- Hackathon -->
+    <a href="project-snow-robot.html" class="tile tile-hack">
+      <div>
+        <span class="tile-tag">Hackathon · 2026</span>
+        <h2>Snow Robot 4S</h2>
+        <p>Electric four-season snow robot concept from the WIMTACH hackathon. Mechanical lead, twelve body versions and two animations in three days, built with AI-driven fast CAD.</p>
+        <span class="tile-cta">VIEW CASE STUDY →</span>
+      </div>
+      <img src="images/snow-robot/hero.webp" width="1317" height="989" loading="lazy" alt="Snow Robot 4S render on black, blurred for now under NDA.">
+    </a>
+
+
   </div>
 </div>
 
+<script src="analytics.js" defer></script>
 </body>
 </html>

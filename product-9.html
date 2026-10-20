@@ -461,8 +461,8 @@
     <p style="color: #666; margin-top: 20px; max-width: 600px;">
       BuddhaCalm began with research into stress physiology and wearable ergonomics.
       Competitive benchmarking, mood board exploration, and user analysis shaped a direction
-      for a discreet, body-worn form that integrates a pogo-pin electrode array for skin-contact
-      stimulation without sacrificing comfort or discretion.
+      for a discreet, body-worn form that integrates a pogo-pin contact array
+      without sacrificing comfort or discretion.
     </p>
   </div>
 
@@ -583,7 +583,7 @@
       <span class="int-tag">01 / User Definition</span>
       <div class="int-row">
         <span class="int-row-label">Situation</span>
-        <p class="int-situation">The team defined our target audience as "adults 24+." Too broad to design for — a 28-year-old office worker and a 55-year-old with chronic stress have completely different needs, postures, and expectations from a wearable.</p>
+        <p class="int-situation">The team defined our target audience as a broad adult age range. Too broad to design for — a 28-year-old office worker and a 55-year-old with chronic stress have completely different needs, postures, and expectations from a wearable.</p>
       </div>
       <div class="int-row">
         <span class="int-row-label">Intervention</span>
@@ -614,14 +614,14 @@
 
     <!-- Card 3 — Motor Control -->
     <div class="int-card">
-      <span class="int-tag">03 / Motor Control UX</span>
+      <span class="int-tag">03 / Control UX</span>
       <div class="int-row">
         <span class="int-row-label">Situation</span>
-        <p class="int-situation">The circuit engineer proposed individual motor control per motor in the app interface — technically accurate, and a trust problem for a wellness product.</p>
+        <p class="int-situation">The circuit engineer proposed exposing every output setting individually in the app interface — technically accurate, and a trust problem for a wellness product.</p>
       </div>
       <div class="int-row">
         <span class="int-row-label">Intervention</span>
-        <p class="int-intervention">The average user has no reference point for "too much" electrical stimulation. Exposing raw motor control without guidance puts the burden of safety on the user. I proposed progressive disclosure: 3 preset modes (Low / Medium / High) as the default interaction, with Advanced controls accessible through a deliberate extra step.</p>
+        <p class="int-intervention">The average user has no reference point for "too much" intensity. Exposing raw controls without guidance puts the burden of safety on the user. I proposed progressive disclosure: 3 preset modes (Low / Medium / High) as the default interaction, with Advanced controls accessible through a deliberate extra step.</p>
       </div>
       <div class="int-row">
         <span class="int-row-label">Outcome</span>
@@ -638,10 +638,9 @@
     <span class="section-num">PHASE 04</span>
     <h2 class="section-title">Engineering & Build</h2>
     <p style="color: #666; margin-top: 20px; max-width: 600px;">
-      The core challenge was a 3-pogo-pin electrode array spanning three mating
-      components — PCB, electrode contacts, and enclosure shell — delivering electrical
-      stimulation through reliable skin contact (charging is handled separately via USB-C).
-      Positional tolerances were tightened from ±0.5mm to ±0.15mm through iterative SolidWorks
+      The core challenge was a 3-pogo-pin array spanning three mating
+      components — PCB, contacts, and enclosure shell — that all had to line up for reliable
+      contact. Positional tolerances were tightened through iterative SolidWorks
       geometry revisions across 6+ prototype cycles, before finalizing production drawings for
       hardware handoff.
     </p>
@@ -659,14 +658,13 @@
       <h3>Technical Specification</h3>
       <p style="color: #888; margin-bottom: 20px;">
         Enclosure designed for anatomy-aware body contact, integrating a triangular pogo-pin
-        electrode array, PCB, and production-ready form.
+        contact array, PCB, and production-ready form.
       </p>
       <ul class="tech-list">
         <li><span>Software</span>          <b>SolidWorks 2024</b></li>
         <li><span>Units</span>             <b>mm (Millimeters)</b></li>
         <li><span>Prototype Machine</span> <b>Bambu Lab P1S</b></li>
-        <li><span>Charging</span>          <b>USB-C</b></li>
-        <li><span>Pogo Tolerance</span>    <b>±0.15 mm</b></li>
+        <li><span>Pogo Alignment</span>    <b>Tightened by iteration</b></li>
         <li><span>Prototype Cycles</span>  <b>6+</b></li>
         <li><span>Status</span>            <b>Patent Pending</b></li>
       </ul>
@@ -748,5 +746,6 @@
     });
   });
 </script>
+<script src="analytics.js" defer></script>
 </body>
 </html>
