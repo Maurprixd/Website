@@ -416,8 +416,8 @@
       </div>
     </div>
     <figure class="hero-art">
-      <img src="images/snow-robot/hero.webp" width="1317" height="989" fetchpriority="high"
-           alt="Snow Robot 4S front three-quarter render: graphite body with a silver top shell, four wheels in angular pods, orange auger in the front head and a curved chute.">
+      <img src="images/snow-robot/dock-hero.webp" width="1400" height="788" fetchpriority="high"
+           alt="Garage dock in a snow scene with its door lowered into a ramp and the robot's chute and orange auger just visible inside.">
     </figure>
   </div>
 </header>
@@ -573,7 +573,7 @@ LIFT = {<span class="n">"snow"</span>: <span class="n">70</span>, <span class="n
 <section id="iterations" style="border-top:1px solid var(--line);padding-bottom:96px">
   <div class="wrap">
     <h2 class="h2" data-reveal>Twelve versions, and why each one moved on.</h2>
-    <p class="body" data-reveal>Real renders in the order they were made, with the time each file was saved. Gold means the idea survived. Gray means I said no. Early versions and the docks are blurred for now, under NDA.</p>
+    <p class="body" data-reveal>Real renders in the order they were made, with the time each file was saved. Gold means the idea survived. Gray means I said no. The final Monolith render, the early versions and the docks are blurred for now, under NDA.</p>
   </div>
 
   <div class="strip" id="strip" tabindex="0" role="region" aria-label="Iteration timeline, scroll sideways">
@@ -656,6 +656,7 @@ LIFT = {<span class="n">"snow"</span>: <span class="n">70</span>, <span class="n
 
     <article class="frame keep">
       <button class="shot" data-zoom="images/snow-robot/monolith-v3.webp" aria-label="Enlarge Monolith v3"><img src="images/snow-robot/monolith-v3.webp" width="1200" height="750" loading="lazy" alt="Monolith v3: a top handle for rotating the head and an index plunger with a rotary damper on the head side plate."></button>
+      <p class="nda">Blurred for now, under NDA</p>
       <div class="f-top"><h3>Monolith v3</h3><time>Sep 30, 22:21</time></div>
       <p class="verdict">Kept</p>
       <p class="why">Head rotation with a spring plunger and rotary damper, plus tool-free blade rods. Rejected inside it: a bolt per blade (needs tools) and snap-in blades (retention risk).</p>
@@ -717,6 +718,14 @@ LIFT = {<span class="n">"snow"</span>: <span class="n">70</span>, <span class="n
       <p>The snow head strikes any ramp steeper than about 13 to 14 degrees. Either the head lifts into its transport pose before docking, or the ramp stays at 13 degrees or less.</p>
     </div>
     <p class="body" style="margin-top:40px" data-reveal>My own cost table is blunt. At production cost multiples, all three docks cost more than a complete Yarbo robot. A consumer would not pay that, so the next step is a lean version without the extras.</p>
+
+    <figure class="vid-block" id="animation" data-reveal>
+      <div class="vid">
+        <video src="images/snow-robot/dock-exit.mp4" poster="images/snow-robot/dock-hero.webp" muted loop playsinline preload="none" controls data-autoplay
+               aria-label="Animation: the garage dock door lowers into a ramp and the robot drives out onto snow."></video>
+      </div>
+      <figcaption class="small" style="margin-top:14px">Dock exit. 420 frames at 1080p, rendered unattended. The door becomes the ramp, so the robot always rolls out above the snow.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -771,6 +780,15 @@ LIFT = {<span class="n">"snow"</span>: <span class="n">70</span>, <span class="n
       <li data-reveal><b>Pilot confirms</b>A shorter third pin makes contact last.</li>
       <li data-reveal><b>Power goes live</b>The charger energizes only after the pilot confirms.</li>
     </ol>
+
+    <figure class="vid-block" id="self-plug" data-reveal>
+      <div class="vid">
+        <video src="images/snow-robot/self-plug.mp4" poster="images/snow-robot/self-plug-poster.webp" muted loop playsinline preload="none" controls data-autoplay
+               aria-label="Animation: the robot reverses into the dock, its socket shutters open, the dock plug self-aligns, the pins mate and the status ring turns green."></video>
+      </div>
+      <figcaption class="small" style="margin-top:14px">The fixed animation. 450 frames: the robot reverses in, the shutters open, the plug self-centers in section view, and the ring turns green once the pilot pin confirms.</figcaption>
+    </figure>
+
   </div>
 </section>
 
@@ -967,7 +985,7 @@ LIFT = {<span class="n">"snow"</span>: <span class="n">70</span>, <span class="n
   dlg.addEventListener('click', function (e) { if (e.target === dlg || e.target === zi) dlg.close(); });
 
   /* Videos play once when first seen. After that the viewer is in control. */
-  if (!reduce) {
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     var vo = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         if (!e.isIntersecting) return;
